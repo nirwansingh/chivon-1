@@ -16,7 +16,7 @@ import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { EmptyState } from '@/components/empty-state';
 import { UploadForm } from '../../documents/upload-form';
 import { deleteDocumentAction } from '../../documents/actions';
-import { Download, FileText, ImageIcon, FileSpreadsheet, Trash2 } from 'lucide-react';
+import { Download, FileText, ImageIcon, FileSpreadsheet, Trash2, FolderOpen } from 'lucide-react';
 
 function getFileIcon(mimeType: string) {
   if (mimeType.includes('pdf')) return <FileText className="w-4 h-4 text-red-500" />;
