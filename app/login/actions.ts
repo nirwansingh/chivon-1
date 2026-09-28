@@ -4,7 +4,7 @@ import { createSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import bcrypt from 'bcryptjs';
 
-export async function loginWithCredentials(prevState: any, formData: FormData) {
+export async function loginWithCredentials(prevState: unknown, formData: FormData) {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
 

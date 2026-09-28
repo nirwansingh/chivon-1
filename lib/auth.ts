@@ -73,7 +73,7 @@ export async function requirePermission(permissionKey: string) {
     return user;
   }
 
-  const hasPerm = user.role.permissions.some((rp: any) => rp.permission.key === permissionKey);
+  const hasPerm = user.role.permissions.some((rp: { permission: { key: string } }) => rp.permission.key === permissionKey);
   if (!hasPerm) {
     throw new Error(`FORBIDDEN: Missing permission ${permissionKey}`);
   }

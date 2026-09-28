@@ -359,8 +359,8 @@ Format: `[ ] ID — Task  (Deps)  ▸ Acceptance`
 - ✅ **Exit:** schema migrated, seed runs, money/numbering/status/audit/permission libs unit-tested.
 
 ### PHASE 2 — Authentication, users, roles, permissions
-- [ ] P2.1 — Easy dev login: normal email + password form checked against seeded users (hashed passwords, inactive users blocked, lastLoginAt updated), plus one-click 'Quick login' cards for each seeded role on the login page. Session is a simple signed cookie. Local development only.
-- [ ] P2.2 — Route protection (middleware + server checks); `requirePermission()` guard for actions/routes  (P2.1)  ▸ unauthenticated redirected; unauthorized = 403 server-side
+- [x] P2.1 — Easy dev login: normal email + password form checked against seeded users (hashed passwords, inactive users blocked, lastLoginAt updated), plus one-click 'Quick login' cards for each seeded role on the login page. Session is a simple signed cookie. Local development only.
+- [x] P2.2 — Route protection (middleware + server checks); `requirePermission()` guard for actions/routes  (P2.1)  ▸ unauthenticated redirected; unauthorized = 403 server-side
 - [ ] P2.3 — Users admin: list/create/edit/deactivate, reset password (no public registration; only `USER.MANAGE`)  (P2.2)
 - [ ] P2.4 — Roles & Permissions admin: edit default roles, create custom roles, permission matrix UI; audited  (P2.2)
 - [ ] P2.5 — Protect SUPER_ADMIN from Admin changes  (P2.3)
