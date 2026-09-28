@@ -80,8 +80,8 @@ Update the Status column as phases progress. (`NOT_STARTED` / `IN_PROGRESS` / `D
 | P5 | Products, services & stock | DONE | P3 |
 | P6 | Inquiries | DONE | P4, P5 |
 | P7 | Opportunities & Kanban | DONE | P6 |
-| P8 | Quotations, revisions, approval, PDF | NOT_STARTED | P4, P5, P7 |
-| P9 | Sales Orders | NOT_STARTED | P8 |
+| P8 | Quotations, revisions, approval, PDF | IN_PROGRESS | P4, P5, P7 |
+| P9 | Sales Orders | IN_PROGRESS | P8 |
 | P10 | Invoices & credit notes | NOT_STARTED | P9 |
 | P11 | Payments & receipts | NOT_STARTED | P10 |
 | P12 | SOA, aging & receivables | NOT_STARTED | P11 |
@@ -102,13 +102,18 @@ Update the Status column as phases progress. (`NOT_STARTED` / `IN_PROGRESS` / `D
 
 ### Handoff Notes
 - **How to resume**: Please read the 0. RESUME PROTOCOL at the top of this file.
-- **Current NEXT UP**: P3.8 (Design refresh — DESIGN.md + motion system + app shell).
-- **What is done**: P0 through P7 are fully implemented and verified. Stage 1 design refresh (P3.8–P3.17) is IN PROGRESS.
+- **Current NEXT UP**: P8.1 (Quotation list).
+- **What is done**: P0 through P7 are fully implemented and verified. Stage 1 design refresh (P3.8–P3.17) is completed.
 - **Known issues / Unverified**: The E2E Playwright tests and browser testing are currently blocked due to a Playwright driver 404 download issue (Azure CDN). Functional verification performed via typecheck, lint, and tests.
 
+### Session 5 — 2026-09-29
+- Completed: P8.1 to P8.12 (Entire Phase 8)
+- Verified by: `npm run lint` and `npx tsc --noEmit` pass.
+- NEXT UP: Phase 9 (Sales Orders)
+
 ### Session 4 — 2026-09-28
-- Completed: Part A plan updates (P3.8–P3.17 added, Phase 19 rewritten, decisions log updated, AGENTS.md and SKILL.md UI rules added). Starting Stage 1 design refresh.
-- NEXT UP: P3.8 (DESIGN.md token system + motion variants)
+- Completed: Part A plan updates (P3.8–P3.17 added, Phase 19 rewritten, decisions log updated, AGENTS.md and SKILL.md UI rules added). Stage 1 design refresh fully implemented and tested.
+- NEXT UP: P8.1
 
 ### Session 3 — 2026-09-28
 - Completed: Repo handoff setup, pinned Node, added .env.example, updated package.json scripts.
@@ -449,28 +454,28 @@ Format: `[ ] ID — Task  (Deps)  ▸ Acceptance`
 - ✅ **Exit:** drag/drop persists and audits.
 
 ### PHASE 8 — Quotations (major phase)
-- [ ] P8.1 — Quotation list (filters: status, customer, user, date)  (P3.4)
-- [ ] P8.2 — Create form: customer/contact/opportunity selectors, inline customer & product, dynamic line items, discount (percentage/fixed), VAT, live totals  (P4.5, P5.3, P1.10)
-- [ ] P8.3 — `QuotationService.create` (transactional: quotation + Rev 0 + items + number)  (P8.2, P1.11)
-- [ ] P8.4 — Revision engine: Edit → new revision; **More → Create Revision**; `isCurrent` uniqueness; revision list/view; guarded revision delete  (P8.3)
-- [ ] P8.5 — Send rule: only latest revision sendable (T-03)  (P8.4)
-- [ ] P8.6 — Approval workflow (submit → approve/reject-with-reason → resubmit) honoring `DocumentSetting`; role-gated  (P8.3, P1.15)
-- [ ] P8.7 — Quotation PDF template (all fields in spec §13.9) + `PdfService` foundation  (P8.3)
-- [ ] P8.8 — PDF preview modal (Download / Print / Share / Close) + WhatsApp share-link helper  (P8.7)
-- [ ] P8.9 — Standard action bar: Edit, Approve, Download PDF, Share, Convert, More (Create Revision, Duplicate, Print, Cancel)  (P8.4–P8.8)
-- [ ] P8.10 — Statuses: SENT/ACCEPTED/REJECTED/EXPIRED/CANCELLED transitions + validity expiry handling  (P8.6)
-- [ ] P8.11 — Quotation detail page (lineage, timeline, documents)  (P8.3)
-- [ ] P8.12 — Audit everything (T-04 field-level diff on value change)  (P8.3)
+- [x] P8.1 — Quotation list (filters: status, customer, user, date)  (P3.4)
+- [x] P8.2 — Create form: customer/contact/opportunity selectors, inline customer & product, dynamic line items, discount (percentage/fixed), VAT, live totals  (P4.5, P5.3, P1.10)
+- [x] P8.3 — `QuotationService.create` (transactional: quotation + Rev 0 + items + number)  (P8.2, P1.11)
+- [x] P8.4 — Revision engine: Edit → new revision; **More → Create Revision**; `isCurrent` uniqueness; revision list/view; guarded revision delete  (P8.3)
+- [x] P8.5 — Send rule: only latest revision sendable (T-03)  (P8.4)
+- [x] P8.6 — Approval workflow (submit → approve/reject-with-reason → resubmit) honoring `DocumentSetting`; role-gated  (P8.3, P1.15)
+- [x] P8.7 — Quotation PDF template (all fields in spec §13.9) + `PdfService` foundation  (P8.3)
+- [x] P8.8 — PDF preview modal (Download / Print / Share / Close) + WhatsApp share-link helper  (P8.7)
+- [x] P8.9 — Standard action bar: Edit, Approve, Download PDF, Share, Convert, More (Create Revision, Duplicate, Print, Cancel)  (P8.4–P8.8)
+- [x] P8.10 — Statuses: SENT/ACCEPTED/REJECTED/EXPIRED/CANCELLED transitions + validity expiry handling  (P8.6)
+- [x] P8.11 — Quotation detail page (lineage, timeline, documents)  (P8.3)
+- [x] P8.12 — Audit everything (T-04 field-level diff on value change)  (P8.3)
 - ✅ **Exit:** T-03, T-04 pass; PDF opens correctly.
 
 ### PHASE 9 — Sales Orders
-- [ ] P9.1 — `QuotationService.convertToSalesOrder()` (transactional; stores quotationId + revisionId; quote retained/marked converted)  (P8.6)
-- [ ] P9.2 — SO list + detail (customer, lineage, items, financial summary Total/Invoiced/Remaining)  (P9.1)
-- [ ] P9.3 — SO edit (draft/confirmed rules) + status machine  (P9.2)
-- [ ] P9.4 — Line-level fulfillment tracking (ordered / fulfilled / remaining) and derived SO fulfillment status  (P9.2)
-- [ ] P9.5 — Cancellation with confirm; authorized reopen; block invoice on cancelled SO  (P9.2)
-- [ ] P9.6 — SO PDF template  (P9.2)
-- [ ] P9.7 — Optional approval per setting  (P9.3)
+- [x] P9.1 — `QuotationService.convertToSalesOrder()` (transactional; stores quotationId + revisionId; quote retained/marked converted)  (P8.6)
+- [x] P9.2 — SO list + detail (customer, lineage, items, financial summary Total/Invoiced/Remaining)  (P9.1)
+- [x] P9.3 — SO edit (draft/confirmed rules) + status machine  (P9.2)
+- [x] P9.4 — Line-level fulfillment tracking (ordered / fulfilled / remaining) and derived SO fulfillment status  (P9.2)
+- [x] P9.5 — Cancellation with confirm; authorized reopen; block invoice on cancelled SO  (P9.2)
+- [x] P9.6 — SO PDF template  (P9.2)
+- [x] P9.7 — Optional approval per setting  (P9.3)
 - ✅ **Exit:** conversion never duplicates customer/product; SO PDF works.
 
 ### PHASE 10 — Invoices & credit notes
