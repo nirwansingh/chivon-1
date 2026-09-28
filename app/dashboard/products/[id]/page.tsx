@@ -63,33 +63,33 @@ export default async function ProductDetailsPage(props: { params: Promise<{ id: 
       />
       
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
+        <Card className={`card-hover ${isLowStock ? 'kpi-accent-red' : 'kpi-accent-blue'}`}>
           <CardHeader className="py-4">
-            <CardDescription className="font-medium">Current Stock</CardDescription>
-            <CardTitle className={`text-2xl font-bold ${isLowStock ? 'text-destructive' : 'text-foreground'}`}>
+            <CardDescription className="font-semibold uppercase tracking-wider text-xs">Current Stock</CardDescription>
+            <CardTitle className={`text-2xl font-bold ${isLowStock ? 'text-danger' : 'text-foreground'}`}>
               {Number(product.stockQuantity)} {product.unit}
             </CardTitle>
           </CardHeader>
         </Card>
-        <Card>
+        <Card className="card-hover kpi-accent-green">
           <CardHeader className="py-4">
-            <CardDescription className="font-medium">Rate</CardDescription>
+            <CardDescription className="font-semibold uppercase tracking-wider text-xs">Rate</CardDescription>
             <CardTitle className="text-2xl font-bold text-success">
               <MoneyDisplay amount={Number(product.rate)} />
             </CardTitle>
           </CardHeader>
         </Card>
-        <Card>
+        <Card className="card-hover kpi-accent-amber">
           <CardHeader className="py-4">
-            <CardDescription className="font-medium">Type</CardDescription>
+            <CardDescription className="font-semibold uppercase tracking-wider text-xs">Type</CardDescription>
             <CardTitle className="text-2xl font-bold">
               {product.type}
             </CardTitle>
           </CardHeader>
         </Card>
-        <Card>
+        <Card className="card-hover border-border">
           <CardHeader className="py-4">
-            <CardDescription className="font-medium">Status</CardDescription>
+            <CardDescription className="font-semibold uppercase tracking-wider text-xs">Status</CardDescription>
             <CardTitle className="text-xl font-bold">
               <StatusBadge status={product.status} />
             </CardTitle>
@@ -110,39 +110,39 @@ export default async function ProductDetailsPage(props: { params: Promise<{ id: 
         </ScrollArea>
 
         <TabsContent value="overview" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Item Information</CardTitle>
+          <Card className="shadow-sm border-border">
+            <CardHeader className="pb-3 border-b border-border/50 bg-surface-blue/30">
+              <CardTitle className="text-base font-semibold">Item Information</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+            <CardContent className="pt-5 space-y-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-y-6 gap-x-4 text-sm">
                 <div>
-                  <div className="text-muted-foreground">Category</div>
-                  <div className="font-medium">{product.category?.name || '-'}</div>
+                  <div className="text-muted-foreground font-medium mb-1">Category</div>
+                  <div className="font-semibold text-foreground">{product.category?.name || '-'}</div>
                 </div>
                 <div>
-                  <div className="text-muted-foreground">Unit of Measure</div>
-                  <div className="font-medium">{product.unit}</div>
+                  <div className="text-muted-foreground font-medium mb-1">Unit of Measure</div>
+                  <div className="font-semibold text-foreground">{product.unit}</div>
                 </div>
                 <div>
-                  <div className="text-muted-foreground">VAT Rate</div>
-                  <div className="font-medium">{Number(product.vatRate)}%</div>
+                  <div className="text-muted-foreground font-medium mb-1">VAT Rate</div>
+                  <div className="font-semibold text-foreground">{Number(product.vatRate)}%</div>
                 </div>
                 <div>
-                  <div className="text-muted-foreground">Min Stock Level</div>
-                  <div className="font-medium">{product.minStock ? Number(product.minStock) : '-'}</div>
+                  <div className="text-muted-foreground font-medium mb-1">Min Stock Level</div>
+                  <div className="font-semibold text-foreground">{product.minStock ? Number(product.minStock) : '-'}</div>
                 </div>
                 <div className="md:col-span-4">
-                  <div className="text-muted-foreground mb-1">Description</div>
-                  <div className="font-medium bg-muted/50 p-3 rounded-md">{product.description || '-'}</div>
+                  <div className="text-muted-foreground font-medium mb-1.5">Description</div>
+                  <div className="font-medium bg-surface-blue/30 text-foreground p-3.5 rounded-lg border border-border/50">{product.description || '-'}</div>
                 </div>
                 <div>
-                  <div className="text-muted-foreground">Created</div>
-                  <div className="font-medium"><DateDisplay date={product.createdAt} /></div>
+                  <div className="text-muted-foreground font-medium mb-1">Created</div>
+                  <div className="font-medium text-foreground"><DateDisplay date={product.createdAt} /></div>
                 </div>
                 <div>
-                  <div className="text-muted-foreground">Last Updated</div>
-                  <div className="font-medium"><DateDisplay date={product.updatedAt} /></div>
+                  <div className="text-muted-foreground font-medium mb-1">Last Updated</div>
+                  <div className="font-medium text-foreground"><DateDisplay date={product.updatedAt} /></div>
                 </div>
               </div>
             </CardContent>
@@ -150,12 +150,12 @@ export default async function ProductDetailsPage(props: { params: Promise<{ id: 
         </TabsContent>
 
         <TabsContent value="stock">
-          <Card>
-            <CardHeader>
-              <CardTitle>Stock Movement History</CardTitle>
+          <Card className="shadow-sm border-border">
+            <CardHeader className="pb-3 border-b border-border/50 bg-surface-blue/30">
+              <CardTitle className="text-base font-semibold">Stock Movement History</CardTitle>
               <CardDescription>Log of all stock additions, deductions, and adjustments.</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-5">
               <StockMovementList movements={movements} unit={product.unit} />
             </CardContent>
           </Card>

@@ -43,7 +43,13 @@ export function InquiryListClient({ inquiries }: InquiryListClientProps) {
           </Button>
         );
       },
-      cell: ({ row }) => <div className="font-medium px-4">{row.getValue('title')}</div>,
+      cell: ({ row }) => (
+        <div className="px-4">
+          <Link href={`/dashboard/inquiries/${row.original.id}`} className="font-semibold text-primary hover:underline transition-colors duration-150">
+            {row.getValue('title')}
+          </Link>
+        </div>
+      ),
     },
     {
       accessorKey: 'customer',

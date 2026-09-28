@@ -1,6 +1,8 @@
 'use client';
 
 import * as React from 'react';
+import { m } from 'framer-motion';
+import { staggerItem, MAX_STAGGER_ROWS } from '@/lib/motion';
 import {
   ColumnDef,
   flexRender,
@@ -111,158 +113,190 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
+    <div className="space-y-3">
+      {/* Toolbar */}
+      <div className="flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-2">
           {onGlobalFilterChange && (
-            <Input
-              placeholder={searchPlaceholder}
-              value={globalFilter ?? ''}
-              onChange={(event) => onGlobalFilterChange(event.target.value)}
-              className="max-w-sm w-64"
-            />
+            <div className="relative">
+              <input
+                type="search"
+                placeholder={searchPlaceholder}
+                value={globalFilter ?? ''}
+                onChange={(event) => onGlobalFilterChange(event.target.value)}
+                className="h-9 w-64 pl-3 pr-3 text-sm rounded-lg border transition-all duration-150 focus:outline-none focus:ring-2 bg-surface-blue focus:bg-white"
+                style={{ borderColor: 'var(--border)', color: 'var(--foreground)' }}
+                aria-label="Search table"
+              />
+            </div>
           )}
         </div>
         <div className="flex items-center gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger render={<Button variant="outline" size="sm" className="ml-auto" />}>
-              <Settings2 className="mr-2 h-4 w-4" />
-              View
+              <Settings2 className="mr-2 h-3.5 w-3.5" aria-hidden="true" />
+              Columns
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-[150px]">
+            <DropdownMenuContent align="end" className="w-[180px]">
               {table
                 .getAllColumns()
                 .filter((column) => typeof column.accessorFn !== 'undefined' && column.getCanHide())
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) => column.toggleVisibility(!!value)}
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
+                .map((column) => (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className="capitalize"
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                  >
+                    {column.id}
+                  </DropdownMenuCheckboxItem>
+                ))}
             </DropdownMenuContent>
           </DropdownMenu>
           {onExport && (
             <Button variant="outline" size="sm" onClick={onExport}>
-              <Download className="mr-2 h-4 w-4" />
+              <Download className="mr-2 h-3.5 w-3.5" aria-hidden="true" />
               Export
             </Button>
           )}
         </div>
       </div>
-      <div className="rounded-md border">
+      {/* Table */}
+      <div
+        className="rounded-xl border overflow-hidden"
+        style={{ borderColor: 'var(--border)' }}
+      >
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(header.column.columnDef.header, header.getContext())}
-                    </TableHead>
-                  );
-                })}
+              <TableRow
+                key={headerGroup.id}
+                className="border-b"
+                style={{ background: 'var(--surface-blue)', borderColor: 'var(--border)' }}
+              >
+                {headerGroup.headers.map((header) => (
+                  <TableHead
+                    key={header.id}
+                    className="text-xs font-semibold uppercase tracking-wider"
+                    style={{ color: 'var(--muted-foreground)' }}
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(header.column.columnDef.header, header.getContext())}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              Array.from({ length: pagination.pageSize }).map((_, index) => (
-                <TableRow key={index}>
+              Array.from({ length: Math.min(pagination.pageSize, 8) }).map((_, index) => (
+                <TableRow key={index} style={{ background: index % 2 === 0 ? 'white' : 'var(--surface-blue)/30' }}>
                   {columns.map((_, colIndex) => (
                     <TableCell key={colIndex}>
-                      <Skeleton className="h-4 w-full" />
+                      <div className="skeleton h-4 w-full rounded" />
                     </TableCell>
                   ))}
                 </TableRow>
               ))
             ) : table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
+              table.getRowModel().rows.map((row, rowIndex) => {
+                const shouldAnimate = rowIndex < MAX_STAGGER_ROWS;
+                const RowWrapper = shouldAnimate ? m.tr : 'tr';
+                const animProps = shouldAnimate ? {
+                  variants: staggerItem,
+                  initial: 'hidden',
+                  animate: 'visible',
+                  custom: rowIndex,
+                } : {};
+                return (
+                  <RowWrapper
+                    key={row.id}
+                    // @ts-expect-error -- motion.tr and tr have compatible props at runtime
+                    {...animProps}
+                    data-state={row.getIsSelected() && 'selected'}
+                    className="border-b transition-colors duration-100 hover:bg-surface-blue/60 cursor-default"
+                    style={{ borderColor: 'var(--border)' }}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id} className="text-sm">
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </TableCell>
+                    ))}
+                  </RowWrapper>
+                );
+              })
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No results.
+                <TableCell colSpan={columns.length} className="h-24 text-center text-sm text-muted-foreground">
+                  No results found.
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-between px-2">
-        <div className="flex-1 text-sm text-muted-foreground">
+      {/* Pagination */}
+      <div className="flex items-center justify-between px-1 pt-1">
+        <div className="text-xs text-muted-foreground">
           {isLoading ? (
-            <Skeleton className="h-4 w-32" />
+            <div className="skeleton h-4 w-32 rounded" />
           ) : (
             <>
               Showing{' '}
-              <span className="font-medium">
+              <span className="font-medium text-foreground">
                 {pageCount === 0 ? 0 : pagination.pageIndex * pagination.pageSize + 1}
               </span>{' '}
-              to{' '}
-              <span className="font-medium">
+              –{' '}
+              <span className="font-medium text-foreground">
                 {pageCount === 0
                   ? 0
                   : Math.min((pagination.pageIndex + 1) * pagination.pageSize, data.length > 0 ? (pagination.pageIndex * pagination.pageSize) + data.length : 0)}
               </span>{' '}
-              of <span className="font-medium">{pageCount * pagination.pageSize}</span> results
-              {/* Note: pageCount * pageSize is just an approximation here without totalRows. For precise totalRows, pass it as a prop. */}
+              of <span className="font-medium text-foreground">{pageCount * pagination.pageSize}</span> results
             </>
           )}
         </div>
-        <div className="flex items-center space-x-6 lg:space-x-8">
-          <div className="flex items-center space-x-2">
-            <Button
-              variant="outline"
-              className="hidden h-8 w-8 p-0 lg:flex"
-              onClick={() => table.setPageIndex(0)}
-              disabled={!table.getCanPreviousPage() || isLoading}
-            >
-              <span className="sr-only">Go to first page</span>
-              <ChevronsLeft className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              className="h-8 w-8 p-0"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage() || isLoading}
-            >
-              <span className="sr-only">Go to previous page</span>
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              className="h-8 w-8 p-0"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage() || isLoading}
-            >
-              <span className="sr-only">Go to next page</span>
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              className="hidden h-8 w-8 p-0 lg:flex"
-              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-              disabled={!table.getCanNextPage() || isLoading}
-            >
-              <span className="sr-only">Go to last page</span>
-              <ChevronsRight className="h-4 w-4" />
-            </Button>
-          </div>
+        <div className="flex items-center gap-1">
+          <Button
+            variant="outline"
+            className="hidden h-8 w-8 p-0 lg:flex"
+            onClick={() => table.setPageIndex(0)}
+            disabled={!table.getCanPreviousPage() || isLoading}
+            aria-label="Go to first page"
+          >
+            <ChevronsLeft className="h-3.5 w-3.5" aria-hidden="true" />
+          </Button>
+          <Button
+            variant="outline"
+            className="h-8 w-8 p-0"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage() || isLoading}
+            aria-label="Go to previous page"
+          >
+            <ChevronLeft className="h-3.5 w-3.5" aria-hidden="true" />
+          </Button>
+          <span className="text-xs font-medium px-2 text-foreground">
+            Page {pagination.pageIndex + 1} of {Math.max(1, pageCount)}
+          </span>
+          <Button
+            variant="outline"
+            className="h-8 w-8 p-0"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage() || isLoading}
+            aria-label="Go to next page"
+          >
+            <ChevronRight className="h-3.5 w-3.5" aria-hidden="true" />
+          </Button>
+          <Button
+            variant="outline"
+            className="hidden h-8 w-8 p-0 lg:flex"
+            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+            disabled={!table.getCanNextPage() || isLoading}
+            aria-label="Go to last page"
+          >
+            <ChevronsRight className="h-3.5 w-3.5" aria-hidden="true" />
+          </Button>
         </div>
       </div>
     </div>

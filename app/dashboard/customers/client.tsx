@@ -82,7 +82,7 @@ export function CustomerListClient({ initialData, initialPageCount }: CustomerLi
       accessorKey: 'companyName',
       header: 'Company Name',
       cell: ({ row }) => (
-        <Link href={`/dashboard/customers/${row.original.id}`} className="font-medium text-primary hover:underline">
+        <Link href={`/dashboard/customers/${row.original.id}`} className="font-semibold text-primary hover:underline transition-colors duration-150">
           {row.getValue('companyName')}
         </Link>
       ),

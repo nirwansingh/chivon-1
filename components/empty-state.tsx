@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { LucideIcon } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
@@ -16,22 +16,55 @@ interface EmptyStateProps {
 
 export function EmptyState({ icon: Icon, title, description, action, className }: EmptyStateProps) {
   return (
-    <div className={cn("flex flex-col items-center justify-center py-12 px-4 text-center space-y-4 rounded-lg border border-dashed bg-muted/30", className)}>
+    <div
+      className={cn(
+        'relative flex flex-col items-center justify-center py-16 px-6 text-center space-y-5 rounded-xl border border-dashed overflow-hidden',
+        className
+      )}
+      style={{ borderColor: 'var(--border)', background: 'var(--card)' }}
+    >
+      {/* Subtle blueprint grid backdrop */}
+      <div
+        className="absolute inset-0 blueprint-grid opacity-[0.04] pointer-events-none"
+        aria-hidden="true"
+      />
+
+      {/* Icon chip */}
       {Icon && (
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted">
-          <Icon className="h-8 w-8 text-muted-foreground" />
+        <div
+          className="relative z-10 flex h-14 w-14 items-center justify-center rounded-2xl shadow-sm"
+          style={{ background: 'var(--surface-blue)' }}
+          aria-hidden="true"
+        >
+          <Icon
+            className="h-6 w-6"
+            style={{ color: 'var(--primary)' }}
+            strokeWidth={1.75}
+          />
         </div>
       )}
-      <div className="space-y-1">
-        <h3 className="text-lg font-medium">{title}</h3>
+
+      {/* Text */}
+      <div className="relative z-10 space-y-2">
+        <h3
+          className="text-h3 text-foreground"
+        >
+          {title}
+        </h3>
         {description && (
-          <p className="text-sm text-muted-foreground max-w-sm mx-auto">
+          <p className="text-sm text-muted-foreground max-w-xs mx-auto leading-relaxed">
             {description}
           </p>
         )}
       </div>
+
+      {/* CTA */}
       {action && (
-        <Button onClick={action.onClick} variant="outline" className="mt-4">
+        <Button
+          onClick={action.onClick}
+          variant="outline"
+          className="relative z-10 mt-1"
+        >
           {action.label}
         </Button>
       )}

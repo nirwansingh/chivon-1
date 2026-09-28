@@ -44,7 +44,13 @@ export function OpportunityClient({ opportunities, view, canEdit }: OpportunityC
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
-      cell: ({ row }) => <div className="font-medium px-4">{row.getValue('name')}</div>,
+      cell: ({ row }) => (
+        <div className="px-4">
+          <Link href={`/dashboard/opportunities/${row.original.id}`} className="font-semibold text-primary hover:underline transition-colors duration-150">
+            {row.getValue('name')}
+          </Link>
+        </div>
+      ),
     },
     {
       accessorKey: 'customer',

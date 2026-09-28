@@ -43,7 +43,7 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
   // so we default to neutral if unknown.
   const s = status.toUpperCase();
 
-  let variantClass = 'bg-gray-100 text-gray-800 border-gray-200'; // Default Neutral
+  let variantClass = 'bg-muted text-muted-foreground border-border'; // Default Neutral
 
   // Success (Green)
   if (['WON', 'ACCEPTED', 'FULFILLED', 'PAID', 'ACTIVE', 'COMPLETED', 'CONVERTED', 'APPROVED'].includes(s)) {
@@ -55,15 +55,15 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
   }
   // Danger (Red)
   else if (['LOST', 'UNQUALIFIED', 'REJECTED', 'EXPIRED', 'CANCELLED', 'OVERDUE', 'INACTIVE'].includes(s)) {
-    variantClass = 'bg-destructive/10 text-destructive border-destructive/20';
+    variantClass = 'bg-destructive/10 text-danger border-destructive/20';
   }
   // Info (Sky Blue)
   else if (['SENT', 'ISSUED', 'CONTACTED', 'QUALIFIED', 'CONFIRMED'].includes(s)) {
-    variantClass = 'bg-accent/10 text-accent border-accent/20 text-accent-foreground';
+    variantClass = 'bg-sky/10 text-sky border-sky/20';
   }
-  // Neutral (Gray) - NEW, DRAFT, TODO, etc.
+  // Neutral (Blue/Gray) - NEW, DRAFT, TODO, etc.
   else if (['NEW', 'DRAFT', 'TODO'].includes(s)) {
-    variantClass = 'bg-secondary text-secondary-foreground border-border';
+    variantClass = 'bg-surface-blue text-primary border-primary/20';
   }
 
   // Format text: replace underscores and title case

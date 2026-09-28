@@ -66,33 +66,33 @@ export default async function InquiryDetailsPage(props: { params: Promise<{ id: 
       />
       
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
+        <Card className="card-hover kpi-accent-blue">
           <CardHeader className="py-4">
-            <CardDescription className="font-medium">Status</CardDescription>
+            <CardDescription className="font-semibold uppercase tracking-wider text-xs">Status</CardDescription>
             <CardTitle className="text-xl font-bold">
               <StatusBadge status={inquiry.status} />
             </CardTitle>
           </CardHeader>
         </Card>
-        <Card>
+        <Card className="card-hover kpi-accent-amber">
           <CardHeader className="py-4">
-            <CardDescription className="font-medium">Priority</CardDescription>
-            <CardTitle className="text-xl font-bold">
+            <CardDescription className="font-semibold uppercase tracking-wider text-xs">Priority</CardDescription>
+            <CardTitle className={`text-xl font-bold ${inquiry.priority === 'URGENT' ? 'text-danger' : inquiry.priority === 'HIGH' ? 'text-warning' : 'text-foreground'}`}>
               {inquiry.priority}
             </CardTitle>
           </CardHeader>
         </Card>
-        <Card>
+        <Card className="card-hover kpi-accent-green">
           <CardHeader className="py-4">
-            <CardDescription className="font-medium">Expected Value</CardDescription>
-            <CardTitle className="text-xl font-bold text-primary">
+            <CardDescription className="font-semibold uppercase tracking-wider text-xs">Expected Value</CardDescription>
+            <CardTitle className="text-xl font-bold text-success">
               {inquiry.expectedValue ? <MoneyDisplay amount={Number(inquiry.expectedValue)} /> : '-'}
             </CardTitle>
           </CardHeader>
         </Card>
-        <Card>
+        <Card className="card-hover border-border">
           <CardHeader className="py-4">
-            <CardDescription className="font-medium">Assigned To</CardDescription>
+            <CardDescription className="font-semibold uppercase tracking-wider text-xs">Assigned To</CardDescription>
             <CardTitle className="text-xl font-bold">
               {inquiry.assignedTo?.name || 'Unassigned'}
             </CardTitle>
@@ -108,68 +108,68 @@ export default async function InquiryDetailsPage(props: { params: Promise<{ id: 
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Inquiry Information</CardTitle>
+          <Card className="shadow-sm border-border">
+            <CardHeader className="pb-3 border-b border-border/50 bg-surface-blue/30">
+              <CardTitle className="text-base font-semibold">Inquiry Information</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+            <CardContent className="pt-5 space-y-4">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-y-6 gap-x-4 text-sm">
                 <div>
-                  <div className="text-muted-foreground">Customer</div>
-                  <div className="font-medium">
+                  <div className="text-muted-foreground font-medium mb-1">Customer</div>
+                  <div className="font-semibold text-foreground">
                     {inquiry.customer ? (
-                      <Link href={`/dashboard/customers/${inquiry.customerId}`} className="text-primary hover:underline">
+                      <Link href={`/dashboard/customers/${inquiry.customerId}`} className="text-primary hover:underline transition-colors">
                         {inquiry.customer.companyName}
                       </Link>
                     ) : '-'}
                   </div>
                 </div>
                 <div>
-                  <div className="text-muted-foreground">Contact Person</div>
-                  <div className="font-medium">{inquiry.contact?.name || '-'}</div>
+                  <div className="text-muted-foreground font-medium mb-1">Contact Person</div>
+                  <div className="font-semibold text-foreground">{inquiry.contact?.name || '-'}</div>
                 </div>
                 <div>
-                  <div className="text-muted-foreground">Source</div>
-                  <div className="font-medium">{inquiry.source || '-'}</div>
+                  <div className="text-muted-foreground font-medium mb-1">Source</div>
+                  <div className="font-semibold text-foreground">{inquiry.source || '-'}</div>
                 </div>
                 
                 <div>
-                  <div className="text-muted-foreground">Product/Service</div>
-                  <div className="font-medium">{inquiry.productOrService || '-'}</div>
+                  <div className="text-muted-foreground font-medium mb-1">Product/Service</div>
+                  <div className="font-semibold text-foreground">{inquiry.productOrService || '-'}</div>
                 </div>
                 <div>
-                  <div className="text-muted-foreground">Quantity</div>
-                  <div className="font-medium">{inquiry.quantity ? Number(inquiry.quantity) : '-'}</div>
+                  <div className="text-muted-foreground font-medium mb-1">Quantity</div>
+                  <div className="font-semibold text-foreground">{inquiry.quantity ? Number(inquiry.quantity) : '-'}</div>
                 </div>
                 <div>
-                  <div className="text-muted-foreground">Expected Closing</div>
-                  <div className="font-medium">{inquiry.expectedClosingDate ? <DateDisplay date={inquiry.expectedClosingDate} /> : '-'}</div>
+                  <div className="text-muted-foreground font-medium mb-1">Expected Closing</div>
+                  <div className="font-semibold text-foreground">{inquiry.expectedClosingDate ? <DateDisplay date={inquiry.expectedClosingDate} /> : '-'}</div>
                 </div>
 
                 <div>
-                  <div className="text-muted-foreground">Project</div>
-                  <div className="font-medium">{inquiry.project || '-'}</div>
+                  <div className="text-muted-foreground font-medium mb-1">Project</div>
+                  <div className="font-semibold text-foreground">{inquiry.project || '-'}</div>
                 </div>
                 <div>
-                  <div className="text-muted-foreground">Site Location</div>
-                  <div className="font-medium">{inquiry.site || '-'}</div>
+                  <div className="text-muted-foreground font-medium mb-1">Site Location</div>
+                  <div className="font-semibold text-foreground">{inquiry.site || '-'}</div>
                 </div>
                 <div>
-                  <div className="text-muted-foreground">Created</div>
-                  <div className="font-medium"><DateDisplay date={inquiry.createdAt} /></div>
+                  <div className="text-muted-foreground font-medium mb-1">Created</div>
+                  <div className="font-medium text-foreground"><DateDisplay date={inquiry.createdAt} /></div>
                 </div>
 
                 <div className="md:col-span-3">
-                  <div className="text-muted-foreground mb-1">Description / Requirements</div>
-                  <div className="font-medium bg-muted/50 p-3 rounded-md min-h-[60px] whitespace-pre-wrap">
+                  <div className="text-muted-foreground font-medium mb-1.5">Description / Requirements</div>
+                  <div className="font-medium bg-surface-blue/30 text-foreground p-3.5 rounded-lg border border-border/50 min-h-[60px] whitespace-pre-wrap">
                     {inquiry.description || '-'}
                   </div>
                 </div>
                 
                 {inquiry.notes && (
                   <div className="md:col-span-3">
-                    <div className="text-muted-foreground mb-1">Internal Notes</div>
-                    <div className="font-medium bg-muted/50 p-3 rounded-md min-h-[60px] whitespace-pre-wrap">
+                    <div className="text-muted-foreground font-medium mb-1.5">Internal Notes</div>
+                    <div className="font-medium bg-surface-blue/30 text-foreground p-3.5 rounded-lg border border-border/50 min-h-[60px] whitespace-pre-wrap">
                       {inquiry.notes}
                     </div>
                   </div>

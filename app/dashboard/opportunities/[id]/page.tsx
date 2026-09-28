@@ -54,33 +54,34 @@ export default async function OpportunityDetailsPage(props: { params: Promise<{ 
       />
       
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <Card className="card-hover kpi-accent-blue">
           <CardHeader className="py-4">
-            <CardDescription className="font-medium">Status</CardDescription>
+            <CardDescription className="font-semibold uppercase tracking-wider text-xs">Status</CardDescription>
             <CardTitle className="text-xl font-bold">
               <StatusBadge status={opportunity.status} />
             </CardTitle>
           </CardHeader>
         </Card>
-        <Card>
+        <Card className="card-hover kpi-accent-amber">
           <CardHeader className="py-4">
-            <CardDescription className="font-medium">Probability</CardDescription>
+            <CardDescription className="font-semibold uppercase tracking-wider text-xs">Probability</CardDescription>
             <CardTitle className="text-2xl font-bold text-primary">
               {opportunity.probability !== null ? `${opportunity.probability}%` : '-'}
             </CardTitle>
           </CardHeader>
         </Card>
-        <Card>
+        <Card className="card-hover kpi-accent-green">
           <CardHeader className="py-4">
-            <CardDescription className="font-medium">Expected Value</CardDescription>
+            <CardDescription className="font-semibold uppercase tracking-wider text-xs">Expected Value</CardDescription>
             <CardTitle className="text-2xl font-bold text-success">
               {opportunity.expectedValue ? <MoneyDisplay amount={Number(opportunity.expectedValue)} /> : '-'}
             </CardTitle>
           </CardHeader>
         </Card>
-        <Card>
+        <Card className="card-hover border-border">
           <CardHeader className="py-4">
-            <CardDescription className="font-medium">Assigned To</CardDescription>
+            <CardDescription className="font-semibold uppercase tracking-wider text-xs">Assigned To</CardDescription>
             <CardTitle className="text-xl font-bold">
               {opportunity.assignedUser?.name || 'Unassigned'}
             </CardTitle>
@@ -96,64 +97,64 @@ export default async function OpportunityDetailsPage(props: { params: Promise<{ 
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Deal Information</CardTitle>
+          <Card className="shadow-sm border-border">
+            <CardHeader className="pb-3 border-b border-border/50 bg-surface-blue/30">
+              <CardTitle className="text-base font-semibold">Deal Information</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+            <CardContent className="pt-5 space-y-4">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-y-6 gap-x-4 text-sm">
                 <div>
-                  <div className="text-muted-foreground">Customer</div>
-                  <div className="font-medium">
+                  <div className="text-muted-foreground font-medium mb-1">Customer</div>
+                  <div className="font-semibold text-foreground">
                     {opportunity.customer ? (
-                      <Link href={`/dashboard/customers/${opportunity.customerId}`} className="text-primary hover:underline">
+                      <Link href={`/dashboard/customers/${opportunity.customerId}`} className="text-primary hover:underline transition-colors">
                         {opportunity.customer.companyName}
                       </Link>
                     ) : '-'}
                   </div>
                 </div>
                 <div>
-                  <div className="text-muted-foreground">Contact Person</div>
-                  <div className="font-medium">{opportunity.contact?.name || '-'}</div>
+                  <div className="text-muted-foreground font-medium mb-1">Contact Person</div>
+                  <div className="font-semibold text-foreground">{opportunity.contact?.name || '-'}</div>
                 </div>
                 <div>
-                  <div className="text-muted-foreground">Source</div>
-                  <div className="font-medium">{opportunity.source || '-'}</div>
+                  <div className="text-muted-foreground font-medium mb-1">Source</div>
+                  <div className="font-semibold text-foreground">{opportunity.source || '-'}</div>
                 </div>
                 
                 <div>
-                  <div className="text-muted-foreground">Competitor</div>
-                  <div className="font-medium">{opportunity.competitor || '-'}</div>
+                  <div className="text-muted-foreground font-medium mb-1">Competitor</div>
+                  <div className="font-semibold text-foreground">{opportunity.competitor || '-'}</div>
                 </div>
                 <div>
-                  <div className="text-muted-foreground">Expected Closing</div>
-                  <div className="font-medium">{opportunity.expectedClosingDate ? <DateDisplay date={opportunity.expectedClosingDate} /> : '-'}</div>
+                  <div className="text-muted-foreground font-medium mb-1">Expected Closing</div>
+                  <div className="font-semibold text-foreground">{opportunity.expectedClosingDate ? <DateDisplay date={opportunity.expectedClosingDate} /> : '-'}</div>
                 </div>
 
                 <div>
-                  <div className="text-muted-foreground">Project</div>
-                  <div className="font-medium">{opportunity.project || '-'}</div>
+                  <div className="text-muted-foreground font-medium mb-1">Project</div>
+                  <div className="font-semibold text-foreground">{opportunity.project || '-'}</div>
                 </div>
                 <div>
-                  <div className="text-muted-foreground">Site Location</div>
-                  <div className="font-medium">{opportunity.site || '-'}</div>
+                  <div className="text-muted-foreground font-medium mb-1">Site Location</div>
+                  <div className="font-semibold text-foreground">{opportunity.site || '-'}</div>
                 </div>
                 <div>
-                  <div className="text-muted-foreground">Created</div>
-                  <div className="font-medium"><DateDisplay date={opportunity.createdAt} /></div>
+                  <div className="text-muted-foreground font-medium mb-1">Created</div>
+                  <div className="font-medium text-foreground"><DateDisplay date={opportunity.createdAt} /></div>
                 </div>
 
                 <div className="md:col-span-3">
-                  <div className="text-muted-foreground mb-1">Description</div>
-                  <div className="font-medium bg-muted/50 p-3 rounded-md min-h-[60px] whitespace-pre-wrap">
+                  <div className="text-muted-foreground font-medium mb-1.5">Description</div>
+                  <div className="font-medium bg-surface-blue/30 text-foreground p-3.5 rounded-lg border border-border/50 min-h-[60px] whitespace-pre-wrap">
                     {opportunity.description || '-'}
                   </div>
                 </div>
                 
                 {opportunity.notes && (
                   <div className="md:col-span-3">
-                    <div className="text-muted-foreground mb-1">Internal Notes</div>
-                    <div className="font-medium bg-muted/50 p-3 rounded-md min-h-[60px] whitespace-pre-wrap">
+                    <div className="text-muted-foreground font-medium mb-1.5">Internal Notes</div>
+                    <div className="font-medium bg-surface-blue/30 text-foreground p-3.5 rounded-lg border border-border/50 min-h-[60px] whitespace-pre-wrap">
                       {opportunity.notes}
                     </div>
                   </div>

@@ -61,34 +61,34 @@ export default async function CustomerDetailsPage(props: { params: Promise<{ id:
       
       {/* P4.7 Financial Summary Card */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
+        <Card className="card-hover kpi-accent-blue">
           <CardHeader className="py-4">
-            <CardDescription className="font-medium">Total Invoiced</CardDescription>
+            <CardDescription className="font-semibold uppercase tracking-wider text-xs">Total Invoiced</CardDescription>
             <CardTitle className="text-2xl font-bold text-foreground">
               <MoneyDisplay amount={totalInvoiced} />
             </CardTitle>
           </CardHeader>
         </Card>
-        <Card>
+        <Card className="card-hover kpi-accent-green">
           <CardHeader className="py-4">
-            <CardDescription className="font-medium">Total Paid</CardDescription>
+            <CardDescription className="font-semibold uppercase tracking-wider text-xs">Total Paid</CardDescription>
             <CardTitle className="text-2xl font-bold text-success">
               <MoneyDisplay amount={totalPaid} />
             </CardTitle>
           </CardHeader>
         </Card>
-        <Card>
+        <Card className="card-hover kpi-accent-amber">
           <CardHeader className="py-4">
-            <CardDescription className="font-medium">Outstanding Balance</CardDescription>
+            <CardDescription className="font-semibold uppercase tracking-wider text-xs">Outstanding Balance</CardDescription>
             <CardTitle className="text-2xl font-bold text-warning">
               <MoneyDisplay amount={outstanding} />
             </CardTitle>
           </CardHeader>
         </Card>
-        <Card>
+        <Card className="card-hover kpi-accent-red">
           <CardHeader className="py-4">
-            <CardDescription className="font-medium">Overdue Amount</CardDescription>
-            <CardTitle className="text-2xl font-bold text-destructive">
+            <CardDescription className="font-semibold uppercase tracking-wider text-xs">Overdue Amount</CardDescription>
+            <CardTitle className="text-2xl font-bold text-danger">
               <MoneyDisplay amount={overdue} />
             </CardTitle>
           </CardHeader>
@@ -116,69 +116,69 @@ export default async function CustomerDetailsPage(props: { params: Promise<{ id:
         </ScrollArea>
 
         <TabsContent value="overview" className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Company Information</CardTitle>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card className="shadow-sm border-border">
+              <CardHeader className="pb-3 border-b border-border/50 bg-surface-blue/30">
+                <CardTitle className="text-base font-semibold">Company Information</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-2 text-sm">
-                  <div className="text-muted-foreground">Status</div>
+              <CardContent className="pt-5 space-y-4">
+                <div className="grid grid-cols-2 gap-y-4 gap-x-2 text-sm">
+                  <div className="text-muted-foreground font-medium">Status</div>
                   <div><StatusBadge status={customer.status} /></div>
                   
-                  <div className="text-muted-foreground">Customer Type</div>
-                  <div>{customer.customerType || '-'}</div>
+                  <div className="text-muted-foreground font-medium">Customer Type</div>
+                  <div className="font-medium text-foreground">{customer.customerType || '-'}</div>
                   
-                  <div className="text-muted-foreground">Industry</div>
-                  <div>{customer.industry || '-'}</div>
+                  <div className="text-muted-foreground font-medium">Industry</div>
+                  <div className="text-foreground">{customer.industry || '-'}</div>
                   
-                  <div className="text-muted-foreground">Email</div>
-                  <div>{customer.email || '-'}</div>
+                  <div className="text-muted-foreground font-medium">Email</div>
+                  <div className="text-primary">{customer.email || '-'}</div>
                   
-                  <div className="text-muted-foreground">Phone</div>
-                  <div>{customer.phone || '-'}</div>
+                  <div className="text-muted-foreground font-medium">Phone</div>
+                  <div className="text-foreground">{customer.phone || '-'}</div>
                   
-                  <div className="text-muted-foreground">Website</div>
-                  <div>{customer.website || '-'}</div>
+                  <div className="text-muted-foreground font-medium">Website</div>
+                  <div className="text-primary">{customer.website || '-'}</div>
                   
-                  <div className="text-muted-foreground">TRN</div>
-                  <div>{customer.trn || '-'}</div>
+                  <div className="text-muted-foreground font-medium">TRN</div>
+                  <div className="font-mono text-xs">{customer.trn || '-'}</div>
                   
-                  <div className="text-muted-foreground">Created</div>
+                  <div className="text-muted-foreground font-medium">Created</div>
                   <div><DateDisplay date={customer.createdAt} /></div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Primary Contact</CardTitle>
+            <Card className="shadow-sm border-border">
+              <CardHeader className="pb-3 border-b border-border/50 bg-surface-blue/30">
+                <CardTitle className="text-base font-semibold">Primary Contact</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="pt-5 space-y-4">
                 {customer.contacts.length > 0 ? (
                   (() => {
                     const primary = customer.contacts.find(c => c.isPrimary) || customer.contacts[0];
                     return (
-                      <div className="grid grid-cols-2 gap-2 text-sm">
-                        <div className="text-muted-foreground">Name</div>
-                        <div className="font-medium">{primary.name}</div>
+                      <div className="grid grid-cols-2 gap-y-4 gap-x-2 text-sm">
+                        <div className="text-muted-foreground font-medium">Name</div>
+                        <div className="font-semibold text-foreground">{primary.name}</div>
                         
-                        <div className="text-muted-foreground">Designation</div>
-                        <div>{primary.designation || '-'}</div>
+                        <div className="text-muted-foreground font-medium">Designation</div>
+                        <div className="text-foreground">{primary.designation || '-'}</div>
                         
-                        <div className="text-muted-foreground">Email</div>
-                        <div>{primary.email || '-'}</div>
+                        <div className="text-muted-foreground font-medium">Email</div>
+                        <div className="text-primary">{primary.email || '-'}</div>
                         
-                        <div className="text-muted-foreground">Phone</div>
-                        <div>{primary.phone || '-'}</div>
+                        <div className="text-muted-foreground font-medium">Phone</div>
+                        <div className="text-foreground">{primary.phone || '-'}</div>
                         
-                        <div className="text-muted-foreground">Mobile</div>
-                        <div>{primary.mobile || '-'}</div>
+                        <div className="text-muted-foreground font-medium">Mobile</div>
+                        <div className="text-foreground">{primary.mobile || '-'}</div>
                       </div>
                     );
                   })()
                 ) : (
-                  <div className="text-sm text-muted-foreground">No contacts available.</div>
+                  <div className="text-sm text-muted-foreground py-4 text-center">No contacts available.</div>
                 )}
               </CardContent>
             </Card>
@@ -186,21 +186,21 @@ export default async function CustomerDetailsPage(props: { params: Promise<{ id:
         </TabsContent>
 
         <TabsContent value="contacts">
-          <Card>
-            <CardHeader>
-              <CardTitle>All Contacts</CardTitle>
+          <Card className="shadow-sm border-border">
+            <CardHeader className="pb-3 border-b border-border/50 bg-surface-blue/30">
+              <CardTitle className="text-base font-semibold">All Contacts</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <CardContent className="pt-5">
+              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                 {customer.contacts.map(contact => (
-                  <div key={contact.id} className="p-4 border rounded-lg shadow-sm">
-                    <div className="flex justify-between items-start mb-2">
-                      <h4 className="font-semibold">{contact.name}</h4>
-                      {contact.isPrimary && <Badge className="text-[10px] px-1.5 h-5 bg-primary/10 text-primary hover:bg-primary/20 border-0">Primary</Badge>}
+                  <div key={contact.id} className="p-4 border border-border rounded-xl shadow-sm bg-card card-hover hover:border-primary/30 transition-colors">
+                    <div className="flex justify-between items-start mb-3">
+                      <h4 className="font-semibold text-foreground">{contact.name}</h4>
+                      {contact.isPrimary && <Badge className="text-[10px] px-1.5 h-5 bg-surface-blue text-primary border-0 font-semibold tracking-wide">Primary</Badge>}
                     </div>
-                    <div className="text-sm space-y-1 text-muted-foreground">
-                      {contact.designation && <p>{contact.designation}</p>}
-                      {contact.email && <p>📧 {contact.email}</p>}
+                    <div className="text-sm space-y-1.5 text-muted-foreground">
+                      {contact.designation && <p className="text-foreground font-medium">{contact.designation}</p>}
+                      {contact.email && <p className="text-primary hover:underline cursor-pointer">✉️ {contact.email}</p>}
                       {contact.phone && <p>📞 {contact.phone}</p>}
                       {contact.mobile && <p>📱 {contact.mobile}</p>}
                     </div>
@@ -212,24 +212,24 @@ export default async function CustomerDetailsPage(props: { params: Promise<{ id:
         </TabsContent>
 
         <TabsContent value="addresses">
-          <Card>
-            <CardHeader>
-              <CardTitle>All Addresses</CardTitle>
+          <Card className="shadow-sm border-border">
+            <CardHeader className="pb-3 border-b border-border/50 bg-surface-blue/30">
+              <CardTitle className="text-base font-semibold">All Addresses</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <CardContent className="pt-5">
+              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                 {customer.addresses.map(address => (
-                  <div key={address.id} className="p-4 border rounded-lg shadow-sm">
-                    <div className="mb-2">
-                      <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground bg-muted px-2 py-1 rounded">
+                  <div key={address.id} className="p-4 border border-border rounded-xl shadow-sm bg-card card-hover hover:border-primary/30 transition-colors">
+                    <div className="mb-3">
+                      <span className="text-[10px] font-semibold uppercase tracking-wider text-primary bg-surface-blue px-2 py-1 rounded-md">
                         {address.type}
                       </span>
                     </div>
-                    <div className="text-sm space-y-1 mt-3">
-                      <p>{address.addressLine1}</p>
+                    <div className="text-sm space-y-1 mt-3 text-muted-foreground leading-relaxed">
+                      <p className="font-medium text-foreground">{address.addressLine1}</p>
                       {address.addressLine2 && <p>{address.addressLine2}</p>}
                       <p>{address.city}{address.state ? `, ${address.state}` : ''}</p>
-                      <p>{address.country} {address.postalCode}</p>
+                      <p>{address.country} <span className="font-mono ml-1">{address.postalCode}</span></p>
                     </div>
                   </div>
                 ))}

@@ -89,7 +89,7 @@ export function ProductListClient({ initialData, initialPageCount, categories }:
       accessorKey: 'name',
       header: 'Name',
       cell: ({ row }) => (
-        <Link href={`/dashboard/products/${row.original.id}`} className="font-medium text-primary hover:underline">
+        <Link href={`/dashboard/products/${row.original.id}`} className="font-semibold text-primary hover:underline transition-colors duration-150">
           {row.getValue('name')}
         </Link>
       ),
@@ -119,7 +119,7 @@ export function ProductListClient({ initialData, initialPageCount, categories }:
         return (
           <div className="flex items-center gap-2">
             <span>{qty} {row.original.unit}</span>
-            {isLow && <span className="text-xs text-destructive font-medium bg-destructive/10 px-1.5 py-0.5 rounded">Low</span>}
+            {isLow && <span className="text-[10px] font-semibold text-danger bg-danger/10 px-1.5 h-5 flex items-center rounded-md">Low</span>}
           </div>
         );
       },

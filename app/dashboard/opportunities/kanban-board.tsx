@@ -80,16 +80,16 @@ export function KanbanBoard({ opportunities, canEdit }: KanbanBoardProps) {
         return (
           <div 
             key={col}
-            className="flex-shrink-0 w-80 bg-muted/30 rounded-lg flex flex-col max-h-full border border-border/50"
+            className="flex-shrink-0 w-80 bg-surface-blue/30 rounded-xl flex flex-col max-h-full border border-border/50 shadow-sm"
             onDragOver={handleDragOver}
             onDrop={(e) => handleDrop(e, col)}
           >
-            <div className="p-3 border-b flex justify-between items-center bg-muted/50 rounded-t-lg font-semibold">
+            <div className="p-3 border-b border-border/50 flex justify-between items-center bg-surface-blue/80 rounded-t-xl font-semibold">
               <div className="flex items-center gap-2">
-                <span>{formatColumnName(col)}</span>
-                <span className="bg-background text-xs px-2 py-0.5 rounded-full border">{colItems.length}</span>
+                <span className="text-foreground tracking-wide text-sm">{formatColumnName(col)}</span>
+                <span className="bg-background text-primary text-[10px] px-2 py-0.5 rounded-md shadow-sm font-bold border border-border/50">{colItems.length}</span>
               </div>
-              <div className="text-xs text-muted-foreground font-normal">
+              <div className="text-xs text-muted-foreground font-medium">
                 <MoneyDisplay amount={totalValue} />
               </div>
             </div>
@@ -101,15 +101,15 @@ export function KanbanBoard({ opportunities, canEdit }: KanbanBoardProps) {
                   draggable={canEdit}
                   onDragStart={(e) => handleDragStart(e, opp.id)}
                   className={cn(
-                    "bg-card border rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow",
+                    "bg-card border border-border rounded-xl p-3 shadow-sm card-hover hover:border-primary/30 transition-all",
                     canEdit && "cursor-grab active:cursor-grabbing"
                   )}
                 >
                   <div className="flex justify-between items-start mb-2">
-                    <Link href={`/dashboard/opportunities/${opp.id}`} className="font-semibold text-sm hover:underline hover:text-primary line-clamp-2">
+                    <Link href={`/dashboard/opportunities/${opp.id}`} className="font-semibold text-sm text-primary hover:underline line-clamp-2 pr-2">
                       {opp.name}
                     </Link>
-                    {canEdit && <GripVertical className="h-4 w-4 text-muted-foreground/50 shrink-0 cursor-grab" />}
+                    {canEdit && <GripVertical className="h-4 w-4 text-muted-foreground/30 hover:text-muted-foreground shrink-0 cursor-grab transition-colors" />}
                   </div>
                   
                   <div className="text-xs text-muted-foreground mb-3 truncate">
