@@ -182,7 +182,7 @@ Critical financial invariants that must always hold (test them):
 
 ## 12. GIT & ENVIRONMENT HYGIENE
 
-- Commit small and often, only after verification. Never commit `.env*` (except `.env.example`), build output, or generated PDFs/uploads.
+- Commit locally after every verified task. NEVER run git push. Before ending any session, tell the human how many commits are unpushed so they can push with GitHub Desktop.
 - Don't rewrite history or force-push. Don't discard uncommitted changes you didn't make.
 - Local dev DB is disposable; production is sacred. Never point local tooling at production credentials.
 - Keep `.env.example` in sync when adding an env var. Document any new setup step in README/DEPLOYMENT.

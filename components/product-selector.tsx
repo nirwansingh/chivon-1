@@ -41,21 +41,7 @@ export function ProductSelector({ value, onChange, error }: ProductSelectorProps
   
   const selectedProduct = products.find((p) => p.id === value);
 
-  React.useEffect(() => {
-    const timer = setTimeout(() => {
-      fetchProducts(search);
-    }, 300);
-    
-    return () => clearTimeout(timer);
-  }, [search]);
-  
-  React.useEffect(() => {
-    if (value && !selectedProduct) {
-      fetchProducts('', value);
-    }
-  }, [value, selectedProduct]);
-
-  const fetchProducts = async (q: string, idToInclude?: string) => {
+  const fetchProducts = React.useCallback(async (q: string, idToInclude?: string) => {
     setLoading(true);
     try {
       const url = new URL(window.location.origin + '/api/products');
@@ -74,7 +60,21 @@ export function ProductSelector({ value, onChange, error }: ProductSelectorProps
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchProducts(search);
+    }, 300);
+    
+    return () => clearTimeout(timer);
+  }, [search, fetchProducts]);
+  
+  React.useEffect(() => {
+    if (value && !selectedProduct) {
+      fetchProducts('', value);
+    }
+  }, [value, selectedProduct, fetchProducts]);
 
   return (
     <>

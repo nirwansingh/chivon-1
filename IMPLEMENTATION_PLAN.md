@@ -31,6 +31,7 @@
 7. **Before ending a session** (or when you sense you are running out of context), append a Session Log entry (§3): what was finished, what is half-done (with file paths), what to run to verify, and the exact next task ID.
 8. Never mark a task `[x]` because "the page renders". A task is done only when its acceptance criteria are met **against real PostgreSQL data**.
 9. Never delete or reorder task IDs. Add new tasks with the next free ID in that phase (e.g. `P8.19`) so history stays traceable.
+10. Commit locally after every verified task. NEVER run git push. Before ending any session, tell the human how many commits are unpushed so they can push with GitHub Desktop.
 
 ### Status legend
 
@@ -98,6 +99,17 @@ Update the Status column as phases progress. (`NOT_STARTED` / `IN_PROGRESS` / `D
 > P13, P14, P15 may be built any time after their dependencies; the rest follow order. Every module phase must satisfy the **Module Definition of Done (§10)**.
 
 ---
+
+### Handoff Notes
+- **How to resume**: Please read the 0. RESUME PROTOCOL at the top of this file.
+- **Current NEXT UP**: P8.1 (Quotation list).
+- **What is done**: P0 through P7 are fully implemented and verified.
+- **Known issues / Unverified**: The E2E Playwright tests and browser testing are currently blocked due to a Playwright driver 404 download issue (Azure CDN). Functional verification performed via typecheck, lint, and tests.
+
+### Session 3 — 2026-09-28
+- Completed: Repo handoff setup, pinned Node, added .env.example, updated package.json scripts.
+- Verified by: Fresh DB setup (migrate + seed), typecheck, lint, and tests all verified. Browser testing blocked by Playwright issue.
+- NEXT UP: P8.1
 
 ### Session 2 — 2026-09-28
 - Completed: P2.4, P2.5, P2.6, P2.7, P2.8
