@@ -238,8 +238,64 @@ export default async function CustomerDetailsPage(props: { params: Promise<{ id:
           </Card>
         </TabsContent>
 
+        <TabsContent value="tasks">
+          <Card className="shadow-sm border-border">
+            <CardHeader className="pb-3 border-b border-border/50 bg-surface-blue/30 flex flex-row items-center justify-between">
+              <CardTitle className="text-base font-semibold">Customer Tasks</CardTitle>
+              <Link href={`/dashboard/tasks/new?customerId=${customer.id}`}>
+                <Button size="sm">Create Task</Button>
+              </Link>
+            </CardHeader>
+            <CardContent className="pt-5">
+              {customer.tasks && customer.tasks.length > 0 ? (
+                <div className="space-y-4">
+                  {customer.tasks.map(task => (
+                    <div key={task.id} className="flex justify-between items-center p-4 border rounded-lg hover:border-primary/50 transition-colors">
+                      <div>
+                        <h4 className="font-semibold">{task.title}</h4>
+                        <div className="text-sm text-muted-foreground mt-1 flex gap-4">
+                          <span>Status: {task.status}</span>
+                          <span>Priority: {task.priority}</span>
+                          {task.dueDate && <span>Due: {new Date(task.dueDate).toLocaleDateString()}</span>}
+                        </div>
+                      </div>
+                      <Link href={`/dashboard/tasks/${task.id}`}>
+                        <Button variant="outline" size="sm">View</Button>
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <EmptyState 
+                  icon={FolderOpen} 
+                  title="No Tasks Found" 
+                  description="There are no tasks associated with this customer yet." 
+                />
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="soa">
+          <Card className="shadow-sm border-border">
+            <CardHeader className="pb-3 border-b border-border/50 bg-surface-blue/30 flex flex-row items-center justify-between">
+              <CardTitle className="text-base font-semibold">Statement of Account</CardTitle>
+              <Link href={`/dashboard/soa?customerId=${customer.id}`}>
+                <Button size="sm">View Full SOA</Button>
+              </Link>
+            </CardHeader>
+            <CardContent className="pt-5">
+               <EmptyState 
+                  icon={FolderOpen} 
+                  title="SOA Generation" 
+                  description="Click View Full SOA to select a date range and generate a Statement of Account." 
+                />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
         {/* Placeholders for future modules */}
-        {['inquiries', 'opportunities', 'quotations', 'orders', 'invoices', 'payments', 'soa', 'tasks', 'documents', 'activity'].map(tab => (
+        {['inquiries', 'opportunities', 'quotations', 'orders', 'invoices', 'payments', 'documents', 'activity'].map(tab => (
           <TabsContent key={tab} value={tab}>
             <Card>
               <CardContent className="pt-6">

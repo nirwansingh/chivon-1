@@ -61,6 +61,15 @@ export function SalesOrderView({ initialSalesOrder }: { initialSalesOrder: Sales
             </a>
           </Button>
 
+          {initialSalesOrder.status === 'CONFIRMED' && (
+            <Link href={`/dashboard/invoices/new?salesOrderId=${initialSalesOrder.id}`}>
+              <Button variant="default" size="sm" className="bg-blue-600 hover:bg-blue-700 text-white">
+                <FileEdit className="w-4 h-4 mr-2" />
+                Generate Invoice
+              </Button>
+            </Link>
+          )}
+
           {isEditable && (
             <Link href={`/dashboard/sales-orders/${initialSalesOrder.id}/edit`}>
               <Button variant="default" size="sm" disabled={isPending}>

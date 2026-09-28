@@ -479,40 +479,40 @@ Format: `[ ] ID — Task  (Deps)  ▸ Acceptance`
 - ✅ **Exit:** conversion never duplicates customer/product; SO PDF works.
 
 ### PHASE 10 — Invoices & credit notes
-- [ ] P10.1 — `SalesOrderService.convertToInvoice()` + direct quote→invoice; enforce source rule; partial invoicing by qty/value; over-invoice block (T-02)  (P9.2)
-- [ ] P10.2 — Invoice list/detail (lineage, due date, payment terms, financial summary)  (P10.1)
-- [ ] P10.3 — Computed outstanding function/query + derived OVERDUE  (P10.1, P1.10)
-- [ ] P10.4 — Invoice status machine + optional approval → ISSUED  (P10.2)
-- [ ] P10.5 — Cancellation rules (no valid allocations)  (P10.2)
-- [ ] P10.6 — Invoice PDF template  (P10.2)
-- [ ] P10.7 — Minimal CreditNote: create against invoice (≤ outstanding), `CN-` number, PDF, audit  (P10.2)
-- [ ] P10.8 — Idempotency + button lock (T-07)  (P10.1)
+- [x] P10.1 — `SalesOrderService.convertToInvoice()` + direct quote→invoice; enforce source rule; partial invoicing by qty/value; over-invoice block (T-02)  (P9.2)
+- [x] P10.2 — Invoice list/detail (lineage, due date, payment terms, financial summary)  (P10.1)
+- [x] P10.3 — Computed outstanding function/query + derived OVERDUE  (P10.1, P1.10)
+- [x] P10.4 — Invoice status machine + optional approval → ISSUED  (P10.2)
+- [x] P10.5 — Cancellation rules (no valid allocations)  (P10.2)
+- [x] P10.6 — Invoice PDF template  (P10.2)
+- [x] P10.7 — Minimal CreditNote: create against invoice (≤ outstanding), `CN-` number, PDF, audit  (P10.2)
+- [x] P10.8 — Idempotency + button lock (T-07)  (P10.1)
 - ✅ **Exit:** T-02 passes.
 
 ### PHASE 11 — Payments
-- [ ] P11.1 — Payment list + record payment (Cash/Bank Transfer/Cheque/Card/Other; ref, bank, cheque no., attachment)  (P10.2)
-- [ ] P11.2 — Allocation UI + `PaymentService.allocate` (multi-invoice; over-allocation blocked; unallocated state) (T-05)  (P11.1)
-- [ ] P11.3 — Post-hoc allocation of remaining balance by Accounts  (P11.2)
-- [ ] P11.4 — **Reverse Payment** (reversal record; allocations reversed; original preserved) (T-06)  (P11.2)
-- [ ] P11.5 — Payment receipt PDF (`PAY-` number, allocated invoices, remaining unallocated, amount in words)  (P11.2)
-- [ ] P11.6 — Invoice status updates (PARTIALLY_PAID/PAID) driven by allocations; T-01 verified  (P11.2, P10.7)
-- [ ] P11.7 — Idempotency + button lock (T-07)  (P11.1)
+- [x] P11.1 — Payment list + record payment (Cash/Bank Transfer/Cheque/Card/Other; ref, bank, cheque no., attachment)  (P10.2)
+- [x] P11.2 — Allocation UI + `PaymentService.allocate` (multi-invoice; over-allocation blocked; unallocated state) (T-05)  (P11.1)
+- [x] P11.3 — Post-hoc allocation of remaining balance by Accounts  (P11.2)
+- [x] P11.4 — **Reverse Payment** (reversal record; allocations reversed; original preserved) (T-06)  (P11.2)
+- [x] P11.5 — Payment receipt PDF (`PAY-` number, allocated invoices, remaining unallocated, amount in words)  (P11.2)
+- [x] P11.6 — Invoice status updates (PARTIALLY_PAID/PAID) driven by allocations; T-01 verified  (P11.2, P10.7)
+- [x] P11.7 — Idempotency + button lock (T-07)  (P11.1)
 - ✅ **Exit:** T-01, T-05, T-06 pass.
 
 ### PHASE 12 — SOA, aging & receivables
-- [ ] P12.1 — `SOAService`: opening balance + invoices + credit notes + payments + adjustments → closing balance for date range  (P11.6)
-- [ ] P12.2 — SOA page (customer + From/To), ledger table  (P12.1)
-- [ ] P12.3 — Aging buckets from due date (T-09)  (P12.1)
-- [ ] P12.4 — SOA PDF (generate / download / print)  (P12.2)
-- [ ] P12.5 — Receivables page (columns/filters per spec: customer, status, date, salesperson, aging bucket)  (P11.6)
-- [ ] P12.6 — Wire Customer 360 financial summary + SOA tab to real data  (P12.1, P4.7)
+- [x] P12.1 — `SOAService`: opening balance + invoices + credit notes + payments + adjustments → closing balance for date range  (P11.6)
+- [x] P12.2 — SOA page (customer + From/To), ledger table  (P12.1)
+- [x] P12.3 — Aging buckets from due date (T-09)  (P12.1)
+- [x] P12.4 — SOA PDF (generate / download / print)  (P12.2)
+- [x] P12.5 — Receivables page (columns/filters per spec: customer, status, date, salesperson, aging bucket)  (P11.6)
+- [x] P12.6 — Wire Customer 360 financial summary + SOA tab to real data  (P12.1, P4.7)
 - ✅ **Exit:** T-09 passes; totals reconcile with invoices/payments.
 
 ### PHASE 13 — Tasks & follow-ups
-- [ ] P13.1 — Task CRUD with links (customer/inquiry/opportunity/quotation/SO/invoice), assignee, priority, due date, status  (P4.6)
-- [ ] P13.2 — Visual state: Overdue / Due Today / Upcoming / Completed (no notification engine)  (P13.1)
-- [ ] P13.3 — Tasks list/board view + related-entity tabs + follow-ups view  (P13.1)
-- [ ] P13.4 — Activity/timeline events written for major actions across modules  (P13.1, P1.14)
+- [x] P13.1 — Task CRUD with links (customer/inquiry/opportunity/quotation/SO/invoice), assignee, priority, due date, status  (P4.6)
+- [x] P13.2 — Visual state: Overdue / Due Today / Upcoming / Completed (no notification engine)  (P13.1)
+- [x] P13.3 — Tasks list/board view + related-entity tabs + follow-ups view  (P13.1)
+- [x] P13.4 — Activity/timeline events written for major actions across modules  (P13.1, P1.14)
 
 ### PHASE 14 — Documents
 - [ ] P14.1 — Upload (PDF/PNG/JPG/JPEG/DOCX/XLSX, ≤10 MB, MIME+extension validation) via `StorageService`  (P1.16)

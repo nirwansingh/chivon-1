@@ -1,0 +1,29 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { requirePermission } from '@/lib/auth';
+import { PdfService } from '@/lib/pdf-service';
+
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    await requirePermission('view_invoices');
+    
+    const id = params.id;
+    if (!id) {
+      return new NextResponse('Invoice ID is required', { status: 400 });
+    }
+
+    const pdfBuffer = await PdfService.generateInvoicePdf(id);
+    
+    return new NextResponse(pdfBuffer, {
+      headers: {
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': `inline; filename="invoice-${id}.pdf"`,
+      },
+    });
+  } catch (error: any) {
+    console.error('Error generating PDF:', error);
+    return new NextResponse(error.message || 'Error generating PDF', { status: 500 });
+  }
+}

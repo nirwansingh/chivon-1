@@ -147,15 +147,23 @@ export function QuotationView({ initialQuotation }: { initialQuotation: any }) {
                 </Button>
               )}
               {(initialQuotation.status === 'APPROVED' || initialQuotation.status === 'SENT') && (
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  disabled={isPending}
-                  onClick={() => handleAction(() => convertQuotationToSOAction(initialQuotation.id), 'Converted to Sales Order successfully')}
-                >
-                  <FileOutput className="w-4 h-4 mr-2" />
-                  Convert to SO
-                </Button>
+                <>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    disabled={isPending}
+                    onClick={() => handleAction(() => convertQuotationToSOAction(initialQuotation.id), 'Converted to Sales Order successfully')}
+                  >
+                    <FileOutput className="w-4 h-4 mr-2" />
+                    Convert to SO
+                  </Button>
+                  <Link href={`/dashboard/invoices/new?quotationId=${initialQuotation.id}&revisionId=${activeRevision.id}`}>
+                    <Button variant="default" size="sm" className="bg-blue-600 hover:bg-blue-700 text-white">
+                      <FileEdit className="w-4 h-4 mr-2" />
+                      Generate Invoice
+                    </Button>
+                  </Link>
+                </>
               )}
               <a href={`/api/pdf/${initialQuotation.id}?revisionId=${activeRevision.id}`} target="_blank" rel="noopener noreferrer">
                 <Button 

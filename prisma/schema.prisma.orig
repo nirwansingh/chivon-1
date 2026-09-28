@@ -589,13 +589,12 @@ model Invoice {
 }
 
 model InvoiceItem {
-  id               String   @id @default(cuid())
-  invoiceId        String
-  invoice          Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
-  productId        String?
-  product          Product? @relation(fields: [productId], references: [id])
-  salesOrderItemId String?
-  description      String?
+  id          String   @id @default(cuid())
+  invoiceId   String
+  invoice     Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  productId   String?
+  product     Product? @relation(fields: [productId], references: [id])
+  description String?
 
   quantity Decimal     @db.Decimal(18, 4)
   unit     ProductUnit @default(NOS)

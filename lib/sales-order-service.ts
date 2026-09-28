@@ -257,6 +257,132 @@ export class SalesOrderService {
     return cancelled;
   }
 
+  static async convertToInvoice(
+    salesOrderId: string,
+    itemsToInvoice: { salesOrderItemId: string; quantity: number }[],
+    userId: string
+  ) {
+    if (itemsToInvoice.length === 0) {
+      throw new Error("No items selected for invoicing");
+    }
+
+    return await prisma.$transaction(async (tx) => {
+      const so = await tx.salesOrder.findUnique({
+        where: { id: salesOrderId },
+        include: { items: true, customer: true }
+      });
+
+      if (!so) throw new Error("Sales Order not found");
+      if (so.status !== 'CONFIRMED' && so.status !== 'FULFILLED') {
+        throw new Error("Sales Order must be confirmed to create an invoice");
+      }
+
+      // Check quantities
+      const itemsMap = new Map(so.items.map(i => [i.id, i]));
+      for (const req of itemsToInvoice) {
+        const soItem = itemsMap.get(req.salesOrderItemId);
+        if (!soItem) throw new Error(`Item ${req.salesOrderItemId} not found in Sales Order`);
+        if (req.quantity <= 0) throw new Error("Invoice quantity must be greater than 0");
+        if (req.quantity > soItem.remainingQty.toNumber()) {
+          throw new Error(`Cannot invoice ${req.quantity} for item ${soItem.product?.name || soItem.description}. Only ${soItem.remainingQty.toNumber()} remaining.`);
+        }
+      }
+
+      // Generate invoice number
+      const invoiceNumber = await DocumentNumberService.generateNext('INVOICE', tx);
+
+      // Prepare invoice items
+      const newInvoiceItems = [];
+      for (const req of itemsToInvoice) {
+        const soItem = itemsMap.get(req.salesOrderItemId)!;
+        
+        // Update SO Item quantities
+        await tx.salesOrderItem.update({
+          where: { id: soItem.id },
+          data: {
+            invoicedQty: soItem.invoicedQty.toNumber() + req.quantity,
+            remainingQty: soItem.remainingQty.toNumber() - req.quantity,
+          }
+        });
+
+        // Calculate money
+        const calcRes = calculateLineItem({
+          quantity: req.quantity,
+          rate: soItem.rate.toNumber(),
+          discountType: soItem.discountType as 'PERCENTAGE' | 'FIXED_AMOUNT' | null,
+          discountValue: soItem.discountValue?.toNumber(),
+          vatRate: soItem.vatRate.toNumber(),
+        });
+
+        newInvoiceItems.push({
+          salesOrderItemId: soItem.id,
+          productId: soItem.productId,
+          description: soItem.description,
+          quantity: req.quantity,
+          unit: soItem.unit,
+          rate: soItem.rate,
+          discountType: soItem.discountType,
+          discountValue: soItem.discountValue,
+          discountAmount: calcRes.discountAmount,
+          vatRate: soItem.vatRate,
+          vatAmount: calcRes.vatAmount,
+          lineSubtotal: calcRes.subtotal,
+          lineTotal: calcRes.total,
+        });
+      }
+
+      // Update SO status if all items are fully invoiced (for simplicity, we assume invoicing = fulfillment)
+      const updatedSOItems = await tx.salesOrderItem.findMany({ where: { salesOrderId } });
+      const allFullyInvoiced = updatedSOItems.every(i => i.remainingQty.toNumber() === 0);
+      
+      if (allFullyInvoiced) {
+        await tx.salesOrder.update({
+          where: { id: salesOrderId },
+          data: { status: 'FULFILLED' }
+        });
+      }
+
+      const docTotals = calculateDocumentTotals(newInvoiceItems.map(i => ({
+        subtotal: i.lineSubtotal.toNumber(),
+        discountAmount: i.discountAmount.toNumber(),
+        vatAmount: i.vatAmount.toNumber(),
+        total: i.lineTotal.toNumber()
+      })));
+
+      const invoice = await tx.invoice.create({
+        data: {
+          number: invoiceNumber,
+          customerId: so.customerId,
+          salesOrderId: so.id,
+          status: 'DRAFT',
+          date: new Date(),
+          subtotal: docTotals.subtotal,
+          discountAmount: docTotals.discountAmount,
+          taxableAmount: docTotals.taxableAmount,
+          vatAmount: docTotals.vatAmount,
+          grandTotal: docTotals.grandTotal,
+          notes: so.notes,
+          paymentTerms: so.terms,
+          items: {
+            create: newInvoiceItems
+          }
+        }
+      });
+
+      await AuditService.log({
+        userId,
+        module: 'INVOICE',
+        entityType: 'INVOICE',
+        entityId: invoice.id,
+        action: 'CREATE',
+        description: `Invoice ${invoiceNumber} created from Sales Order ${so.number}`,
+        metadata: { salesOrderId }
+      }, tx);
+
+      return invoice;
+    });
+  }
+
   static async reopen(id: string, userId: string) {
     const so = await prisma.salesOrder.findUnique({
       where: { id },

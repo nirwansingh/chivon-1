@@ -1,0 +1,10 @@
+--- prisma/schema.prisma
++++ prisma/schema.prisma
+@@ -583,6 +583,7 @@
+   invoice     Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+   productId   String?
+   product     Product? @relation(fields: [productId], references: [id])
++  salesOrderItemId String?
+   description String?
+ 
+   quantity Decimal     @db.Decimal(18, 4)

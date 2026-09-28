@@ -448,4 +448,110 @@ export class QuotationService {
 
     return salesOrder;
   }
+
+  static async convertToInvoice(
+    quotationId: string,
+    revisionId: string,
+    itemsToInvoice: { quotationItemId: string; quantity: number }[],
+    userId: string
+  ) {
+    if (itemsToInvoice.length === 0) {
+      throw new Error("No items selected for invoicing");
+    }
+
+    return await prisma.$transaction(async (tx) => {
+      const quote = await tx.quotation.findUnique({
+        where: { id: quotationId },
+        include: { revisions: { where: { id: revisionId }, include: { items: true } } }
+      });
+
+      if (!quote) throw new Error("Quotation not found");
+      if (quote.status !== 'APPROVED') throw new Error("Only APPROVED quotations can be converted");
+      const revision = quote.revisions[0];
+      if (!revision) throw new Error("Revision not found");
+
+      // Generate invoice number
+      const invoiceNumber = await DocumentNumberService.generateNext('INVOICE', tx);
+
+      const itemsMap = new Map(revision.items.map(i => [i.id, i]));
+      const newInvoiceItems = [];
+      for (const req of itemsToInvoice) {
+        const qItem = itemsMap.get(req.quotationItemId);
+        if (!qItem) throw new Error(`Item ${req.quotationItemId} not found in Quotation`);
+        if (req.quantity <= 0) throw new Error("Invoice quantity must be greater than 0");
+        
+        if (req.quantity > qItem.quantity.toNumber()) {
+          throw new Error(`Cannot invoice ${req.quantity} for item ${qItem.product?.name || qItem.description}. Quotation quantity is only ${qItem.quantity.toNumber()}.`);
+        }
+
+        const calcRes = calculateLineItem({
+          quantity: req.quantity,
+          rate: qItem.rate.toNumber(),
+          discountType: qItem.discountType as 'PERCENTAGE' | 'FIXED_AMOUNT' | null,
+          discountValue: qItem.discountValue?.toNumber(),
+          vatRate: qItem.vatRate.toNumber(),
+        });
+
+        newInvoiceItems.push({
+          productId: qItem.productId,
+          description: qItem.description,
+          quantity: req.quantity,
+          unit: qItem.unit,
+          rate: qItem.rate,
+          discountType: qItem.discountType,
+          discountValue: qItem.discountValue,
+          discountAmount: calcRes.discountAmount,
+          vatRate: qItem.vatRate,
+          vatAmount: calcRes.vatAmount,
+          lineSubtotal: calcRes.subtotal,
+          lineTotal: calcRes.total,
+        });
+      }
+
+      const docTotals = calculateDocumentTotals(newInvoiceItems.map(i => ({
+        subtotal: i.lineSubtotal.toNumber(),
+        discountAmount: i.discountAmount.toNumber(),
+        vatAmount: i.vatAmount.toNumber(),
+        total: i.lineTotal.toNumber()
+      })));
+
+      const invoice = await tx.invoice.create({
+        data: {
+          number: invoiceNumber,
+          customerId: quote.customerId,
+          quotationId: quote.id,
+          status: 'DRAFT',
+          date: new Date(),
+          subtotal: docTotals.subtotal,
+          discountAmount: docTotals.discountAmount,
+          taxableAmount: docTotals.taxableAmount,
+          vatAmount: docTotals.vatAmount,
+          grandTotal: docTotals.grandTotal,
+          notes: revision.notes,
+          paymentTerms: revision.terms,
+          items: {
+            create: newInvoiceItems
+          }
+        }
+      });
+
+      await tx.quotation.update({
+        where: { id: quote.id },
+        data: { status: 'CONVERTED' }
+      });
+
+      await AuditService.log({
+        userId,
+        module: 'INVOICE',
+        entityType: 'INVOICE',
+        entityId: invoice.id,
+        action: 'CREATE',
+        description: `Invoice ${invoiceNumber} created directly from Quotation ${quote.number}`,
+        metadata: { quotationId, revisionId }
+      }, tx);
+
+      return invoice;
+    });
+  }
 }
+
