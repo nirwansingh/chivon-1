@@ -1,0 +1,434 @@
+
+> temp-app@0.1.0 lint
+> eslint
+
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/app/api/customers/route.ts
+  16:16  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/app/api/products/route.ts
+  33:12  warning  'error' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/app/dashboard/customers/actions.ts
+   53:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  108:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  120:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/app/dashboard/inquiries/[id]/convert-dialog.tsx
+  39:14  warning  'e' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/app/dashboard/inquiries/[id]/page.tsx
+   7:16  warning  'RefreshCw' is defined but never used  @typescript-eslint/no-unused-vars
+  16:10  warning  'Timeline' is defined but never used   @typescript-eslint/no-unused-vars
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/app/dashboard/inquiries/actions.ts
+  15:65  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  18:68  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  23:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  31:65  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  34:72  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  40:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  51:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  54:78  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  66:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/app/dashboard/inquiries/client.tsx
+    8:50  warning  'Trash' is defined but never used                                                                                                                                                                                                                                   @typescript-eslint/no-unused-vars
+   14:3   warning  'DropdownMenuSeparator' is defined but never used                                                                                                                                                                                                                   @typescript-eslint/no-unused-vars
+   82:54  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                            @typescript-eslint/no-explicit-any
+  113:48  warning  Do not use `window.location.href` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
+  116:48  warning  Do not use `window.location.href` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
+  129:27  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                            @typescript-eslint/no-explicit-any
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/app/dashboard/opportunities/actions.ts
+  15:69  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  18:76  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  23:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  31:69  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  34:80  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  40:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  52:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/app/dashboard/opportunities/client.tsx
+    8:50  warning  'Trash' is defined but never used                                                                                                                                                                                                                                   @typescript-eslint/no-unused-vars
+   69:54  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                            @typescript-eslint/no-explicit-any
+  105:48  warning  Do not use `window.location.href` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
+  109:50  warning  Do not use `window.location.href` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
+  122:27  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                            @typescript-eslint/no-explicit-any
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/app/dashboard/opportunities/kanban-board.tsx
+   5:10  warning  'Card' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  @typescript-eslint/no-unused-vars
+   5:16  warning  'CardContent' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @typescript-eslint/no-unused-vars
+   5:29  warning  'CardHeader' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @typescript-eslint/no-unused-vars
+   5:41  warning  'CardTitle' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             @typescript-eslint/no-unused-vars
+  31:5   warning  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/app/dashboard/opportunities/kanban-board.tsx:31:5
+  29 |   // Keep synced if props change
+  30 |   React.useEffect(() => {
+> 31 |     setItems(opportunities);
+     |     ^^^^^^^^ Avoid calling setState() directly within an effect
+  32 |   }, [opportunities]);
+  33 |
+  34 |   const handleDragStart = (e: React.DragEvent, id: string) => {  react-hooks/set-state-in-effect
+  64:14  warning  'err' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   @typescript-eslint/no-unused-vars
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/app/dashboard/products/[id]/page.tsx
+  7:16  warning  'PackagePlus' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/app/dashboard/products/[id]/stock-adjustment-dialog.tsx
+   4:10  warning  'useRouter' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          @typescript-eslint/no-unused-vars
+  56:20  warning  Compilation Skipped: Use of incompatible library
+
+This API returns functions which cannot be memoized without leading to stale UI. To prevent this, by default React Compiler will skip memoizing this component/hook. However, you may see issues if values from this API are passed to other components/hooks that are memoized.
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/app/dashboard/products/[id]/stock-adjustment-dialog.tsx:56:20
+  54 |   });
+  55 |
+> 56 |   const quantity = form.watch('quantity');
+     |                    ^^^^ React Hook Form's `useForm()` API returns a `watch()` function which cannot be memoized safely.
+  57 |   const newStock = currentStock + (quantity || 0);
+  58 |
+  59 |   async function onSubmit(data: StockFormValues) {  react-hooks/incompatible-library
+  70:14  warning  'e' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  @typescript-eslint/no-unused-vars
+  91:28  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       @typescript-eslint/no-explicit-any
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/app/dashboard/products/client.tsx
+  31:68  warning  'categories' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/auth.ts
+  18:23  warning  'credentials' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/components/app-topbar.tsx
+   25:10  warning  'Button' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       @typescript-eslint/no-unused-vars
+   91:63  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  111:7   warning  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/components/app-topbar.tsx:111:7
+  109 |   React.useEffect(() => {
+  110 |     if (query.trim().length < 2) {
+> 111 |       setResults({});
+      |       ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  112 |       setOpen(false);
+  113 |       return;
+  114 |     }  react-hooks/set-state-in-effect
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/components/customer-form.tsx
+   25:10  warning  'Textarea' is defined but never used                                                                                 @typescript-eslint/no-unused-vars
+   92:5   error    Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  @typescript-eslint/ban-ts-comment
+   94:37  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  142:14  warning  'error' is defined but never used                                                                                    @typescript-eslint/no-unused-vars
+  150:24  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  151:53  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  168:44  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  170:39  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  182:44  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  184:39  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  204:44  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  206:39  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  227:44  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  229:39  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  241:44  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  243:39  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  255:44  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  257:39  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  277:44  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  279:39  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  291:44  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  293:39  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  306:46  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  308:41  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  352:46  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  354:41  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  365:46  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  367:41  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  378:46  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  380:41  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  391:46  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  393:41  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  404:46  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  406:41  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  419:48  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  421:43  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  481:46  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  483:41  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  504:46  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  506:41  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  518:46  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  520:41  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  532:46  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  534:41  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/components/customer-selector.tsx
+   45:20  warning  'searchCustomers' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          @typescript-eslint/no-unused-vars
+   51:15  warning  'data' is assigned a value but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @typescript-eslint/no-unused-vars
+   65:7   error    Error: Cannot access variable before it is declared
+
+`fetchCustomers` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/components/customer-selector.tsx:65:7
+  63 |     // Let's assume we can fetch them via a dedicated API we'll create next.
+  64 |     const timer = setTimeout(() => {
+> 65 |       fetchCustomers(search);
+     |       ^^^^^^^^^^^^^^ `fetchCustomers` accessed before it is declared
+  66 |     }, 300);
+  67 |     
+  68 |     return () => clearTimeout(timer);
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/components/customer-selector.tsx:78:3
+   76 |   }, [value, selectedCustomer]);
+   77 |
+>  78 |   const fetchCustomers = async (q: string, idToInclude?: string) => {
+      |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  79 |     setLoading(true);
+      | ^^^^^^^^^^^^^^^^^^^^^
+>  80 |     try {
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^
+>  97 |     }
+      | ^^^^^^^^^^^^^^^^^^^^^
+>  98 |   };
+      | ^^^^^ `fetchCustomers` is declared here
+   99 |
+  100 |   return (
+  101 |     <>  react-hooks/immutability
+  168:13  error    Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  @typescript-eslint/ban-ts-comment
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/components/data-table.tsx
+  26:10  warning  'Input' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    @typescript-eslint/no-unused-vars
+  34:10  warning  'Skeleton' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 @typescript-eslint/no-unused-vars
+  71:17  warning  Compilation Skipped: Use of incompatible library
+
+This API returns functions which cannot be memoized without leading to stale UI. To prevent this, by default React Compiler will skip memoizing this component/hook. However, you may see issues if values from this API are passed to other components/hooks that are memoized.
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/components/data-table.tsx:71:17
+  69 |   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
+  70 |
+> 71 |   const table = useReactTable({
+     |                 ^^^^^^^^^^^^^ TanStack Table's `useReactTable()` API returns functions that cannot be memoized safely
+  72 |     data,
+  73 |     columns,
+  74 |     pageCount,  react-hooks/incompatible-library
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/components/date-display.tsx
+  30:7   error    Error: Avoid constructing JSX within try/catch
+
+React does not immediately render components when JSX is rendered, so any errors from this component will not be caught by the try/catch. To catch errors in rendering a given component, wrap that component in an error boundary. (https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary).
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/components/date-display.tsx:30:7
+  28 |     
+  29 |     return (
+> 30 |       <span className={cn('whitespace-nowrap', className)}>
+     |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 31 |         {format(dateObj as Date, finalFormat)}
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 32 |       </span>
+     | ^^^^^^^^^^^^^^ Avoid constructing JSX within try/catch
+  33 |     );
+  34 |   } catch (error) {
+  35 |     return <span className={cn('text-destructive', className)}>Invalid Date</span>;  react-hooks/error-boundaries
+  34:12  warning  'error' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @typescript-eslint/no-unused-vars
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/components/document-actions.tsx
+  12:62  warning  'Printer' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/components/filter-bar.tsx
+   7:10  warning  'Badge' is defined but never used             @typescript-eslint/no-unused-vars
+  35:3   warning  'filters' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  37:3   warning  'onFilterChange' is defined but never used    @typescript-eslint/no-unused-vars
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/components/inquiry-form.tsx
+   53:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   54:43  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   76:45  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   77:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  101:14  warning  'error' is defined but never used         @typescript-eslint/no-unused-vars
+  109:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  110:53  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  118:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  120:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  132:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  134:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  149:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  151:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  163:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  165:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  177:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  179:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  200:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  202:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  223:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  225:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  244:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  246:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  258:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  260:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  279:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  281:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  303:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  305:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  330:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  332:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  354:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  356:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/components/opportunity-form.tsx
+   53:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   74:49  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   75:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   99:14  warning  'error' is defined but never used         @typescript-eslint/no-unused-vars
+  107:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  108:53  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  116:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  118:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  130:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  132:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  148:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  150:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  171:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  173:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  196:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  198:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  217:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  219:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  231:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  233:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  252:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  254:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  276:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  278:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  302:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  304:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  316:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  318:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  330:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  332:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/components/product-form.tsx
+   44:35  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+   47:35  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+   51:39  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+   68:5   error    Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  @typescript-eslint/ban-ts-comment
+   70:37  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  102:14  warning  'error' is defined but never used                                                                                    @typescript-eslint/no-unused-vars
+  110:24  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  111:53  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  119:40  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  121:35  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  133:40  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  135:35  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  147:40  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  149:35  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  170:40  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  172:35  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  193:40  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  195:35  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  221:40  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  223:35  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  243:40  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  245:35  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  264:40  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  266:35  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  284:40  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  286:35  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  304:40  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  306:35  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  329:42  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  331:37  warning  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/components/product-selector.tsx
+  75:7  warning  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/components/product-selector.tsx:75:7
+  73 |   React.useEffect(() => {
+  74 |     if (value && !selectedProduct) {
+> 75 |       fetchProducts('', value);
+     |       ^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  76 |     }
+  77 |   }, [value, selectedProduct, fetchProducts]);
+  78 |  react-hooks/set-state-in-effect
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/components/timeline.tsx
+  31:15  warning  'isLast' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/hooks/use-mobile.ts
+  14:5  warning  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/hooks/use-mobile.ts:14:5
+  12 |     }
+  13 |     mql.addEventListener("change", onChange)
+> 14 |     setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
+     |     ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  15 |     return () => mql.removeEventListener("change", onChange)
+  16 |   }, [])
+  17 |  react-hooks/set-state-in-effect
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/lib/auth.ts
+  55:12  warning  'error' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/lib/customer-service.ts
+    2:10  warning  'Customer' is defined but never used         @typescript-eslint/no-unused-vars
+    2:20  warning  'CustomerContact' is defined but never used  @typescript-eslint/no-unused-vars
+    2:37  warning  'CustomerAddress' is defined but never used  @typescript-eslint/no-unused-vars
+  127:37  warning  Unexpected any. Specify a different type     @typescript-eslint/no-explicit-any
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/lib/inquiry-service.ts
+    3:10  warning  'ActionResult' is defined but never used  @typescript-eslint/no-unused-vars
+   23:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   77:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  107:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  133:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/lib/opportunity-service.ts
+   23:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   77:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  107:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  114:59  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  117:85  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  167:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/lib/product-service.ts
+   48:34  warning  Unexpected any. Specify a different type       @typescript-eslint/no-explicit-any
+   50:40  warning  Unexpected any. Specify a different type       @typescript-eslint/no-explicit-any
+   90:36  warning  Unexpected any. Specify a different type       @typescript-eslint/no-explicit-any
+  137:21  warning  Unexpected any. Specify a different type       @typescript-eslint/no-explicit-any
+  146:48  warning  Unexpected any. Specify a different type       @typescript-eslint/no-explicit-any
+  181:21  warning  Unexpected any. Specify a different type       @typescript-eslint/no-explicit-any
+  199:15  warning  'movement' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  231:21  warning  Unexpected any. Specify a different type       @typescript-eslint/no-explicit-any
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/lib/search-service.ts
+  2:10  warning  'requirePermission' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/lib/storage.ts
+  69:20  warning  'path' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/jhanvijain/Documents/GitHub/chivon-1/tests/money.test.ts
+  11:10  warning  'Decimal' is defined but never used  @typescript-eslint/no-unused-vars
+
+✖ 231 problems (5 errors, 226 warnings)
+
