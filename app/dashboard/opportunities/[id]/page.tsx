@@ -54,7 +54,6 @@ export default async function OpportunityDetailsPage(props: { params: Promise<{ 
       />
       
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card className="card-hover kpi-accent-blue">
           <CardHeader className="py-4">
             <CardDescription className="font-semibold uppercase tracking-wider text-xs">Status</CardDescription>
