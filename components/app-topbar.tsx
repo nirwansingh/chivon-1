@@ -69,7 +69,7 @@ export function AppTopbar({ user }: { user: { name: string; roleName: string } }
       {/* Universal Search */}
       <div className="flex-1 w-full max-w-xl mx-auto hidden md:flex items-center gap-2">
         <Popover open={open} onOpenChange={setOpen}>
-          <PopoverTrigger render={
+          <PopoverTrigger nativeButton={false} render={
             <div className="relative w-full">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
