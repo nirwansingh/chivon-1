@@ -34,9 +34,9 @@ import { Skeleton } from '@/components/ui/skeleton';
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  pageCount: number;
-  pagination: PaginationState;
-  onPaginationChange: (pagination: PaginationState) => void;
+  pageCount?: number;
+  pagination?: PaginationState;
+  onPaginationChange?: (pagination: PaginationState) => void;
   sorting?: SortingState;
   onSortingChange?: (sorting: SortingState) => void;
   columnFilters?: ColumnFiltersState;
@@ -51,9 +51,9 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
   columns,
   data,
-  pageCount,
-  pagination,
-  onPaginationChange,
+  pageCount = 1,
+  pagination = { pageIndex: 0, pageSize: 100 },
+  onPaginationChange = () => {},
   sorting,
   onSortingChange,
   columnFilters,

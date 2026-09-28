@@ -72,13 +72,13 @@ Update the Status column as phases progress. (`NOT_STARTED` / `IN_PROGRESS` / `D
 | Phase | Title | Status | Depends on |
 |---|---|---|---|
 | P0 | Project setup | DONE | — |
-| P1 | Database, core libs & seed | IN_PROGRESS | P0 |
+| P1 | Database, core libs & seed | DONE | P0 |
 | P2 | Authentication, users, roles, permissions | DONE | P1 |
-| P3 | Design system & app shell | NOT_STARTED | P2 |
-| P4 | Customers (contacts, addresses, 360) | NOT_STARTED | P3 |
-| P5 | Products, services & stock | NOT_STARTED | P3 |
-| P6 | Inquiries | NOT_STARTED | P4, P5 |
-| P7 | Opportunities & Kanban | NOT_STARTED | P6 |
+| P3 | Design system & app shell | DONE | P2 |
+| P4 | Customers (contacts, addresses, 360) | DONE | P3 |
+| P5 | Products, services & stock | DONE | P3 |
+| P6 | Inquiries | DONE | P4, P5 |
+| P7 | Opportunities & Kanban | DONE | P6 |
 | P8 | Quotations, revisions, approval, PDF | NOT_STARTED | P4, P5, P7 |
 | P9 | Sales Orders | NOT_STARTED | P8 |
 | P10 | Invoices & credit notes | NOT_STARTED | P9 |
@@ -399,25 +399,25 @@ Format: `[ ] ID — Task  (Deps)  ▸ Acceptance`
 - ✅ **Exit:** §10 DoD met; inline creation works.
 
 ### PHASE 5 — Products, services & stock
-- [ ] P5.1 — Product list + categories  (P3.4)
-- [ ] P5.2 — Create/Edit product (types PRODUCT/SERVICE/MANPOWER; units NOS, KG, HOURS, DAYS, METER, SET, LOT, OTHER; VAT rate; min stock)  (P5.1)
-- [ ] P5.3 — **Inline product creation** via `ProductSelector`  (P5.2)
-- [ ] P5.4 — Stock: current stock, adjustments, movement history (OPENING/IN/OUT/ADJUSTMENT), computed current quantity; low-stock indicator  (P5.2)
-- [ ] P5.5 — Product detail page  (P5.2)
+- [x] P5.1 — Product list + categories  (P3.4)
+- [x] P5.2 — Create/Edit product (types PRODUCT/SERVICE/MANPOWER; units NOS, KG, HOURS, DAYS, METER, SET, LOT, OTHER; VAT rate; min stock)  (P5.1)
+- [x] P5.3 — **Inline product creation** via `ProductSelector`  (P5.2)
+- [x] P5.4 — Stock: current stock, adjustments, movement history (OPENING/IN/OUT/ADJUSTMENT), computed current quantity; low-stock indicator  (P5.2)
+- [x] P5.5 — Product detail page  (P5.2)
 - ✅ **Exit:** stock arithmetic verified (100 −20 +50 −5 = 125).
 
 ### PHASE 6 — Inquiries
-- [ ] P6.1 — Inquiry list + create/edit (fields per spec)  (P4.5, P5.3)
-- [ ] P6.2 — Inquiry detail (Overview, Customer, Product/Service, Activity, Tasks, Notes, Attachments, Timeline)  (P6.1)
-- [ ] P6.3 — Status workflow + assignment  (P6.1)
-- [ ] P6.4 — **Convert to Opportunity** (inquiry retained; `status=CONVERTED`, `opportunityId` set; transactional)  (P7.1)
+- [x] P6.1 — Inquiry list + create/edit (fields per spec)  (P4.5, P5.3)
+- [x] P6.2 — Inquiry detail (Overview, Customer, Product/Service, Activity, Tasks, Notes, Attachments, Timeline)  (P6.1)
+- [x] P6.3 — Status workflow + assignment  (P6.1)
+- [x] P6.4 — **Convert to Opportunity** (inquiry retained; `status=CONVERTED`, `opportunityId` set; transactional)  (P7.1)
 - ✅ **Exit:** conversion keeps traceability.
 
 ### PHASE 7 — Opportunities
-- [ ] P7.1 — Opportunity list + create/edit  (P4.5)
-- [ ] P7.2 — Detail page (tasks, timeline, products/services)  (P7.1)
-- [ ] P7.3 — Kanban board (6 columns); drag/drop updates status server-side; cards show name, customer, value, probability, expected close, assignee  (P7.1)
-- [ ] P7.4 — Pipeline summary widget data (for dashboard)  (P7.3)
+- [x] P7.1 — Opportunity list + create/edit  (P4.5)
+- [x] P7.2 — Detail page (tasks, timeline, products/services)  (P7.1)
+- [x] P7.3 — Kanban board (6 columns); drag/drop updates status server-side; cards show name, customer, value, probability, expected close, assignee  (P7.1)
+- [x] P7.4 — Pipeline summary widget data (for dashboard)  (P7.3)
 - ✅ **Exit:** drag/drop persists and audits.
 
 ### PHASE 8 — Quotations (major phase)
