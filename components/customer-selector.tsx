@@ -146,7 +146,6 @@ export function CustomerSelector({ value, onChange, error }: CustomerSelectorPro
           {/* We wrap CustomerForm or a simplified version here. 
               Since CustomerForm navigates away on success, we need a prop to handle inline success. */}
           <CustomerForm 
-            // @ts-expect-error - we'll add onInlineSuccess prop to CustomerForm next
             onInlineSuccess={(id) => {
               setCreateOpen(false);
               onChange(id);
