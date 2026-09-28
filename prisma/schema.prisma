@@ -1,0 +1,822 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum AddressType {
+  REGISTERED
+  BILLING
+  SHIPPING
+}
+
+enum ProductType {
+  PRODUCT
+  SERVICE
+  MANPOWER
+}
+
+enum ProductUnit {
+  NOS
+  KG
+  HOURS
+  DAYS
+  METER
+  SET
+  LOT
+  OTHER
+}
+
+enum StockMovementType {
+  OPENING
+  IN
+  OUT
+  ADJUSTMENT
+}
+
+enum InquiryStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  UNQUALIFIED
+  FOLLOW_UP_REQUIRED
+  CONVERTED
+  LOST
+}
+
+enum OpportunityStatus {
+  NEW
+  QUALIFIED
+  PROPOSAL
+  NEGOTIATION
+  WON
+  LOST
+}
+
+enum QuotationStatus {
+  DRAFT
+  PENDING_APPROVAL
+  APPROVED
+  REJECTED
+  SENT
+  ACCEPTED
+  EXPIRED
+  CANCELLED
+}
+
+enum RejectionStage {
+  APPROVAL
+  CUSTOMER
+}
+
+enum SalesOrderStatus {
+  DRAFT
+  CONFIRMED
+  IN_PROGRESS
+  PARTIALLY_FULFILLED
+  FULFILLED
+  CANCELLED
+}
+
+enum InvoiceStatus {
+  DRAFT
+  PENDING_APPROVAL
+  APPROVED
+  ISSUED
+  PARTIALLY_PAID
+  PAID
+  CANCELLED
+}
+
+enum PaymentStatus {
+  UNALLOCATED
+  PARTIALLY_ALLOCATED
+  FULLY_ALLOCATED
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+model User {
+  id           String     @id @default(cuid())
+  name         String
+  email        String     @unique
+  passwordHash String
+  roleId       String
+  role         Role       @relation(fields: [roleId], references: [id])
+  avatar       String?
+  phone        String?
+  status       UserStatus @default(ACTIVE)
+
+  assignedInquiries     Inquiry[]       @relation("InquiryAssignedTo")
+  createdInquiries      Inquiry[]       @relation("InquiryCreatedBy")
+  assignedOpportunities Opportunity[]   @relation("OpportunityAssignedTo")
+  createdStockMovements StockMovement[]
+  createdQuotations     Quotation[]     @relation("QuotationCreatedBy")
+  createdSalesOrders    SalesOrder[]    @relation("SalesOrderCreatedBy")
+  createdInvoices       Invoice[]       @relation("InvoiceCreatedBy")
+  createdPayments       Payment[]       @relation("PaymentCreatedBy")
+  createdCreditNotes    CreditNote[]    @relation("CreditNoteCreatedBy")
+  assignedTasks         Task[]          @relation("TaskAssignedTo")
+  createdTasks          Task[]          @relation("TaskCreatedBy")
+  createdActivities     Activity[]
+  uploadedDocuments     Document[]
+  auditLogs             AuditLog[]
+
+  lastLoginAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Role {
+  id          String  @id @default(cuid())
+  name        String  @unique
+  description String?
+  isSystem    Boolean @default(false)
+
+  users       User[]
+  permissions RolePermission[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Permission {
+  id          String  @id @default(cuid())
+  key         String  @unique
+  module      String
+  action      String
+  description String?
+
+  roles RolePermission[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@id([roleId, permissionId])
+}
+
+model Customer {
+  id                String     @id @default(cuid())
+  companyName       String
+  customerType      String?
+  vatNumber         String?
+  trn               String?
+  email             String?
+  phone             String?
+  website           String?
+  industry          String?
+  status            UserStatus @default(ACTIVE)
+  notes             String?
+  openingReceivable Decimal?   @db.Decimal(18, 2)
+  openingAsOfDate   DateTime?
+
+  contacts      CustomerContact[]
+  addresses     CustomerAddress[]
+  inquiries     Inquiry[]
+  opportunities Opportunity[]
+  quotations    Quotation[]
+  salesOrders   SalesOrder[]
+  invoices      Invoice[]
+  payments      Payment[]
+  tasks         Task[]
+  activities    Activity[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([companyName])
+}
+
+model CustomerContact {
+  id          String   @id @default(cuid())
+  customerId  String
+  customer    Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  name        String
+  designation String?
+  email       String?
+  phone       String?
+  mobile      String?
+  whatsapp    String?
+  isPrimary   Boolean  @default(false)
+  notes       String?
+
+  inquiries     Inquiry[]
+  opportunities Opportunity[]
+  quotations    Quotation[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CustomerAddress {
+  id           String      @id @default(cuid())
+  customerId   String
+  customer     Customer    @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  type         AddressType
+  addressLine1 String
+  addressLine2 String?
+  city         String?
+  state        String?
+  country      String?
+  postalCode   String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Inquiry {
+  id                  String           @id @default(cuid())
+  title               String
+  source              String?
+  customerId          String?
+  customer            Customer?        @relation(fields: [customerId], references: [id])
+  contactId           String?
+  contact             CustomerContact? @relation(fields: [contactId], references: [id])
+  productOrService    String?
+  quantity            Decimal?         @db.Decimal(18, 4)
+  description         String?
+  project             String?
+  site                String?
+  expectedValue       Decimal?         @db.Decimal(18, 2)
+  expectedClosingDate DateTime?
+
+  assignedToId String?
+  assignedTo   User?   @relation(fields: [assignedToId], references: [id], name: "InquiryAssignedTo")
+
+  status   InquiryStatus @default(NEW)
+  priority TaskPriority  @default(MEDIUM)
+  notes    String?
+
+  opportunityId String?
+
+  createdById String?
+  createdBy   User?   @relation("InquiryCreatedBy", fields: [createdById], references: [id])
+
+  tasks Task[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([customerId])
+}
+
+model Opportunity {
+  id                  String            @id @default(cuid())
+  name                String
+  customerId          String
+  customer            Customer          @relation(fields: [customerId], references: [id])
+  contactId           String?
+  contact             CustomerContact?  @relation(fields: [contactId], references: [id])
+  description         String?
+  expectedValue       Decimal?          @db.Decimal(18, 2)
+  probability         Int?
+  expectedClosingDate DateTime?
+  assignedUserId      String?
+  assignedUser        User?             @relation(fields: [assignedUserId], references: [id], name: "OpportunityAssignedTo")
+  source              String?
+  competitor          String?
+  project             String?
+  site                String?
+  notes               String?
+  status              OpportunityStatus @default(NEW)
+
+  items      OpportunityItem[]
+  quotations Quotation[]
+  tasks      Task[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([customerId])
+}
+
+model OpportunityItem {
+  id            String      @id @default(cuid())
+  opportunityId String
+  opportunity   Opportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+  productId     String?
+  product       Product?    @relation(fields: [productId], references: [id])
+  description   String?
+  quantity      Decimal?    @db.Decimal(18, 4)
+  rate          Decimal?    @db.Decimal(18, 2)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ProductCategory {
+  id          String  @id @default(cuid())
+  name        String  @unique
+  description String?
+
+  products Product[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Product {
+  id            String           @id @default(cuid())
+  sku           String?          @unique
+  name          String
+  type          ProductType      @default(PRODUCT)
+  categoryId    String?
+  category      ProductCategory? @relation(fields: [categoryId], references: [id])
+  description   String?
+  unit          ProductUnit      @default(NOS)
+  rate          Decimal          @db.Decimal(18, 2)
+  vatRate       Decimal          @default(5.00) @db.Decimal(5, 2)
+  stockQuantity Decimal          @default(0) @db.Decimal(18, 4)
+  minStock      Decimal?         @db.Decimal(18, 4)
+  status        UserStatus       @default(ACTIVE)
+
+  movements        StockMovement[]
+  opportunityItems OpportunityItem[]
+  quotationItems   QuotationItem[]
+  salesOrderItems  SalesOrderItem[]
+  invoiceItems     InvoiceItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([categoryId])
+  @@index([status])
+}
+
+model StockMovement {
+  id          String            @id @default(cuid())
+  productId   String
+  product     Product           @relation(fields: [productId], references: [id], onDelete: Cascade)
+  type        StockMovementType
+  quantity    Decimal           @db.Decimal(18, 4)
+  reference   String?
+  notes       String?
+  createdById String?
+  createdBy   User?             @relation(fields: [createdById], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Quotation {
+  id              String           @id @default(cuid())
+  number          String           @unique
+  customerId      String
+  customer        Customer         @relation(fields: [customerId], references: [id])
+  contactId       String?
+  contact         CustomerContact? @relation(fields: [contactId], references: [id])
+  opportunityId   String?
+  opportunity     Opportunity?     @relation(fields: [opportunityId], references: [id])
+  status          QuotationStatus  @default(DRAFT)
+  date            DateTime         @default(now())
+  validUntil      DateTime?
+  rejectionStage  RejectionStage?
+  rejectionReason String?
+
+  notes String?
+  terms String?
+
+  createdById String?
+  createdBy   User?   @relation(fields: [createdById], references: [id], name: "QuotationCreatedBy")
+
+  revisions   QuotationRevision[]
+  salesOrders SalesOrder[]
+  invoices    Invoice[]
+  tasks       Task[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([customerId])
+}
+
+model QuotationRevision {
+  id             String    @id @default(cuid())
+  quotationId    String
+  quotation      Quotation @relation(fields: [quotationId], references: [id], onDelete: Cascade)
+  revisionNumber Int
+  isCurrent      Boolean   @default(false)
+
+  subtotal       Decimal  @db.Decimal(18, 2)
+  discountType   String?
+  discountValue  Decimal? @db.Decimal(18, 2)
+  discountAmount Decimal  @default(0) @db.Decimal(18, 2)
+  taxableAmount  Decimal  @db.Decimal(18, 2)
+  vatAmount      Decimal  @db.Decimal(18, 2)
+  grandTotal     Decimal  @db.Decimal(18, 2)
+
+  items       QuotationItem[]
+  salesOrders SalesOrder[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model QuotationItem {
+  id                  String            @id @default(cuid())
+  quotationRevisionId String
+  revision            QuotationRevision @relation(fields: [quotationRevisionId], references: [id], onDelete: Cascade)
+  productId           String?
+  product             Product?          @relation(fields: [productId], references: [id])
+  description         String?
+  quantity            Decimal           @db.Decimal(18, 4)
+  unit                ProductUnit       @default(NOS)
+  rate                Decimal           @db.Decimal(18, 2)
+
+  discountType   String?
+  discountValue  Decimal? @db.Decimal(18, 2)
+  discountAmount Decimal  @default(0) @db.Decimal(18, 2)
+
+  vatRate   Decimal @default(5.00) @db.Decimal(5, 2)
+  vatAmount Decimal @db.Decimal(18, 2)
+
+  lineSubtotal Decimal @db.Decimal(18, 2)
+  lineTotal    Decimal @db.Decimal(18, 2)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SalesOrder {
+  id                  String             @id @default(cuid())
+  number              String             @unique
+  customerId          String
+  customer            Customer           @relation(fields: [customerId], references: [id])
+  quotationId         String?
+  quotation           Quotation?         @relation(fields: [quotationId], references: [id])
+  quotationRevisionId String?
+  quotationRevision   QuotationRevision? @relation(fields: [quotationRevisionId], references: [id])
+
+  status SalesOrderStatus @default(DRAFT)
+  date   DateTime         @default(now())
+
+  subtotal       Decimal @db.Decimal(18, 2)
+  discountAmount Decimal @default(0) @db.Decimal(18, 2)
+  taxableAmount  Decimal @db.Decimal(18, 2)
+  vatAmount      Decimal @db.Decimal(18, 2)
+  grandTotal     Decimal @db.Decimal(18, 2)
+
+  notes String?
+  terms String?
+
+  cancelledBy        String?
+  cancelledAt        DateTime?
+  cancellationReason String?
+
+  createdById String?
+  createdBy   User?   @relation(fields: [createdById], references: [id], name: "SalesOrderCreatedBy")
+
+  items    SalesOrderItem[]
+  invoices Invoice[]
+  tasks    Task[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([customerId])
+}
+
+model SalesOrderItem {
+  id           String     @id @default(cuid())
+  salesOrderId String
+  salesOrder   SalesOrder @relation(fields: [salesOrderId], references: [id], onDelete: Cascade)
+  productId    String?
+  product      Product?   @relation(fields: [productId], references: [id])
+  description  String?
+
+  orderedQty   Decimal @db.Decimal(18, 4)
+  fulfilledQty Decimal @default(0) @db.Decimal(18, 4)
+  invoicedQty  Decimal @default(0) @db.Decimal(18, 4)
+  remainingQty Decimal @db.Decimal(18, 4)
+
+  unit ProductUnit @default(NOS)
+  rate Decimal     @db.Decimal(18, 2)
+
+  discountType   String?
+  discountValue  Decimal? @db.Decimal(18, 2)
+  discountAmount Decimal  @default(0) @db.Decimal(18, 2)
+
+  vatRate   Decimal @default(5.00) @db.Decimal(5, 2)
+  vatAmount Decimal @db.Decimal(18, 2)
+
+  lineSubtotal Decimal @db.Decimal(18, 2)
+  lineTotal    Decimal @db.Decimal(18, 2)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Invoice {
+  id           String      @id @default(cuid())
+  number       String      @unique
+  customerId   String
+  customer     Customer    @relation(fields: [customerId], references: [id])
+  quotationId  String?
+  quotation    Quotation?  @relation(fields: [quotationId], references: [id])
+  salesOrderId String?
+  salesOrder   SalesOrder? @relation(fields: [salesOrderId], references: [id])
+
+  status       InvoiceStatus @default(DRAFT)
+  date         DateTime      @default(now())
+  dueDate      DateTime?
+  paymentTerms String?
+
+  subtotal       Decimal @db.Decimal(18, 2)
+  discountAmount Decimal @default(0) @db.Decimal(18, 2)
+  taxableAmount  Decimal @db.Decimal(18, 2)
+  vatAmount      Decimal @db.Decimal(18, 2)
+  grandTotal     Decimal @db.Decimal(18, 2)
+
+  notes String?
+
+  idempotencyKey String? @unique
+
+  cancelledBy        String?
+  cancelledAt        DateTime?
+  cancellationReason String?
+
+  createdById String?
+  createdBy   User?   @relation(fields: [createdById], references: [id], name: "InvoiceCreatedBy")
+
+  items       InvoiceItem[]
+  allocations PaymentAllocation[]
+  creditNotes CreditNote[]
+  tasks       Task[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([customerId])
+}
+
+model InvoiceItem {
+  id          String   @id @default(cuid())
+  invoiceId   String
+  invoice     Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  productId   String?
+  product     Product? @relation(fields: [productId], references: [id])
+  description String?
+
+  quantity Decimal     @db.Decimal(18, 4)
+  unit     ProductUnit @default(NOS)
+  rate     Decimal     @db.Decimal(18, 2)
+
+  discountType   String?
+  discountValue  Decimal? @db.Decimal(18, 2)
+  discountAmount Decimal  @default(0) @db.Decimal(18, 2)
+
+  vatRate   Decimal @default(5.00) @db.Decimal(5, 2)
+  vatAmount Decimal @db.Decimal(18, 2)
+
+  lineSubtotal Decimal @db.Decimal(18, 2)
+  lineTotal    Decimal @db.Decimal(18, 2)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Payment {
+  id              String   @id @default(cuid())
+  number          String   @unique
+  customerId      String
+  customer        Customer @relation(fields: [customerId], references: [id])
+  amount          Decimal  @db.Decimal(18, 2)
+  paymentDate     DateTime @default(now())
+  paymentMethod   String
+  referenceNumber String?
+  bank            String?
+  chequeNumber    String?
+  notes           String?
+  attachmentPath  String?
+
+  status PaymentStatus @default(UNALLOCATED)
+
+  isReversed     Boolean   @default(false)
+  reversalReason String?
+  reversedById   String?
+  reversedAt     DateTime?
+
+  idempotencyKey String? @unique
+
+  createdById String?
+  createdBy   User?   @relation(fields: [createdById], references: [id], name: "PaymentCreatedBy")
+
+  allocations PaymentAllocation[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PaymentAllocation {
+  id        String  @id @default(cuid())
+  paymentId String
+  payment   Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  invoiceId String
+  invoice   Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  amount    Decimal @db.Decimal(18, 2)
+
+  isReversed Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([paymentId, invoiceId])
+}
+
+model CreditNote {
+  id        String   @id @default(cuid())
+  number    String   @unique
+  invoiceId String
+  invoice   Invoice  @relation(fields: [invoiceId], references: [id])
+  date      DateTime @default(now())
+
+  subtotal   Decimal @db.Decimal(18, 2)
+  vatAmount  Decimal @db.Decimal(18, 2)
+  grandTotal Decimal @db.Decimal(18, 2)
+
+  notes String?
+
+  createdById String?
+  createdBy   User?   @relation(fields: [createdById], references: [id], name: "CreditNoteCreatedBy")
+
+  items CreditNoteItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CreditNoteItem {
+  id           String     @id @default(cuid())
+  creditNoteId String
+  creditNote   CreditNote @relation(fields: [creditNoteId], references: [id], onDelete: Cascade)
+  description  String
+  quantity     Decimal    @db.Decimal(18, 4)
+  rate         Decimal    @db.Decimal(18, 2)
+  vatRate      Decimal    @default(5.00) @db.Decimal(5, 2)
+  vatAmount    Decimal    @db.Decimal(18, 2)
+  lineTotal    Decimal    @db.Decimal(18, 2)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Task {
+  id           String       @id @default(cuid())
+  title        String
+  description  String?
+  assignedToId String?
+  assignedTo   User?        @relation(fields: [assignedToId], references: [id], name: "TaskAssignedTo")
+  createdById  String?
+  createdBy    User?        @relation(fields: [createdById], references: [id], name: "TaskCreatedBy")
+  dueDate      DateTime?
+  priority     TaskPriority @default(MEDIUM)
+  status       TaskStatus   @default(TODO)
+
+  customerId    String?
+  customer      Customer?    @relation(fields: [customerId], references: [id])
+  inquiryId     String?
+  inquiry       Inquiry?     @relation(fields: [inquiryId], references: [id])
+  opportunityId String?
+  opportunity   Opportunity? @relation(fields: [opportunityId], references: [id])
+  quotationId   String?
+  quotation     Quotation?   @relation(fields: [quotationId], references: [id])
+  salesOrderId  String?
+  salesOrder    SalesOrder?  @relation(fields: [salesOrderId], references: [id])
+  invoiceId     String?
+  invoice       Invoice?     @relation(fields: [invoiceId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Activity {
+  id          String   @id @default(cuid())
+  customerId  String
+  customer    Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  type        String
+  description String
+
+  relatedEntityType String?
+  relatedEntityId   String?
+
+  createdById String?
+  createdBy   User?   @relation(fields: [createdById], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+model Document {
+  id          String @id @default(cuid())
+  fileName    String
+  fileType    String
+  fileSize    Int
+  storagePath String
+  category    String
+
+  relatedEntityType String?
+  relatedEntityId   String?
+
+  uploadedById String?
+  uploadedBy   User?   @relation(fields: [uploadedById], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AuditLog {
+  id          String  @id @default(cuid())
+  userId      String?
+  user        User?   @relation(fields: [userId], references: [id])
+  action      String
+  module      String
+  entityType  String
+  entityId    String
+  description String?
+  beforeData  Json?
+  afterData   Json?
+  ipAddress   String?
+  userAgent   String?
+
+  createdAt DateTime @default(now())
+}
+
+model CompanySetting {
+  id                  String  @id @default("default")
+  companyName         String  @default("Chivon Mechanical")
+  logoPath            String?
+  address             String?
+  phone               String?
+  email               String?
+  website             String?
+  trn                 String?
+  vat                 Decimal @default(5.00) @db.Decimal(5, 2)
+  bankName            String?
+  accountName         String?
+  iban                String?
+  swift               String?
+  paymentInstructions String?
+
+  financialYearStart DateTime?
+  financialYearEnd   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model DocumentSetting {
+  id                 String  @id @default("default")
+  quotationApproval  Boolean @default(true)
+  salesOrderApproval Boolean @default(false)
+  invoiceApproval    Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model DocumentSequence {
+  id        String @id @default(cuid())
+  prefix    String
+  dateKey   String
+  lastValue Int    @default(0)
+
+  @@unique([prefix, dateKey])
+}

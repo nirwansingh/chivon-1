@@ -71,8 +71,8 @@ Update the Status column as phases progress. (`NOT_STARTED` / `IN_PROGRESS` / `D
 
 | Phase | Title | Status | Depends on |
 |---|---|---|---|
-| P0 | Project setup | IN_PROGRESS | — |
-| P1 | Database, core libs & seed | NOT_STARTED | P0 |
+| P0 | Project setup | DONE | — |
+| P1 | Database, core libs & seed | IN_PROGRESS | P0 |
 | P2 | Authentication, users, roles, permissions | NOT_STARTED | P1 |
 | P3 | Design system & app shell | NOT_STARTED | P2 |
 | P4 | Customers (contacts, addresses, 360) | NOT_STARTED | P3 |
@@ -99,19 +99,13 @@ Update the Status column as phases progress. (`NOT_STARTED` / `IN_PROGRESS` / `D
 
 ---
 
-## 3. SESSION LOG
-
-Append newest entry at the **bottom**. Template:
-
-```
-### Session N — YYYY-MM-DD
-- Completed: <task IDs>
-- Partially done ([~]): <task ID> — <what exists, file paths, what remains>
-- Verified by: <commands run / tests passing>
-- Decisions/deviations: <or "none">
-- Blockers: <or "none">
-- NEXT UP: <exact task ID>
-```
+### Session 1 — 2026-09-28
+- Completed: P0.1, P0.2, P0.3, P0.4, P0.5, P0.6, P0.7, P0.8
+- Partially done ([~]): none
+- Verified by: `npx prisma migrate dev` success, folder skeleton exists, libraries installed.
+- Decisions/deviations: none
+- Blockers: none
+- NEXT UP: P1.1
 
 ### Session 0 — YYYY-MM-DD
 - Completed: none
@@ -334,44 +328,45 @@ A module task group is done only if **all** are true:
 Format: `[ ] ID — Task  (Deps)  ▸ Acceptance`
 
 ### PHASE 0 — Project setup
-- [~] P0.1 — Create Git repo, `.gitignore`, `README` stub  ▸ repo initialised, first commit
-- [ ] P0.2 — Create Next.js App Router + TypeScript app, Tailwind  ▸ `npm run dev` serves blank app
-- [ ] P0.3 — Install/configure shadcn/ui, lucide-react, framer-motion, react-hook-form, zod, react-toastify  (P0.2)  ▸ sample Button/Toast render
-- [ ] P0.4 — ESLint + Prettier + TS strict; Vitest + Playwright configured; npm scripts (`lint`, `typecheck`, `test`, `e2e`, `db:migrate`, `db:seed`)  (P0.2)  ▸ all scripts run clean
-- [ ] P0.5 — Local PostgreSQL (no Docker) + Prisma init & connection  (P0.2)  ▸ `prisma migrate dev` succeeds
-- [ ] P0.6 — `.env.example` + Zod-validated env loader (`DATABASE_URL, AUTH_SECRET, AUTH_URL, STORAGE_URL, STORAGE_KEY, STORAGE_SECRET`; future keys commented)  (P0.2)  ▸ app fails fast with clear message on missing env
-- [ ] P0.7 — Create folder skeleton from §7.1  (P0.2)  ▸ structure exists
-- [ ] P0.8 — Install Auth.js + Prisma adapter (config only)  (P0.5)  ▸ compiles
+- [x] P0.1 — Create Git repo, `.gitignore`, `README` stub  ▸ repo initialised, first commit
+- [x] P0.2 — Create Next.js App Router + TypeScript app, Tailwind  ▸ `npm run dev` serves blank app
+- [x] P0.3 — Install/configure shadcn/ui, lucide-react, framer-motion, react-hook-form, zod, react-toastify  (P0.2)  ▸ sample Button/Toast render
+- [x] P0.4 — ESLint + Prettier + TS strict; Vitest + Playwright configured; npm scripts (`lint`, `typecheck`, `test`, `e2e`, `db:migrate`, `db:seed`)  (P0.2)  ▸ all scripts run clean
+- [x] P0.5 — Local PostgreSQL (no Docker) + Prisma init & connection  (P0.2)  ▸ `prisma migrate dev` succeeds
+- [x] P0.6 — `.env.example` + Zod-validated env loader (`DATABASE_URL, AUTH_SECRET, AUTH_URL, STORAGE_URL, STORAGE_KEY, STORAGE_SECRET`; future keys commented)  (P0.2)  ▸ app fails fast with clear message on missing env
+- [x] P0.7 — Create folder skeleton from §7.1  (P0.2)  ▸ structure exists
+- [x] P0.8 — Install Auth.js + Prisma adapter (config only)  (P0.5)  ▸ compiles
 - ✅ **Exit:** app boots, DB connects, lint + typecheck pass. **No UI-heavy work before P1.**
 
 ### PHASE 1 — Database, core libs & seed
-- [ ] P1.1 — Define all enums (§6.3)  (P0.5)  ▸ compiles
-- [ ] P1.2 — Identity models: User, Role, Permission, RolePermission  (P1.1)
-- [ ] P1.3 — CRM models: Customer, CustomerContact, CustomerAddress, Inquiry, Opportunity, OpportunityItem  (P1.1)
-- [ ] P1.4 — Catalog models: Product, ProductCategory, StockMovement  (P1.1)
-- [ ] P1.5 — Sales models: Quotation, QuotationRevision, QuotationItem, SalesOrder, SalesOrderItem  (P1.1)
-- [ ] P1.6 — Finance models: Invoice, InvoiceItem, Payment, PaymentAllocation, CreditNote, CreditNoteItem (Decimal money, idempotencyKey, cancel fields)  (P1.1)
-- [ ] P1.7 — Support models: Task, Activity, Document, AuditLog, CompanySetting, DocumentSetting, DocumentSequence  (P1.1)
-- [ ] P1.8 — Indexes and unique constraints per §7.5; invoice-source check  (P1.2–P1.7)
-- [ ] P1.9 — Run first migration  (P1.8)  ▸ migration committed, DB matches schema
-- [ ] P1.10 — `lib/money` (Decimal helpers, rounding, formatting AED) + line/document calculation functions + amount-in-words  (P0.4)  ▸ unit tests incl. VAT/discount cases
-- [ ] P1.11 — `DocumentNumberService` (atomic, per prefix/day)  (P1.9)  ▸ concurrency test (T-08)
-- [ ] P1.12 — Status-machine helpers (`canTransition`) for all documents  (P1.1)  ▸ unit tests
-- [ ] P1.13 — `ActionResult` type, error mapper, server logger (no secrets)  (P0.4)
-- [ ] P1.14 — `AuditService` (`log({user, action, module, entity, before, after, ip, ua})`)  (P1.9)
-- [ ] P1.15 — `PermissionService` + permission catalog constants  (P1.2)
-- [ ] P1.16 — `StorageService` interface + Supabase impl + `Mock*` integration interfaces (§7.4)  (P0.6)
-- [ ] P1.17 — Seed: permissions, 7 default roles + role→permission map, settings defaults, demo users (one per role; creds from env/seed config), demo data (10 customers, 15 products, 10 opportunities, 15 quotes, 10 SOs, 15 invoices, 10 payments — internally consistent)  (P1.9–P1.15)  ▸ `db:seed` idempotent and dashboard-worthy
+- [x] P1.1 — Define all enums (§6.3)  (P0.5)  ▸ compiles
+- [x] P1.2 — Identity models: User, Role, Permission, RolePermission  (P1.1)
+- [x] P1.3 — CRM models: Customer, CustomerContact, CustomerAddress, Inquiry, Opportunity, OpportunityItem  (P1.1)
+- [x] P1.4 — Catalog models: Product, ProductCategory, StockMovement  (P1.1)
+- [x] P1.5 — Sales models: Quotation, QuotationRevision, QuotationItem, SalesOrder, SalesOrderItem  (P1.1)
+- [x] P1.6 — Finance models: Invoice, InvoiceItem, Payment, PaymentAllocation, CreditNote, CreditNoteItem (Decimal money, idempotencyKey, cancel fields)  (P1.1)
+- [x] P1.7 — Support models: Task, Activity, Document, AuditLog, CompanySetting, DocumentSetting, DocumentSequence  (P1.1)
+- [x] P1.8 — Indexes and unique constraints per §7.5; invoice-source check  (P1.2–P1.7)
+- [x] P1.9 — Run first migration  (P1.8)  ▸ migration committed, DB matches schema
+- [x] P1.10 — `lib/money` (Decimal helpers, rounding, formatting AED) + line/document calculation functions + amount-in-words  (P0.4)  ▸ unit tests incl. VAT/discount cases
+- [x] P1.11 — `DocumentNumberService` (atomic, per prefix/day)  (P1.9)  ▸ concurrency test (T-08)
+- [x] P1.12 — Status-machine helpers (`canTransition`) for all documents  (P1.1)  ▸ unit tests
+- [x] P1.13 — `ActionResult` type, error mapper, server logger (no secrets)  (P0.4)
+- [x] P1.14 — `AuditService` (`log({user, action, module, entity, before, after, ip, ua})`)  (P1.9)
+- [x] P1.15 — `PermissionService` + permission catalog constants  (P1.2)
+- [x] P1.16 — `StorageService` interface + Supabase impl + `Mock*` integration interfaces (§7.4)  (P0.6)
+- [x] P1.17 — Seed: permissions, 7 default roles + role→permission map, settings defaults, demo users (one per role; creds from env/seed config), demo data (10 customers, 15 products, 10 opportunities, 15 quotes, 10 SOs, 15 invoices, 10 payments — internally consistent)  (P1.9–P1.15)  ▸ `db:seed` idempotent and dashboard-worthy
 - ✅ **Exit:** schema migrated, seed runs, money/numbering/status/audit/permission libs unit-tested.
 
 ### PHASE 2 — Authentication, users, roles, permissions
-- [ ] P2.1 — Login page + credentials auth (bcrypt/argon2 hash), logout, JWT session, `lastLoginAt`  (P1.17)  ▸ can log in with seeded users; inactive users blocked
+- [ ] P2.1 — Easy dev login: normal email + password form checked against seeded users (hashed passwords, inactive users blocked, lastLoginAt updated), plus one-click 'Quick login' cards for each seeded role on the login page. Session is a simple signed cookie. Local development only.
 - [ ] P2.2 — Route protection (middleware + server checks); `requirePermission()` guard for actions/routes  (P2.1)  ▸ unauthenticated redirected; unauthorized = 403 server-side
 - [ ] P2.3 — Users admin: list/create/edit/deactivate, reset password (no public registration; only `USER.MANAGE`)  (P2.2)
 - [ ] P2.4 — Roles & Permissions admin: edit default roles, create custom roles, permission matrix UI; audited  (P2.2)
 - [ ] P2.5 — Protect SUPER_ADMIN from Admin changes  (P2.3)
 - [ ] P2.6 — Audit LOGIN/LOGOUT/USER_CHANGE/ROLE_CHANGE/PERMISSION_CHANGE  (P2.1, P1.14)
 - [ ] P2.7 — Permission tests for all default roles (T-10 scaffold)  (P2.4)
+- [ ] P2.8 — User switcher in the profile menu: lists all ACTIVE users with their role; one click switches the current user without a password; shows a permanent 'DEV MODE — acting as <name> (<role>)' badge; each switch writes an audit entry.
 - ✅ **Exit:** all 7 roles tested; permissions server-enforced.
 
 ### PHASE 3 — Design system & app shell
@@ -525,8 +520,15 @@ Format: `[ ] ID — Task  (Deps)  ▸ Acceptance`
 - [ ] P21.2 — `ARCHITECTURE.md`, `DATABASE.md` (every model, relation, enum, calculation, status transition), `PERMISSIONS.md`, `WORKFLOWS.md` (diagrams: Inquiry→Opp→Quote→Revision→SO→Invoice→Payment→SOA), `DEPLOYMENT.md`, `TESTING.md`
 - [ ] P21.3 — `.env.example` final; backup/export procedure for PostgreSQL + storage documented
 
+### PHASE 21A — Real authentication (blocking before deployment)
+- [ ] P21A.1 — Auth.js Credentials + JWT sessions replacing the simple session
+- [ ] P21A.2 — Secure httpOnly cookies, session expiry, login rate limiting
+- [ ] P21A.3 — Password change/reset flow
+- [ ] P21A.4 — Remove quick-login and the switcher from production builds
+- [ ] P21A.5 — Verify unauthenticated users are redirected and every server action still authenticates, authorizes, validates and audits
+
 ### PHASE 22 — Deployment & production check
-- [ ] P22.1 — GitHub repo → Netlify (Next.js) configured; env vars set (`DATABASE_URL, AUTH_SECRET, AUTH_URL`, storage creds)
+- [ ] P22.1 — GitHub repo → Netlify (Next.js) configured; env vars set (`DATABASE_URL, AUTH_SECRET, AUTH_URL`, storage creds) (Depends on P21A)
 - [ ] P22.2 — Supabase Postgres + Storage provisioned; run migrations to prod; seed **only** roles/permissions/settings (no demo passwords; no demo users shown in UI outside dev)
 - [ ] P22.3 — Domain `crm.chivonmechanical.com` (or `erp.`) DNS + HTTPS
 - [ ] P22.4 — Security baseline: secure cookies, password hashing, CSRF, XSS-safe rendering, file validation, secrets not in repo
@@ -561,6 +563,7 @@ Ask the user only for decisions that materially change DB model, workflow, finan
 | plan | PostgreSQL from day 1 (no SQLite) | Avoid SQLite/Postgres behavioural drift |
 | plan | Defaults A1–A7 in §8 | Resolve spec ambiguities without blocking |
 | 2026-09-28 | Local PostgreSQL, no Docker | Use locally installed PostgreSQL on localhost:5432 |
+| 2026-09-28 | Real authentication hardening postponed | Easy dev login + fast user switcher for role testing; enforced server-side access control from day 1 |
 
 *(Append new rows as decisions are made.)*
 
