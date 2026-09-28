@@ -18,6 +18,7 @@ export function DateDisplay({
     return <span className={cn('text-muted-foreground', className)}>-</span>;
   }
 
+  let formattedDate = '';
   try {
     let dateObj = date;
     if (typeof date === 'string') {
@@ -25,13 +26,14 @@ export function DateDisplay({
     }
 
     const finalFormat = includeTime ? `${formatString} h:mm a` : formatString;
-    
-    return (
-      <span className={cn('whitespace-nowrap', className)}>
-        {format(dateObj as Date, finalFormat)}
-      </span>
-    );
+    formattedDate = format(dateObj as Date, finalFormat);
   } catch (error) {
     return <span className={cn('text-destructive', className)}>Invalid Date</span>;
   }
+
+  return (
+    <span className={cn('whitespace-nowrap', className)}>
+      {formattedDate}
+    </span>
+  );
 }

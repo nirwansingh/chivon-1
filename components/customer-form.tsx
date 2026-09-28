@@ -89,7 +89,7 @@ export function CustomerForm({ initialData, onInlineSuccess }: CustomerFormProps
       };
 
   const form = useForm<CustomerFormValues>({
-    // @ts-ignore - mismatch with strict nested types
+    // @ts-expect-error - mismatch with strict nested types
     resolver: zodResolver(customerSchema),
     defaultValues: defaultValues as any,
   });

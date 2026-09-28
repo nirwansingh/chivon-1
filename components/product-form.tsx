@@ -65,7 +65,7 @@ export function ProductForm({ initialData, categories, onInlineSuccess }: Produc
       };
 
   const form = useForm<ProductFormValues>({
-    // @ts-ignore - mismatch with strict nested types
+    // @ts-expect-error - mismatch with strict nested types
     resolver: zodResolver(productSchema),
     defaultValues: defaultValues as any,
   });

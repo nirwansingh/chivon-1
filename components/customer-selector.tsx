@@ -41,41 +41,7 @@ export function CustomerSelector({ value, onChange, error }: CustomerSelectorPro
   
   const selectedCustomer = customers.find((c) => c.id === value);
 
-  React.useEffect(() => {
-    async function searchCustomers() {
-      if (search.length < 2 && search.length > 0) return;
-      
-      setLoading(true);
-      try {
-        const res = await fetch(`/api/search?q=${encodeURIComponent(search)}`);
-        const data = await res.json();
-        // search returns generic format, we need to map or we can create a dedicated API
-        // For inline creation, it's better to hit a dedicated customers API or parse search results
-        // Since Search API returns { "Customers": [{ id, title, subtitle }] } we can use that for UI
-      } catch (e) {
-        console.error(e);
-      } finally {
-        setLoading(false);
-      }
-    }
-    
-    // In a real implementation, we should fetch actual Customer records.
-    // Let's assume we can fetch them via a dedicated API we'll create next.
-    const timer = setTimeout(() => {
-      fetchCustomers(search);
-    }, 300);
-    
-    return () => clearTimeout(timer);
-  }, [search]);
-  
-  // Initial fetch for the selected customer if present and not in list
-  React.useEffect(() => {
-    if (value && !selectedCustomer) {
-      fetchCustomers('', value);
-    }
-  }, [value, selectedCustomer]);
-
-  const fetchCustomers = async (q: string, idToInclude?: string) => {
+  const fetchCustomers = React.useCallback(async (q: string, idToInclude?: string) => {
     setLoading(true);
     try {
       const url = new URL(window.location.origin + '/api/customers');
@@ -95,7 +61,22 @@ export function CustomerSelector({ value, onChange, error }: CustomerSelectorPro
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchCustomers(search);
+    }, 300);
+    
+    return () => clearTimeout(timer);
+  }, [search, fetchCustomers]);
+  
+  // Initial fetch for the selected customer if present and not in list
+  React.useEffect(() => {
+    if (value && !selectedCustomer) {
+      fetchCustomers('', value);
+    }
+  }, [value, selectedCustomer, fetchCustomers]);
 
   return (
     <>
@@ -165,7 +146,7 @@ export function CustomerSelector({ value, onChange, error }: CustomerSelectorPro
           {/* We wrap CustomerForm or a simplified version here. 
               Since CustomerForm navigates away on success, we need a prop to handle inline success. */}
           <CustomerForm 
-            // @ts-ignore - we'll add onInlineSuccess prop to CustomerForm next
+            // @ts-expect-error - we'll add onInlineSuccess prop to CustomerForm next
             onInlineSuccess={(id) => {
               setCreateOpen(false);
               onChange(id);

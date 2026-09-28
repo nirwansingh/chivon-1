@@ -212,7 +212,6 @@ export function DataTable<TData, TValue>({
                 return (
                   <RowWrapper
                     key={row.id}
-                    // @ts-expect-error -- motion.tr and tr have compatible props at runtime
                     {...animProps}
                     data-state={row.getIsSelected() && 'selected'}
                     className="border-b transition-colors duration-100 hover:bg-surface-blue/60 cursor-default"
