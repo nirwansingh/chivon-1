@@ -26,27 +26,41 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen bg-background w-full flex">
-        {isDevMode && (
-          <DevModeBanner
-            currentUser={{ id: user.id, name: user.name, roleName: user.role.name }}
-            allUsers={allUsers.map((u) => ({
-              id: u.id,
-              name: u.name,
-              email: u.email,
-              roleName: u.role.name,
-            }))}
-          />
-        )}
-        
+      {/*
+        DEV MODE bar: fixed at top, 32px (--dev-bar-height).
+        The wrapper below has padding-top equal to dev-bar-height when active,
+        so the sidebar and topbar are never behind the DEV bar.
+      */}
+      {isDevMode && (
+        <DevModeBanner
+          currentUser={{ id: user.id, name: user.name, roleName: user.role.name }}
+          allUsers={allUsers.map((u) => ({
+            id: u.id,
+            name: u.name,
+            email: u.email,
+            roleName: u.role.name,
+          }))}
+        />
+      )}
+
+      {/* Full-screen shell — offset from top by DEV bar when active */}
+      <div
+        className="flex h-screen w-full overflow-hidden"
+        style={{ paddingTop: isDevMode ? 'var(--dev-bar-height)' : '0' }}
+      >
+        {/* Sidebar */}
         <AppSidebar />
-        
-        <div className={`flex-1 flex flex-col min-w-0 ${isDevMode ? 'mt-8' : ''}`}>
+
+        {/* Main column */}
+        <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
           <AppTopbar user={{ name: user.name, roleName: user.role.name }} />
-          <main className="flex-1 p-4 md:p-6 overflow-auto flex flex-col">
-            <PageTransition>
-              {children}
-            </PageTransition>
+
+          <main className="flex-1 overflow-y-auto">
+            <div className="px-5 py-5 md:px-6 md:py-6 h-full">
+              <PageTransition>
+                {children}
+              </PageTransition>
+            </div>
           </main>
         </div>
       </div>

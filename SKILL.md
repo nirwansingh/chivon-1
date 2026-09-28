@@ -125,6 +125,7 @@ Roles and permissions are data (tables), not `if (role === "ADMIN")` scattered i
 
 ## 8. UI / UX STANDARDS
 
+- **All UI follows `DESIGN.md` and uses the shared motion primitives. No hard-coded colors, fonts, spacing or ad-hoc animations in components. No unstyled default elements. Every new screen must include loading, empty, error and entrance-motion states.**
 - Enterprise business app: dense, readable, consistent. White / deep blue / sky blue / light blue / neutral gray; green/amber/red for status only. Animations are subtle and functional (Framer Motion), never distracting.
 - Use shared components from P3; do not restyle per page. Standard record page layout: Header (number, status, actions) → summary cards → main info → line items → financial summary → timeline → documents → related records/lineage.
 - Every async view has **loading (skeleton), empty, and error states**. Every submit button is disabled while pending and shows progress.

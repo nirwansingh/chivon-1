@@ -1,23 +1,30 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
+/**
+ * PageTransition — entrance animation wrapper for page content.
+ * Uses the shared pageTransition variant from lib/motion.
+ * Uses `m` (lazy-loaded motion) instead of `motion` to keep bundle small.
+ */
+
+import { m, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
+import { pageTransition } from '@/lib/motion';
 
 export function PageTransition({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
+    <AnimatePresence mode="wait" initial={false}>
+      <m.div
         key={pathname}
-        initial={{ opacity: 0, y: 5 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -5 }}
-        transition={{ duration: 0.15, ease: 'easeOut' }}
-        className="w-full h-full flex flex-col flex-1"
+        variants={pageTransition}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        className="w-full"
       >
         {children}
-      </motion.div>
+      </m.div>
     </AnimatePresence>
   );
 }

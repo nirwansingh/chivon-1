@@ -102,9 +102,13 @@ Update the Status column as phases progress. (`NOT_STARTED` / `IN_PROGRESS` / `D
 
 ### Handoff Notes
 - **How to resume**: Please read the 0. RESUME PROTOCOL at the top of this file.
-- **Current NEXT UP**: P8.1 (Quotation list).
-- **What is done**: P0 through P7 are fully implemented and verified.
+- **Current NEXT UP**: P3.8 (Design refresh — DESIGN.md + motion system + app shell).
+- **What is done**: P0 through P7 are fully implemented and verified. Stage 1 design refresh (P3.8–P3.17) is IN PROGRESS.
 - **Known issues / Unverified**: The E2E Playwright tests and browser testing are currently blocked due to a Playwright driver 404 download issue (Azure CDN). Functional verification performed via typecheck, lint, and tests.
+
+### Session 4 — 2026-09-28
+- Completed: Part A plan updates (P3.8–P3.17 added, Phase 19 rewritten, decisions log updated, AGENTS.md and SKILL.md UI rules added). Starting Stage 1 design refresh.
+- NEXT UP: P3.8 (DESIGN.md token system + motion variants)
 
 ### Session 3 — 2026-09-28
 - Completed: Repo handoff setup, pinned Node, added .env.example, updated package.json scripts.
@@ -397,7 +401,19 @@ Format: `[ ] ID — Task  (Deps)  ▸ Acceptance`
 - [x] P3.5 — `Timeline/ActivityTimeline`, `StatusBadge`, `MoneyDisplay`, `DateDisplay`, `EmptyState/LoadingState/ErrorState`, `ConfirmDialog`, `DocumentActions`, `DocumentLineage`, `PdfPreview` shell  (P3.3)
 - [x] P3.6 — `SearchService` + universal search UI (debounced, grouped results, deep links) for all indexed entities available so far  (P3.2)
 - [x] P3.7 — Framer Motion transitions (restrained)
-- ✅ **Exit:** one reusable kit; no module re-implements these components.
+
+**DESIGN REFRESH — done directly on main before resuming feature phases:**
+- [~] P3.8 — Design language: create `DESIGN.md` with full token set, motion springs/eases, typography scale, component rules  (P3.1)
+- [~] P3.9 — Motion system: `MotionProvider` with `LazyMotion(domAnimation)` + `reducedMotion="user"`; shared variant file (`fadeUp`, `fadeIn`, `scaleIn`, `slideIn`, stagger container/item); spring and ease tokens  (P3.7)
+- [~] P3.10 — App shell redesign: DEV MODE banner → slim sticky bar that never overlaps sidebar/logo; deep-navy sidebar with brand block, grouped sections, icon+label, sliding active pill (shared `layoutId`), hover/focus states, smooth collapse to icon-only with tooltips, permission-aware; sticky translucent topbar with breadcrumbs, Cmd+K command palette wired to SearchService, profile dropdown (avatar, name, role badge, Switch User in dev only, Logout). Remove red page-body Logout button.  (P3.9)
+- [~] P3.11 — Restyle every shared component to design tokens with motion: buttons, inputs, selects, EntitySelector/CustomerSelector/ProductSelector, StatusBadge, cards, DataTable, Pagination, FilterBar, tabs (animated underline), modal, drawer, dropdown, toasts, ConfirmDialog, Timeline, DocumentActions, Kanban, EmptyState/LoadingState/ErrorState/403 page.  (P3.9)
+- [~] P3.12 — Login page redesign: split layout, branded panel with subtle animated background, clean form, dev-only Quick-login role cards with role icon and description.  (P3.9)
+- [~] P3.13 — Dashboard redesign: greeting header, segmented date filter, KPI cards (icon chip, animated count-up, trend vs previous period, sparkline), themed charts, pipeline and aging visuals, recent-activity tables with status pills, designed loading and empty states. Real data only; role-specific variants.  (P3.10, P3.11)
+- [~] P3.14 — Restyle and animate EVERY existing page: customers (list, create/edit, 360 with all tabs), contacts/addresses, products/services/stock (incl. adjustments and movement history), inquiries, opportunities (incl. Kanban), users, roles and permissions matrix, settings, tasks, audit, documents, and every Coming Soon placeholder. No page may remain in the old style.  (P3.11)
+- [ ] P3.15 — Accessibility and reduced motion: WCAG AA contrast, visible focus rings, keyboard operation, aria labels, `prefers-reduced-motion` honored.  (P3.11)
+- [ ] P3.16 — Regression: typecheck, lint, all unit/integration tests pass; click through every core flow in the browser with several roles; confirm permissions still block forbidden actions. Save before/after screenshots in `docs/design-review/`.  (P3.14)
+- [ ] P3.17 — Visual QA sign-off against "Not Blank" checklist: clear hierarchy, brand fonts loaded, no raw browser controls, entrance motion present, hover/focus/pressed states, designed loading/empty/error states, consistent icon and badge style, tabular right-aligned money, no clipped/overlapping elements — at desktop and mobile widths.
+- ✅ **Exit:** one reusable kit; no module re-implements these components. After P3.17: every page passes the Not Blank checklist.
 
 ### PHASE 4 — Customers
 - [x] P4.1 — Customer list (search/filter/sort/paginate)  (P3.4)
@@ -523,9 +539,14 @@ Format: `[ ] ID — Task  (Deps)  ▸ Acceptance`
 - [ ] P18.2 — Ensure totals never overlap/disappear across page breaks; repeat headers; page numbers
 - [ ] P18.3 — Branding fully driven by `CompanySetting` (logo, TRN, bank details, terms) — nothing hard-coded
 
-### PHASE 19 — Responsive pass
-- [ ] P19.1 — Verify at 1920×1080, 1440×900, 1366×768, 1024×768, 768×1024, 390×844
+### PHASE 19 — Visual polish & responsive pass (for modules built after the redesign)
+- [ ] P19.1 — Verify at 1920×1080, 1440×900, 1366×768, 1024×768, 768×1024, 390×844 with screenshots
 - [ ] P19.2 — Critical mobile flows: customer lookup/detail, opportunity, quote view, PDF view, task update, payment view
+- [ ] P19.3 — Apply design system to any page not yet compliant with DESIGN.md
+- [ ] P19.4 — Responsive behavior: tables become cards on mobile, drawer or bottom nav, filters in a drawer, sticky bottom action bars, touch targets ≥ 44 px, no horizontal page scroll
+- [ ] P19.5 — Lighthouse ≥ 90 for Performance and Accessibility on dashboard, list, and detail pages (production build)
+- [ ] P19.6 — Full regression including T-01 to T-12
+- [ ] P19.7 — Final visual QA against the Not Blank checklist
 
 ### PHASE 20 — Full test pass
 - [ ] P20.1 — Unit: VAT, discount, outstanding, allocation, aging, numbering
@@ -584,6 +605,9 @@ Ask the user only for decisions that materially change DB model, workflow, finan
 | plan | Defaults A1–A7 in §8 | Resolve spec ambiguities without blocking |
 | 2026-09-28 | Local PostgreSQL, no Docker | Use locally installed PostgreSQL on localhost:5432 |
 | 2026-09-28 | Real authentication hardening postponed | Easy dev login + fast user switcher for role testing; enforced server-side access control from day 1 |
+| 2026-09-28 | Design refresh committed directly to main before resuming feature phases | Single-machine workflow; both computers sync via GitHub Desktop; branching adds merge complexity for a one-developer project. Stage 1 (design only, no schema/logic changes) then Stage 2 (feature phases from P8.1). |
+| 2026-09-28 | framer-motion v13 retained; not replaced with `motion` package | Already installed and working; upgrade is a separate task and not allowed during redesign (no new dep upgrades). |
+| 2026-09-28 | Plus Jakarta Sans (headings) + Inter (body/UI) + JetBrains Mono (document numbers) via next/font | Distinctive, professionally designed fonts; free on Google Fonts; no self-hosting required; tabular numerals via font-feature-settings. |
 
 *(Append new rows as decisions are made.)*
 
