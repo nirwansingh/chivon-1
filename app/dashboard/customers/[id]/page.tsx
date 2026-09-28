@@ -14,7 +14,25 @@ import { DateDisplay } from '@/components/date-display';
 import { MoneyDisplay } from '@/components/money-display';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { EmptyState } from '@/components/empty-state';
-import { FolderOpen } from 'lucide-react';
+import { UploadForm } from '../../documents/upload-form';
+import { deleteDocumentAction } from '../../documents/actions';
+import { Download, FileText, ImageIcon, FileSpreadsheet, Trash2 } from 'lucide-react';
+
+function getFileIcon(mimeType: string) {
+  if (mimeType.includes('pdf')) return <FileText className="w-4 h-4 text-red-500" />;
+  if (mimeType.includes('image')) return <ImageIcon className="w-4 h-4 text-blue-500" />;
+  if (mimeType.includes('sheet') || mimeType.includes('excel')) return <FileSpreadsheet className="w-4 h-4 text-green-500" />;
+  return <FileText className="w-4 h-4" />;
+}
+
+function formatBytes(bytes: number, decimals = 2) {
+  if (!+bytes) return '0 Bytes';
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
+}
 
 export const metadata: Metadata = {
   title: 'Customer Details | Chivon CRM',
@@ -294,8 +312,76 @@ export default async function CustomerDetailsPage(props: { params: Promise<{ id:
           </Card>
         </TabsContent>
 
+        <TabsContent value="documents">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="md:col-span-1">
+              <Card className="shadow-sm border-border sticky top-6">
+                <CardHeader className="pb-3 border-b border-border/50 bg-surface-blue/30">
+                  <CardTitle className="text-base font-semibold">Upload Document</CardTitle>
+                </CardHeader>
+                <CardContent className="pt-5">
+                  <UploadForm relatedEntityType="Customer" relatedEntityId={customer.id} />
+                </CardContent>
+              </Card>
+            </div>
+            
+            <div className="md:col-span-3">
+              <Card className="shadow-sm border-border">
+                <CardHeader className="pb-3 border-b border-border/50 bg-surface-blue/30">
+                  <CardTitle className="text-base font-semibold">Customer Documents</CardTitle>
+                </CardHeader>
+                <CardContent className="pt-5">
+                  {customer.documents && customer.documents.length > 0 ? (
+                    <div className="space-y-3">
+                      {customer.documents.map((doc: any) => (
+                        <div key={doc.id} className="flex justify-between items-center p-4 border rounded-lg hover:border-primary/50 transition-colors">
+                          <div className="flex items-center gap-4">
+                            <div className="bg-muted p-3 rounded-md">
+                              {getFileIcon(doc.fileType)}
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-sm">{doc.fileName}</h4>
+                              <div className="text-xs text-muted-foreground mt-1 flex gap-4">
+                                <span>{doc.category}</span>
+                                <span>{formatBytes(doc.fileSize)}</span>
+                                <span>{doc.uploadedBy?.name || 'System'}</span>
+                                <span>{new Date(doc.createdAt).toLocaleDateString()}</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex gap-2">
+                            <Link href={`/api/documents/${doc.id}`} target="_blank">
+                              <Button variant="ghost" size="sm">
+                                <Download className="w-4 h-4" />
+                              </Button>
+                            </Link>
+                            <form action={async () => {
+                              'use server';
+                              await deleteDocumentAction(doc.id);
+                            }}>
+                              <Button variant="ghost" size="sm" className="text-red-500">
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </form>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <EmptyState 
+                      icon={FolderOpen} 
+                      title="No Documents Found" 
+                      description="Upload a document related to this customer." 
+                    />
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </TabsContent>
+
         {/* Placeholders for future modules */}
-        {['inquiries', 'opportunities', 'quotations', 'orders', 'invoices', 'payments', 'documents', 'activity'].map(tab => (
+        {['inquiries', 'opportunities', 'quotations', 'orders', 'invoices', 'payments', 'activity'].map(tab => (
           <TabsContent key={tab} value={tab}>
             <Card>
               <CardContent className="pt-6">

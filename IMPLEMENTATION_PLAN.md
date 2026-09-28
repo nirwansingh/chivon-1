@@ -515,11 +515,11 @@ Format: `[ ] ID — Task  (Deps)  ▸ Acceptance`
 - [x] P13.4 — Activity/timeline events written for major actions across modules  (P13.1, P1.14)
 
 ### PHASE 14 — Documents
-- [ ] P14.1 — Upload (PDF/PNG/JPG/JPEG/DOCX/XLSX, ≤10 MB, MIME+extension validation) via `StorageService`  (P1.16)
-- [ ] P14.2 — Metadata (fileName, type, size, path, uploader, relatedEntity, category)  (P14.1)
-- [ ] P14.3 — Preview / download / delete (permission-gated, audited)  (P14.1)
-- [ ] P14.4 — Attach to entities; generated PDFs saved as documents (quote/SO/invoice/receipt)  (P14.2, P8.7)
-- [ ] P14.5 — Secure-link-ready document service (no public portal in V1)
+- [x] P14.1 — Upload (PDF/PNG/JPG/JPEG/DOCX/XLSX, ≤10 MB, MIME+extension validation) via `StorageService`  (P1.16)
+- [x] P14.2 — Metadata (fileName, type, size, path, uploader, relatedEntity, category)  (P14.1)
+- [x] P14.3 — Preview / download / delete (permission-gated, audited)  (P14.1)
+- [x] P14.4 — Attach to entities; generated PDFs saved as documents (quote/SO/invoice/receipt)  (P14.2, P8.7)
+- [x] P14.5 — Secure-link-ready document service (no public portal in V1)
 
 ### PHASE 15 — Audit log UI
 - [ ] P15.1 — Audit list with filters (user, module, action, entity, date)  (P1.14)

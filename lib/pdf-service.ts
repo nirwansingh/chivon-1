@@ -1,4 +1,5 @@
 import { prisma } from './prisma';
+import { StorageService } from './storage-service';
 
 export class PdfService {
   /**
@@ -210,5 +211,20 @@ export class PdfService {
     `;
 
     return Buffer.from(htmlContent, 'utf-8');
+  }
+
+  static async saveGeneratedPdfAsDocument(
+    buffer: Buffer,
+    fileName: string,
+    uploaderId: string,
+    category: string,
+    relatedEntityType: string,
+    relatedEntityId: string
+  ) {
+    return StorageService.uploadDocument(buffer, fileName, 'application/pdf', uploaderId, {
+      category,
+      relatedEntityType,
+      relatedEntityId,
+    });
   }
 }

@@ -6,8 +6,9 @@ export type CustomerWithRelations = Prisma.CustomerGetPayload<{
   include: {
     contacts: true;
     addresses: true;
+    tasks: true;
   };
-}>;
+}> & { documents?: any[] };
 
 export class CustomerService {
   /**
@@ -73,13 +74,24 @@ export class CustomerService {
    * Get single customer by ID
    */
   static async getCustomerById(id: string): Promise<CustomerWithRelations | null> {
-    return prisma.customer.findUnique({
+    const customer = await prisma.customer.findUnique({
       where: { id },
       include: {
         contacts: { orderBy: { isPrimary: 'desc' } },
         addresses: { orderBy: { type: 'asc' } },
+        tasks: { orderBy: { dueDate: 'asc' } },
       },
     });
+
+    if (!customer) return null;
+
+    const documents = await prisma.document.findMany({
+      where: { relatedEntityType: 'Customer', relatedEntityId: id },
+      include: { uploadedBy: true },
+      orderBy: { createdAt: 'desc' }
+    });
+
+    return { ...customer, documents };
   }
 
   /**
