@@ -44,23 +44,34 @@ export function ProductSelector({ value, onChange, error }: ProductSelectorProps
   const fetchProducts = React.useCallback(async (q: string, idToInclude?: string) => {
     setLoading(true);
     try {
-      const url = new URL(window.location.origin + '/api/products');
-      if (q) url.searchParams.set('search', q);
-      if (idToInclude) url.searchParams.set('id', idToInclude);
+      const params = new URLSearchParams();
+      if (q) params.set('search', q);
+      if (idToInclude) params.set('id', idToInclude);
       
-      const res = await fetch(url.toString());
+      const res = await fetch(`/api/products?${params.toString()}`, {
+        credentials: 'include',
+      });
       if (res.ok) {
         const data = await res.json();
         setProducts((prev) => {
           const map = new Map(prev.map(p => [p.id, p]));
-          data.products.forEach((p: Product) => map.set(p.id, p));
+          (data.products || []).forEach((p: Product) => map.set(p.id, p));
           return Array.from(map.values());
         });
       }
+    } catch {
+      // ignore fetch errors
     } finally {
       setLoading(false);
     }
   }, []);
+
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen);
+    if (newOpen && products.length === 0) {
+      fetchProducts(search);
+    }
+  };
 
   React.useEffect(() => {
     const timer = setTimeout(() => {
@@ -78,7 +89,7 @@ export function ProductSelector({ value, onChange, error }: ProductSelectorProps
 
   return (
     <>
-      <Popover open={open} onOpenChange={setOpen}>
+      <Popover open={open} onOpenChange={handleOpenChange}>
         <PopoverTrigger render={<Button
           variant="outline"
           role="combobox"

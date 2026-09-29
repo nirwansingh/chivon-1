@@ -106,6 +106,12 @@ Update the Status column as phases progress. (`NOT_STARTED` / `IN_PROGRESS` / `D
 - **What is done**: P0 through P21 are fully implemented and verified in the codebase.
 - **Known issues / Unverified**: The E2E Playwright tests and browser testing are currently blocked due to a Playwright driver 404 download issue (Azure CDN). Functional verification performed via typecheck, lint, and tests.
 
+### Session 10 — 2026-09-29
+- Completed: Setup local hosting with Cloudflare tunnel (`cloudflared`) to allow remote interaction with the application over HTTPS.
+- Completed: Resolved WebSocket HMR 502 error for remote clients by configuring `allowedDevOrigins: ['*.trycloudflare.com', 'localhost:3000']` in `next.config.ts`.
+- Completed: Fixed customer/product selector dropdown issue on remote access by switching to relative URLs with `credentials: 'include'` and adding auto-fetch on popover open.
+- NEXT UP: Phase 21A (Real authentication)
+
 ### Session 9 — 2026-09-29
 - Completed: Fixed uncontrolled Select warnings across multiple forms (`customer-form`, `inquiry-form`, `opportunity-form`, `quotation-form`, `sales-order-form`).
 - Completed: Fixed Popover hydration warning by replacing nested button with `PopoverTrigger`'s `render` prop in `quotation-form` and `sales-order-form`.

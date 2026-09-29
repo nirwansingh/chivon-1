@@ -44,24 +44,35 @@ export function CustomerSelector({ value, onChange, error }: CustomerSelectorPro
   const fetchCustomers = React.useCallback(async (q: string, idToInclude?: string) => {
     setLoading(true);
     try {
-      const url = new URL(window.location.origin + '/api/customers');
-      if (q) url.searchParams.set('search', q);
-      if (idToInclude) url.searchParams.set('id', idToInclude);
+      const params = new URLSearchParams();
+      if (q) params.set('search', q);
+      if (idToInclude) params.set('id', idToInclude);
       
-      const res = await fetch(url.toString());
+      const res = await fetch(`/api/customers?${params.toString()}`, {
+        credentials: 'include',
+      });
       if (res.ok) {
         const data = await res.json();
         setCustomers((prev) => {
           // Merge avoiding duplicates
           const map = new Map(prev.map(c => [c.id, c]));
-          data.customers.forEach((c: Customer) => map.set(c.id, c));
+          (data.customers || []).forEach((c: Customer) => map.set(c.id, c));
           return Array.from(map.values());
         });
       }
+    } catch {
+      // ignore fetch errors
     } finally {
       setLoading(false);
     }
   }, []);
+
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen);
+    if (newOpen && customers.length === 0) {
+      fetchCustomers(search);
+    }
+  };
 
   React.useEffect(() => {
     const timer = setTimeout(() => {
@@ -80,7 +91,7 @@ export function CustomerSelector({ value, onChange, error }: CustomerSelectorPro
 
   return (
     <>
-      <Popover open={open} onOpenChange={setOpen}>
+      <Popover open={open} onOpenChange={handleOpenChange}>
         <PopoverTrigger render={<Button
           variant="outline"
           role="combobox"
