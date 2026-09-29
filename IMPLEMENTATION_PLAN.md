@@ -106,6 +106,12 @@ Update the Status column as phases progress. (`NOT_STARTED` / `IN_PROGRESS` / `D
 - **What is done**: P0 through P21 are fully implemented and verified in the codebase.
 - **Known issues / Unverified**: The E2E Playwright tests and browser testing are currently blocked due to a Playwright driver 404 download issue (Azure CDN). Functional verification performed via typecheck, lint, and tests.
 
+### Session 11 — 2026-09-29
+- Completed: Populated authentic, industry-standard mechanical ERP seed data across Products (7 items: AHUs, VAV units, butterfly valves, spiral ducting, chiller overhaul kits, AMC services), Customers (7 premier UAE firms: Al Futtaim, Arabtec, Sobha, Emaar Cooling, Drake & Scull, Khansaheb, Al Naboodah), Opportunities (7 pipeline stages), Quotations (7 items), Sales Orders (6 orders), Invoices (7 invoices spanning June-Sept), Payments (5 allocated receipts), and Tasks (5 actionable upcoming tasks).
+- Completed: Enhanced `DashboardService` to display a rolling multi-month revenue trendline on the BarChart and made upcoming tasks visible across Admin and Manager roles.
+- Completed: Verified all dashboard KPIs (Invoiced: AED 371k, Collected: AED 100k, Outstanding: AED 271k, Overdue: AED 47k), Opportunity Pipeline donut chart, and Recent Activity tables against PostgreSQL.
+- NEXT UP: Phase 21A (Real authentication)
+
 ### Session 10 — 2026-09-29
 - Completed: Setup local hosting with Cloudflare tunnel (`cloudflared`) to allow remote interaction with the application over HTTPS.
 - Completed: Resolved WebSocket HMR 502 error for remote clients by configuring `allowedDevOrigins: ['*.trycloudflare.com', 'localhost:3000']` in `next.config.ts`.

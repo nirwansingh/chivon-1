@@ -122,15 +122,25 @@ export class DashboardService {
       where: {
         status: { notIn: ['COMPLETED', 'CANCELLED'] },
         dueDate: { gte: new Date() },
-        ...(userId ? { assignedToId: userId } : {})
+        ...(userId && role === 'SALES' ? { assignedToId: userId } : {})
       },
       orderBy: { dueDate: 'asc' }
     });
 
     // 8. Charts Data
-    // Revenue over time (Group by month for the filtered period, simplified)
-    // We will build a simple array from the fetched invoices for the chart
-    const revenueByMonth = allInvoices.reduce((acc, inv) => {
+    // Revenue over time (Show rolling 6 months trend so charts are rich and visual)
+    const sixMonthsAgo = new Date(Date.now() - 180 * 24 * 60 * 60 * 1000);
+    const chartInvoices = await prisma.invoice.findMany({
+      where: {
+        status: { notIn: ['DRAFT', 'CANCELLED'] },
+        date: {
+          gte: dateFrom && dateFrom < sixMonthsAgo ? dateFrom : sixMonthsAgo,
+          ...(dateTo ? { lte: dateTo } : {})
+        }
+      }
+    });
+
+    const revenueByMonth = chartInvoices.reduce((acc, inv) => {
       const month = inv.date.toISOString().substring(0, 7); // YYYY-MM
       acc[month] = (acc[month] || 0) + inv.grandTotal.toNumber();
       return acc;
