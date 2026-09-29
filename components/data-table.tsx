@@ -161,9 +161,9 @@ export function DataTable<TData, TValue>({
           )}
         </div>
       </div>
-      {/* Table */}
+      {/* Desktop Table */}
       <div
-        className="rounded-xl border overflow-hidden"
+        className="hidden md:block rounded-xl border overflow-hidden"
         style={{ borderColor: 'var(--border)' }}
       >
         <Table>
@@ -234,6 +234,64 @@ export function DataTable<TData, TValue>({
             )}
           </TableBody>
         </Table>
+      </div>
+
+      {/* Mobile Cards */}
+      <div className="block md:hidden space-y-4">
+        {isLoading ? (
+          Array.from({ length: Math.min(pagination.pageSize, 4) }).map((_, index) => (
+            <div key={index} className="rounded-xl border p-4 space-y-3" style={{ borderColor: 'var(--border)', background: index % 2 === 0 ? 'white' : 'var(--surface-blue)/30' }}>
+              {columns.slice(0, 4).map((_, colIndex) => (
+                <div key={colIndex} className="flex justify-between items-center border-b pb-2 last:border-0 last:pb-0" style={{ borderColor: 'var(--border)' }}>
+                  <div className="skeleton h-3 w-1/3 rounded" />
+                  <div className="skeleton h-4 w-1/2 rounded" />
+                </div>
+              ))}
+            </div>
+          ))
+        ) : table.getRowModel().rows?.length ? (
+          table.getRowModel().rows.map((row, rowIndex) => {
+            const shouldAnimate = rowIndex < MAX_STAGGER_ROWS;
+            const RowWrapper = shouldAnimate ? m.div : 'div';
+            const animProps = shouldAnimate ? {
+              variants: staggerItem,
+              initial: 'hidden',
+              animate: 'visible',
+              custom: rowIndex,
+            } : {};
+            return (
+              <RowWrapper
+                key={row.id}
+                {...animProps}
+                className="rounded-xl border p-4 space-y-3 shadow-sm transition-colors duration-100 hover:bg-surface-blue/60"
+                style={{ borderColor: 'var(--border)', background: 'white' }}
+              >
+                {row.getVisibleCells().map((cell) => {
+                  // For the header in the card, we fall back to the column id if header isn't easily extractable.
+                  let headerText: any = cell.column.id;
+                  if (typeof cell.column.columnDef.header === 'string') {
+                    headerText = cell.column.columnDef.header;
+                  }
+                  
+                  return (
+                    <div key={cell.id} className="flex justify-between items-center text-sm border-b pb-2 last:border-0 last:pb-0 gap-4" style={{ borderColor: 'var(--border)' }}>
+                      <span className="font-semibold text-muted-foreground capitalize shrink-0 text-xs truncate max-w-[40%]">
+                        {headerText}
+                      </span>
+                      <span className="text-right flex-1 break-words">
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </span>
+                    </div>
+                  );
+                })}
+              </RowWrapper>
+            );
+          })
+        ) : (
+          <div className="rounded-xl border p-8 text-center text-sm text-muted-foreground" style={{ borderColor: 'var(--border)' }}>
+            No results found.
+          </div>
+        )}
       </div>
       {/* Pagination */}
       <div className="flex items-center justify-between px-1 pt-1">

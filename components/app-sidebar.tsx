@@ -10,6 +10,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { useSidebar } from '@/components/ui/sidebar';
+import { Sheet, SheetContent } from '@/components/ui/sheet';
 import {
   LayoutDashboard,
   Users,
@@ -186,14 +187,14 @@ function NavItem({
 
 export function AppSidebar() {
   const pathname = usePathname();
-  const { state } = useSidebar();
+  const { state, isMobile, openMobile, setOpenMobile } = useSidebar();
   const collapsed = state === 'collapsed';
 
-  return (
+  const sidebarContent = (
     <m.aside
       animate={{ width: collapsed ? 64 : 240 }}
       transition={spring.smooth}
-      className="relative flex-shrink-0 flex flex-col h-screen overflow-hidden border-r"
+      className="relative flex-shrink-0 flex flex-col h-full overflow-hidden border-r"
       style={{ background: 'var(--sidebar)', borderColor: 'var(--sidebar-border)' }}
       aria-label="Main navigation"
     >
@@ -304,5 +305,21 @@ export function AppSidebar() {
         </AnimatePresence>
       </div>
     </m.aside>
+  );
+
+  if (isMobile) {
+    return (
+      <Sheet open={openMobile} onOpenChange={setOpenMobile}>
+        <SheetContent side="left" className="p-0 w-auto bg-transparent border-none [&>button]:hidden">
+          {sidebarContent}
+        </SheetContent>
+      </Sheet>
+    );
+  }
+
+  return (
+    <div className="hidden md:flex h-screen">
+      {sidebarContent}
+    </div>
   );
 }

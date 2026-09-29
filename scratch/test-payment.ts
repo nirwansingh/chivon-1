@@ -61,7 +61,7 @@ async function main() {
     amount: 500
   }], userId) as any;
 
-  let invAfterP1 = await prisma.invoice.findUnique({ where: { id: invoice.id } });
+  const invAfterP1 = await prisma.invoice.findUnique({ where: { id: invoice.id } });
   console.log(`Invoice Status after 500 payment: ${invAfterP1?.status} (Expected: PARTIALLY_PAID)`);
   if (invAfterP1?.status !== 'PARTIALLY_PAID') throw new Error("T-01 Failed for Partial");
 
@@ -93,7 +93,7 @@ async function main() {
     amount: outstanding
   }], userId) as any;
 
-  let invAfterP2 = await prisma.invoice.findUnique({ where: { id: invoice.id } });
+  const invAfterP2 = await prisma.invoice.findUnique({ where: { id: invoice.id } });
   console.log(`Invoice Status after full payment: ${invAfterP2?.status} (Expected: PAID)`);
   if (invAfterP2?.status !== 'PAID') throw new Error("T-01 Failed for Full Payment");
 
@@ -101,11 +101,11 @@ async function main() {
   console.log("\\nTesting T-06 (Payment Reversal)");
   await PaymentService.reversePayment(payment2.id, "Bounced Cheque", userId);
   
-  let invAfterRev = await prisma.invoice.findUnique({ where: { id: invoice.id } });
+  const invAfterRev = await prisma.invoice.findUnique({ where: { id: invoice.id } });
   console.log(`Invoice Status after reversal: ${invAfterRev?.status} (Expected: PARTIALLY_PAID)`);
   if (invAfterRev?.status !== 'PARTIALLY_PAID') throw new Error("T-06 Failed! Invoice status not reverted correctly");
 
-  let p2After = await prisma.payment.findUnique({ where: { id: payment2.id }, include: { allocations: true } });
+  const p2After = await prisma.payment.findUnique({ where: { id: payment2.id }, include: { allocations: true } });
   console.log(`Payment2 Status: Reversed=${p2After?.isReversed}, AllocationsReversed=${p2After?.allocations[0].isReversed}`);
   if (!p2After?.isReversed || !p2After?.allocations[0].isReversed) throw new Error("T-06 Failed! Allocations not reversed.");
 

@@ -6,6 +6,10 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Filter } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
+
 export interface FilterOption {
   label: string;
   value: string;
@@ -25,20 +29,19 @@ interface FilterBarProps {
   activeFilters?: Record<string, string[]>;
   onFilterChange?: (groupId: string, values: string[]) => void;
   onClearFilters?: () => void;
-  children?: React.ReactNode; // For custom filter controls like Date Pickers
+  children?: React.ReactNode;
 }
 
 export function FilterBar({
   searchQuery,
   onSearchChange,
   searchPlaceholder = 'Search...',
-  filters = [],
   activeFilters = {},
-  onFilterChange,
   onClearFilters,
   children,
 }: FilterBarProps) {
   const hasActiveFilters = Object.values(activeFilters).some((arr) => arr.length > 0);
+  const isMobile = useIsMobile();
 
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between w-full">
@@ -55,23 +58,46 @@ export function FilterBar({
             />
           </div>
         )}
-        
-        <div className="flex flex-wrap items-center gap-2">
-          {/* We can map over simple filter groups here if we implement a custom dropdown component,
-              but usually these are passed via children for maximum flexibility with Shadcn select/popover */}
-          {children}
 
-          {hasActiveFilters && onClearFilters && (
-            <Button
-              variant="ghost"
-              onClick={onClearFilters}
-              className="h-8 px-2 lg:px-3 text-muted-foreground"
-            >
-              Clear
-              <X className="ml-2 h-4 w-4" />
-            </Button>
-          )}
-        </div>
+        {isMobile && children ? (
+          <Sheet>
+            <SheetTrigger render={
+              <Button variant="outline" size="sm" className="h-9 w-9 p-0 shrink-0 relative" />
+            }>
+              <Filter className="h-4 w-4" />
+              {hasActiveFilters && (
+                <span className="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-primary" />
+              )}
+            </SheetTrigger>
+            <SheetContent side="bottom" className="rounded-t-xl max-h-[85vh] overflow-y-auto">
+              <SheetHeader className="mb-4">
+                <SheetTitle>Filters</SheetTitle>
+              </SheetHeader>
+              <div className="flex flex-col gap-4">
+                {children}
+                {hasActiveFilters && onClearFilters && (
+                  <Button variant="outline" onClick={onClearFilters} className="w-full mt-2">
+                    Clear all filters
+                  </Button>
+                )}
+              </div>
+            </SheetContent>
+          </Sheet>
+        ) : (
+          <div className="hidden sm:flex flex-wrap items-center gap-2">
+            {children}
+            {hasActiveFilters && onClearFilters && (
+              <Button
+                variant="ghost"
+                onClick={onClearFilters}
+                className="h-8 px-2 lg:px-3 text-muted-foreground"
+              >
+                Clear
+                <X className="ml-2 h-4 w-4" />
+              </Button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

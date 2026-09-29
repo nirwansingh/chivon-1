@@ -87,7 +87,7 @@ export class PaymentService {
     if (!payment) throw new Error("Payment not found");
     if (payment.isReversed) throw new Error("Cannot allocate a reversed payment");
 
-    let currentlyAllocated = payment.allocations.reduce((sum: number, a: any) => sum + a.amount.toNumber(), 0);
+    const currentlyAllocated = payment.allocations.reduce((sum: number, a: any) => sum + a.amount.toNumber(), 0);
     const newAllocationTotal = allocations.reduce((sum, a) => sum + a.amount, 0);
 
     if (currentlyAllocated + newAllocationTotal > payment.amount.toNumber()) {

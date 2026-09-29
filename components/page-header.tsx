@@ -68,9 +68,20 @@ export function PageHeader({
 
       {/* Actions */}
       {action && (
-        <div className="flex items-center gap-2 shrink-0 flex-wrap sm:mt-1">
-          {action}
-        </div>
+        <>
+          {/* Spacer block for mobile so content doesn't get hidden behind the fixed bottom bar */}
+          <div className="h-20 sm:hidden block w-full" aria-hidden="true" />
+          <div 
+            className="flex items-center gap-2 shrink-0 
+              fixed bottom-0 left-0 right-0 p-4 bg-background border-t z-40 justify-end
+              sm:relative sm:bottom-auto sm:left-auto sm:right-auto sm:p-0 sm:bg-transparent sm:border-0 sm:z-auto sm:justify-start
+              shadow-[0_-4px_15px_rgba(0,0,0,0.05)] sm:shadow-none
+            "
+            style={{ borderColor: 'var(--border)' }}
+          >
+            {action}
+          </div>
+        </>
       )}
     </div>
   );

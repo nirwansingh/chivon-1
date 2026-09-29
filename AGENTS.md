@@ -7,7 +7,9 @@ Before starting ANY task in this repository:
 
 4. Commit locally after every verified task. NEVER run git push. Before ending any session, tell the human how many commits are unpushed so they can push with GitHub Desktop.
 
-5. **All UI follows DESIGN.md and uses the shared motion primitives. No hard-coded colors, fonts, spacing or ad-hoc animations in components. No unstyled default elements. Every new screen must include loading, empty, error and entrance-motion states.**
+5. **CRITICAL RULE:** EVERY TIME you finish any action or task, you MUST immediately update `IMPLEMENTATION_PLAN.md` to reflect the new state. Do not wait until the end of the session!
+
+6. **All UI follows DESIGN.md and uses the shared motion primitives. No hard-coded colors, fonts, spacing or ad-hoc animations in components. No unstyled default elements. Every new screen must include loading, empty, error and entrance-motion states.**
 
 Never mark a task done without running and verifying it. Never build V2 features or fake/mock functionality.
 

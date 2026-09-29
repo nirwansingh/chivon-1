@@ -99,7 +99,7 @@ export class SOAService {
     ]);
 
     // Map to generic entries and sort by date
-    let rawEntries: (Omit<SOAEntry, 'balance'> & { date: Date })[] = [];
+    const rawEntries: (Omit<SOAEntry, 'balance'> & { date: Date })[] = [];
 
     invoices.forEach(inv => {
       rawEntries.push({

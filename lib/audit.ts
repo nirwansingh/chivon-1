@@ -40,4 +40,53 @@ export class AuditService {
       logger.error('Failed to create audit log', error);
     }
   }
+
+  static async getAuditLogs(params: {
+    search?: string;
+    userId?: string;
+    module?: string;
+    action?: string;
+    entityId?: string;
+    dateFrom?: Date;
+    dateTo?: Date;
+    page?: number;
+    limit?: number;
+  }) {
+    const { search, userId, module, action, entityId, dateFrom, dateTo, page = 1, limit = 50 } = params;
+    const skip = (page - 1) * limit;
+
+    const where: Prisma.AuditLogWhereInput = {};
+
+    if (search) {
+      where.OR = [
+        { description: { contains: search, mode: 'insensitive' } },
+        { entityId: { contains: search, mode: 'insensitive' } },
+      ];
+    }
+    if (userId) where.userId = userId;
+    if (module) where.module = module;
+    if (action) where.action = action;
+    if (entityId) where.entityId = entityId;
+
+    if (dateFrom || dateTo) {
+      where.createdAt = {};
+      if (dateFrom) where.createdAt.gte = dateFrom;
+      if (dateTo) where.createdAt.lte = dateTo;
+    }
+
+    const [total, data] = await Promise.all([
+      prisma.auditLog.count({ where }),
+      prisma.auditLog.findMany({
+        where,
+        include: {
+          user: { select: { name: true, email: true } },
+        },
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take: limit,
+      }),
+    ]);
+
+    return { total, data };
+  }
 }
