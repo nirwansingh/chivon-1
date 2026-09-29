@@ -70,6 +70,7 @@ describe('Integration: Quote -> SO -> Invoice -> Payment', () => {
           productId,
           description: 'Test item',
           quantity: 1,
+          unit: 'NOS',
           rate: 1000,
           discountType: 'percentage',
           discountValue: 10,
@@ -123,7 +124,7 @@ describe('Integration: Quote -> SO -> Invoice -> Payment', () => {
   it('4. Make a partial payment and verify outstanding calculation', async () => {
     const payment = await PaymentService.create({
       customerId,
-      date: new Date(),
+      paymentDate: new Date(),
       amount: 500,
       paymentMethod: 'BANK_TRANSFER',
       referenceNumber: 'TRX-12345',
@@ -147,7 +148,7 @@ describe('Integration: Quote -> SO -> Invoice -> Payment', () => {
     
     await PaymentService.create({
       customerId,
-      date: new Date(),
+      paymentDate: new Date(),
       amount: remaining,
       paymentMethod: 'CASH',
       allocations: [

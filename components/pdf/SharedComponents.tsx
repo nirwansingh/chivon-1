@@ -21,11 +21,7 @@ export interface CompanySettingProps {
 export const PdfHeader = ({ setting, title, reference, date }: { setting: CompanySettingProps, title: string, reference: string, date: Date }) => (
   <View style={styles.header}>
     <View style={styles.headerLeft}>
-      {setting.logoPath ? (
-        <Image src={setting.logoPath} style={styles.logo} />
-      ) : (
-        <Text style={styles.companyName}>{setting.companyName}</Text>
-      )}
+      <Image src={`${process.cwd()}/public/logo.png`} style={styles.logo} />
       <Text style={styles.companyDetails}>{setting.address || ''}</Text>
       <Text style={styles.companyDetails}>
         {setting.phone ? `Tel: ${setting.phone}` : ''} {setting.email ? ` | Email: ${setting.email}` : ''}

@@ -5,6 +5,7 @@ import { formatCurrency, formatDate } from '@/lib/utils';
 import { StatusBadge } from '@/components/status-badge';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { PaymentsClient } from './client';
 import { Plus } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
@@ -45,45 +46,6 @@ export default async function PaymentsPage({
     amount: Number(p.amount),
   }));
 
-  const columns = [
-    {
-      header: 'Payment No',
-      accessorKey: 'number',
-      cell: (item: any) => (
-        <Link href={`/dashboard/payments/${item.id}`} className="font-medium hover:underline text-primary">
-          {item.number}
-        </Link>
-      ),
-    },
-    {
-      header: 'Date',
-      accessorKey: 'paymentDate',
-      cell: (item: any) => formatDate(item.paymentDate),
-    },
-    {
-      header: 'Customer',
-      accessorKey: 'customer.companyName',
-    },
-    {
-      header: 'Method',
-      accessorKey: 'paymentMethod',
-    },
-    {
-      header: 'Amount',
-      accessorKey: 'amount',
-      cell: (item: any) => <div className="font-medium text-right">{formatCurrency(item.amount)}</div>,
-    },
-    {
-      header: 'Status',
-      accessorKey: 'status',
-      cell: (item: any) => (
-        <StatusBadge
-          status={item.isReversed ? 'CANCELLED' : item.status}
-        />
-      ),
-    },
-  ];
-
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -93,15 +55,11 @@ export default async function PaymentsPage({
         </Button>
       </div>
 
-      <DataTable
-        data={serializedPayments}
-        columns={columns}
-        searchPlaceholder="Search payments..."
-        pagination={{
-          pageIndex: page - 1,
-          pageSize,
-        }}
-        pageCount={Math.ceil(total / pageSize)}
+      <PaymentsClient 
+        payments={serializedPayments as any} 
+        page={page} 
+        pageSize={pageSize} 
+        total={total} 
       />
     </div>
   );

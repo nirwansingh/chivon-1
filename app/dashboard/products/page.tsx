@@ -52,6 +52,8 @@ export default async function ProductsPage(props: {
     ...p,
     rate: Number(p.rate),
     vatRate: Number(p.vatRate),
+    stockQuantity: p.stockQuantity ? Number(p.stockQuantity) : null,
+    minStock: p.minStock ? Number(p.minStock) : null,
   }));
 
   return (

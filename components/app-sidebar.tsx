@@ -71,7 +71,7 @@ const navGroups: {
     label: 'Catalog',
     items: [
       { title: 'Products', url: '/dashboard/products', icon: Package },
-      { title: 'Services', url: '/dashboard/services', icon: Layers },
+      { title: 'Services', url: '/dashboard/products?type=SERVICE', icon: Layers },
       { title: 'Stock', url: '/dashboard/stock', icon: Box },
     ],
   },
@@ -199,38 +199,44 @@ export function AppSidebar() {
       aria-label="Main navigation"
     >
       {/* ── Brand block ── */}
-      <div
-        className="flex items-center gap-3 px-4 border-b shrink-0"
-        style={{ height: 64, borderColor: 'var(--sidebar-border)' }}
+      <Link 
+        href="/dashboard"
+        className="flex items-center h-16 px-4 border-b shrink-0 transition-opacity"
+        style={{ borderColor: 'var(--sidebar-border)' }}
       >
-        <div
-          className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm shrink-0 shadow-md"
-          style={{ background: 'linear-gradient(135deg, #0EA5E9 0%, #0B4F9E 100%)' }}
-          aria-hidden="true"
-        >
-          C
-        </div>
-        <AnimatePresence initial={false}>
-          {!collapsed && (
+        <AnimatePresence initial={false} mode="wait">
+          {collapsed ? (
             <m.div
+              key="collapsed-logo"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+              className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm shrink-0 shadow-md mx-auto"
+              style={{ background: 'linear-gradient(135deg, #0EA5E9 0%, #0B4F9E 100%)' }}
+            >
+              C
+            </m.div>
+          ) : (
+            <m.div
+              key="expanded-logo"
               initial={{ opacity: 0, width: 0 }}
               animate={{ opacity: 1, width: 'auto' }}
               exit={{ opacity: 0, width: 0 }}
               transition={{ duration: 0.2 }}
-              className="overflow-hidden"
+              className="flex items-center overflow-hidden py-2"
             >
-              <div className="whitespace-nowrap">
-                <p className="text-sm font-bold leading-tight" style={{ color: 'var(--sidebar-foreground)', fontFamily: 'var(--font-heading)' }}>
-                  Chivon CRM
-                </p>
-                <p className="text-xs leading-tight" style={{ color: 'var(--sidebar-muted)' }}>
-                  Mechanical ERP
-                </p>
-              </div>
+              <m.img 
+                src="/logo.png" 
+                alt="Chivon Mechanical" 
+                className="h-8 object-contain origin-left"
+                whileHover={{ scale: 1.08 }}
+                transition={{ type: "spring", stiffness: 300, damping: 15 }}
+              />
             </m.div>
           )}
         </AnimatePresence>
-      </div>
+      </Link>
 
       {/* ── Nav content ── */}
       <nav className="flex-1 overflow-y-auto overflow-x-hidden py-3 px-2 space-y-1">

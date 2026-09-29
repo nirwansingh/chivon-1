@@ -281,7 +281,7 @@ export function InquiryForm({ initialData, users }: InquiryFormProps) {
               render={({ field }: any) => (
                 <FormItem>
                   <FormLabel>Assigned To</FormLabel>
-                  <Select onValueChange={(val) => field.onChange(val === 'unassigned' ? null : val)} defaultValue={field.value || 'unassigned'}>
+                  <Select onValueChange={(val) => field.onChange(val === 'unassigned' ? null : val)} value={field.value || 'unassigned'}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select user" />
@@ -305,7 +305,7 @@ export function InquiryForm({ initialData, users }: InquiryFormProps) {
               render={({ field }: any) => (
                 <FormItem>
                   <FormLabel>Status <span className="text-destructive">*</span></FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select status" />
@@ -332,7 +332,7 @@ export function InquiryForm({ initialData, users }: InquiryFormProps) {
               render={({ field }: any) => (
                 <FormItem>
                   <FormLabel>Priority <span className="text-destructive">*</span></FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select priority" />

@@ -38,7 +38,16 @@ export default async function EditProductPage(props: { params: Promise<{ id: str
       />
       
       <div className="max-w-4xl">
-        <ProductForm initialData={product} categories={categories} />
+        <ProductForm 
+          initialData={{
+            ...product,
+            rate: Number(product.rate),
+            vatRate: Number(product.vatRate),
+            stockQuantity: product.stockQuantity ? Number(product.stockQuantity) : null,
+            minStock: product.minStock ? Number(product.minStock) : null,
+          } as any} 
+          categories={categories} 
+        />
       </div>
     </div>
   );

@@ -149,7 +149,7 @@ export function ProductForm({ initialData, categories, onInlineSuccess }: Produc
               render={({ field }: any) => (
                 <FormItem>
                   <FormLabel>Type <span className="text-destructive">*</span></FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select type" />
@@ -172,16 +172,22 @@ export function ProductForm({ initialData, categories, onInlineSuccess }: Produc
               render={({ field }: any) => (
                 <FormItem>
                   <FormLabel>Category</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value || undefined}>
+                  <Select onValueChange={field.onChange} value={field.value || undefined}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select category" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {categories.map((cat) => (
-                        <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
-                      ))}
+                      {categories.length === 0 ? (
+                        <div className="p-2 text-sm text-muted-foreground text-center">
+                          No categories found
+                        </div>
+                      ) : (
+                        categories.map((cat) => (
+                          <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
+                        ))
+                      )}
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -195,7 +201,7 @@ export function ProductForm({ initialData, categories, onInlineSuccess }: Produc
               render={({ field }: any) => (
                 <FormItem>
                   <FormLabel>Unit of Measure <span className="text-destructive">*</span></FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select unit" />
@@ -223,7 +229,7 @@ export function ProductForm({ initialData, categories, onInlineSuccess }: Produc
               render={({ field }: any) => (
                 <FormItem>
                   <FormLabel>Status</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select status" />

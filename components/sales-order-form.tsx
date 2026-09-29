@@ -115,9 +115,14 @@ export function SalesOrderForm({ initialData, salesOrderId }: SalesOrderFormProp
       vatAmount,
       grandTotal,
     };
-  }, [watchItems, watchDiscountType, watchDiscountValue]);
+  }, [JSON.stringify(watchItems), watchDiscountType, watchDiscountValue]);
 
   async function onSubmit(data: SalesOrderFormValues) {
+    if (!data.items || data.items.length === 0) {
+      toast.error('Please add at least 1 item.');
+      return;
+    }
+    
     setIsSubmitting(true);
     
     let res;
@@ -170,24 +175,24 @@ export function SalesOrderForm({ initialData, salesOrderId }: SalesOrderFormProp
                   <FormItem className="flex flex-col">
                     <FormLabel>Valid Until</FormLabel>
                     <Popover>
-                      <PopoverTrigger>
-                        <FormControl>
+                      <FormControl>
+                        <PopoverTrigger render={
                           <Button
                             variant="outline"
                             className={cn(
                               "w-full pl-3 text-left font-normal",
                               !field.value && "text-muted-foreground"
                             )}
-                          >
-                            {field.value ? (
-                              format(field.value, "PPP")
-                            ) : (
-                              <span>Pick a date</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
+                          />
+                        }>
+                          {field.value ? (
+                            format(field.value, "PPP")
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </PopoverTrigger>
+                      </FormControl>
                       <PopoverContent className="w-auto p-0" align="start">
                         <Calendar
                           mode="single"
@@ -336,7 +341,7 @@ export function SalesOrderForm({ initialData, salesOrderId }: SalesOrderFormProp
                             control={form.control}
                             name={`items.${index}.unit`}
                             render={({ field: unitField }) => (
-                              <Select onValueChange={unitField.onChange} defaultValue={unitField.value}>
+                              <Select onValueChange={unitField.onChange} value={unitField.value}>
                                 <FormControl>
                                   <SelectTrigger className="h-8 text-xs">
                                     <SelectValue placeholder="Unit" />
@@ -431,7 +436,6 @@ export function SalesOrderForm({ initialData, salesOrderId }: SalesOrderFormProp
                             size="icon" 
                             className="h-8 w-8 text-muted-foreground hover:text-destructive"
                             onClick={() => remove(index)}
-                            disabled={fields.length === 1}
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>

@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 import { getCurrentUser } from '@/lib/auth';
 import { LoginForm } from './login-form';
 import { QuickLogin } from './quick-login';
+import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -37,18 +38,9 @@ export default async function LoginPage() {
         {/* Brand content */}
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-16">
-            <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg"
-              style={{ background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(8px)' }}
-            >
-              C
-            </div>
-            <div>
-              <p className="text-white font-bold text-lg leading-tight" style={{ fontFamily: 'var(--font-heading)' }}>
-                Chivon CRM
-              </p>
-              <p className="text-blue-200 text-xs">Mechanical ERP</p>
-            </div>
+            <Link href="/" className="transition-opacity hover:opacity-80 block">
+              <img src="/logo.png" alt="Chivon Logo" className="h-12 object-contain" />
+            </Link>
           </div>
 
           <blockquote className="space-y-4">
@@ -73,18 +65,9 @@ export default async function LoginPage() {
         <div className="w-full max-w-md space-y-8">
           {/* Mobile-only brand header */}
           <div className="flex items-center gap-3 lg:hidden">
-            <div
-              className="w-9 h-9 rounded-xl flex items-center justify-center text-white font-bold shadow"
-              style={{ background: 'linear-gradient(135deg, #0EA5E9 0%, #0B4F9E 100%)' }}
-            >
-              C
-            </div>
-            <div>
-              <p className="font-bold text-foreground" style={{ fontFamily: 'var(--font-heading)' }}>
-                Chivon CRM
-              </p>
-              <p className="text-xs text-muted-foreground">Mechanical ERP</p>
-            </div>
+            <Link href="/" className="transition-opacity hover:opacity-80 block">
+              <img src="/logo.png" alt="Chivon Logo" className="h-10 object-contain" />
+            </Link>
           </div>
 
           {/* Form header */}
