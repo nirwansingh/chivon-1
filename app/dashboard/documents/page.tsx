@@ -109,7 +109,7 @@ export default async function DocumentsPage() {
               data={documents}
               columns={columns}
               searchPlaceholder="Search files..."
-              pagination={{ page: 1, pageSize: 100, total: documents.length, totalPages: 1 }}
+              pagination={{ pageIndex: 0, pageSize: 100 }}
             />
           </div>
         </div>

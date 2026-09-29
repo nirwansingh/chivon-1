@@ -4,19 +4,19 @@ import { PdfService } from '@/lib/pdf-service';
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await requirePermission('view_invoices');
     
-    const id = params.id;
+    const { id } = await params;
     if (!id) {
       return new NextResponse('Invoice ID is required', { status: 400 });
     }
 
     const pdfBuffer = await PdfService.generateInvoicePdf(id);
     
-    return new NextResponse(pdfBuffer, {
+    return new NextResponse(pdfBuffer as any, {
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': `inline; filename="invoice-${id}.pdf"`,

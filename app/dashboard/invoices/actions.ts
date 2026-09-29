@@ -12,8 +12,8 @@ export async function convertSalesOrderToInvoiceAction(
   salesOrderId: string,
   items: { salesOrderItemId: string; quantity: number }[]
 ) {
-  const session = await requirePermission('manage_invoices');
-  const invoice = await SalesOrderService.convertToInvoice(salesOrderId, items, session.user.id);
+  const user = await requirePermission('manage_invoices');
+  const invoice = await SalesOrderService.convertToInvoice(salesOrderId, items, user.id);
   
   revalidatePath('/dashboard/sales-orders');
   revalidatePath('/dashboard/invoices');
@@ -26,8 +26,8 @@ export async function convertQuotationToInvoiceAction(
   revisionId: string,
   items: { quotationItemId: string; quantity: number }[]
 ) {
-  const session = await requirePermission('manage_invoices');
-  const invoice = await QuotationService.convertToInvoice(quotationId, revisionId, items, session.user.id);
+  const user = await requirePermission('manage_invoices');
+  const invoice = await QuotationService.convertToInvoice(quotationId, revisionId, items, user.id);
   
   revalidatePath('/dashboard/quotations');
   revalidatePath('/dashboard/invoices');
@@ -36,15 +36,15 @@ export async function convertQuotationToInvoiceAction(
 }
 
 export async function cancelInvoiceAction(id: string, reason: string) {
-  const session = await requirePermission('manage_invoices');
-  await InvoiceService.cancel(id, session.user.id, reason);
+  const user = await requirePermission('manage_invoices');
+  await InvoiceService.cancel(id, user.id, reason);
   
   revalidatePath('/dashboard/invoices');
   revalidatePath(`/dashboard/invoices/${id}`);
 }
 
 export async function updateInvoiceStatusAction(id: string, status: 'ISSUED' | 'PAID') {
-  const session = await requirePermission('manage_invoices');
+  const user = await requirePermission('manage_invoices');
   
   await prisma.$transaction(async (tx) => {
     const inv = await tx.invoice.update({
@@ -54,7 +54,7 @@ export async function updateInvoiceStatusAction(id: string, status: 'ISSUED' | '
 
     await tx.auditLog.create({
       data: {
-        userId: session.user.id,
+        userId: user.id,
         module: 'INVOICE',
         entityType: 'INVOICE',
         entityId: id,
@@ -75,10 +75,10 @@ export async function createCreditNoteAction(
   items: { description: string; quantity: number; rate: number; vatRate: number }[],
   notes: string
 ) {
-  const session = await requirePermission('manage_invoices');
+  const user = await requirePermission('manage_invoices');
 
   const { CreditNoteService } = await import('@/lib/credit-note-service');
-  const cn = await CreditNoteService.create(invoiceId, items, notes, session.user.id);
+  const cn = await CreditNoteService.create(invoiceId, items, notes, user.id);
   
   revalidatePath('/dashboard/invoices');
   revalidatePath(`/dashboard/invoices/${invoiceId}`);

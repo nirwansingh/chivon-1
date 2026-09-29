@@ -79,7 +79,7 @@ export function SalesOrderClient({ salesOrders, canEdit, users, customers }: Sal
       header: () => <div className="text-right">Grand Total</div>,
       cell: ({ row }) => (
         <div className="text-right font-medium">
-          <MoneyDisplay amount={row.original.grandTotal.toNumber()} />
+          <MoneyDisplay amount={Number(row.original.grandTotal)} />
         </div>
       ),
     },

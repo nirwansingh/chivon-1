@@ -462,16 +462,16 @@ export class QuotationService {
     return await prisma.$transaction(async (tx) => {
       const quote = await tx.quotation.findUnique({
         where: { id: quotationId },
-        include: { revisions: { where: { id: revisionId }, include: { items: true } } }
+        include: { revisions: { where: { id: revisionId }, include: { items: { include: { product: true } } } } }
       });
 
       if (!quote) throw new Error("Quotation not found");
-      if (quote.status !== 'APPROVED') throw new Error("Only APPROVED quotations can be converted");
+      if (quote.status !== 'APPROVED' && quote.status !== 'ACCEPTED') throw new Error("Only APPROVED or ACCEPTED quotations can be converted");
       const revision = quote.revisions[0];
       if (!revision) throw new Error("Revision not found");
 
       // Generate invoice number
-      const invoiceNumber = await DocumentNumberService.generateNext('INVOICE', tx);
+      const invoiceNumber = await DocumentNumberService.generateNextNumber('INVOICE', tx);
 
       const itemsMap = new Map(revision.items.map(i => [i.id, i]));
       const newInvoiceItems = [];
@@ -503,16 +503,17 @@ export class QuotationService {
           discountAmount: calcRes.discountAmount,
           vatRate: qItem.vatRate,
           vatAmount: calcRes.vatAmount,
-          lineSubtotal: calcRes.subtotal,
-          lineTotal: calcRes.total,
+          lineSubtotal: calcRes.lineSubtotal,
+          lineTotal: calcRes.lineTotal,
         });
       }
 
       const docTotals = calculateDocumentTotals(newInvoiceItems.map(i => ({
-        subtotal: i.lineSubtotal.toNumber(),
-        discountAmount: i.discountAmount.toNumber(),
-        vatAmount: i.vatAmount.toNumber(),
-        total: i.lineTotal.toNumber()
+        lineSubtotal: i.lineSubtotal,
+        discountAmount: i.discountAmount,
+        taxableAmount: i.lineSubtotal.sub(i.discountAmount),
+        vatAmount: i.vatAmount,
+        lineTotal: i.lineTotal
       })));
 
       const invoice = await tx.invoice.create({
@@ -527,8 +528,8 @@ export class QuotationService {
           taxableAmount: docTotals.taxableAmount,
           vatAmount: docTotals.vatAmount,
           grandTotal: docTotals.grandTotal,
-          notes: revision.notes,
-          paymentTerms: revision.terms,
+          notes: quote.notes,
+          paymentTerms: quote.terms,
           items: {
             create: newInvoiceItems
           }
@@ -537,7 +538,7 @@ export class QuotationService {
 
       await tx.quotation.update({
         where: { id: quote.id },
-        data: { status: 'CONVERTED' }
+        data: { status: 'ACCEPTED' }
       });
 
       await AuditService.log({

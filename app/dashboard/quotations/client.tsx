@@ -12,6 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
+  DropdownMenuGroup,
 } from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
 import { StatusBadge } from '@/components/status-badge';
@@ -116,15 +117,17 @@ export function QuotationClient({ quotations, canEdit, users, customers }: Quota
               </Button>
             } />
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem render={<Link href={`/dashboard/quotations/${q.id}`} />}>
-                <Eye className="mr-2 h-4 w-4" /> View Details
-              </DropdownMenuItem>
-              {canEdit && (
-                <DropdownMenuItem render={<Link href={`/dashboard/quotations/${q.id}/edit`} />}>
-                  <Edit className="mr-2 h-4 w-4" /> Edit
+              <DropdownMenuGroup>
+                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                <DropdownMenuItem render={<Link href={`/dashboard/quotations/${q.id}`} />}>
+                  <Eye className="mr-2 h-4 w-4" /> View Details
                 </DropdownMenuItem>
-              )}
+                {canEdit && (
+                  <DropdownMenuItem render={<Link href={`/dashboard/quotations/${q.id}/edit`} />}>
+                    <Edit className="mr-2 h-4 w-4" /> Edit
+                  </DropdownMenuItem>
+                )}
+              </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
         );

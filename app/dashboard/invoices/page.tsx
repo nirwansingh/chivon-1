@@ -67,7 +67,7 @@ async function InvoiceList({ search, status }: { search?: string; status?: strin
                 </Link>
               </td>
               <td className="px-6 py-4">{formatDate(inv.date)}</td>
-              <td className="px-6 py-4">{inv.customer.name}</td>
+              <td className="px-6 py-4">{inv.customer.companyName}</td>
               <td className="px-6 py-4">
                 {inv.salesOrder ? (
                   <Link href={`/dashboard/sales-orders/${inv.salesOrder.id}`} className="text-xs hover:underline text-muted-foreground">

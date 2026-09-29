@@ -48,6 +48,12 @@ export default async function ProductsPage(props: {
     ProductService.getCategories(),
   ]);
 
+  const serializedProducts = productsData.data.map(p => ({
+    ...p,
+    rate: Number(p.rate),
+    vatRate: Number(p.vatRate),
+  }));
+
   return (
     <div className="flex flex-col gap-6">
       <PageHeader 
@@ -66,7 +72,7 @@ export default async function ProductsPage(props: {
       />
       
       <ProductListClient 
-        initialData={productsData.data} 
+        initialData={serializedProducts as any} 
         initialTotal={productsData.total}
         initialPageCount={productsData.pageCount}
         categories={categories}

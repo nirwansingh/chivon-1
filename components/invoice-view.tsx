@@ -86,10 +86,8 @@ export function InvoiceView({ invoice }: { invoice: any }) {
             </Button>
           )}
           {invoice.status !== 'CANCELLED' && (
-            <Button variant="outline" asChild>
-              <Link href={`/api/pdf/invoices/${invoice.id}`} target="_blank">
-                <Download className="mr-2 h-4 w-4" /> PDF
-              </Link>
+            <Button variant="outline" render={<Link href={`/api/pdf/invoices/${invoice.id}`} target="_blank" />}>
+              <Download className="mr-2 h-4 w-4" /> PDF
             </Button>
           )}
           {isIssued && outstanding > 0 && (
@@ -265,10 +263,8 @@ export function InvoiceView({ invoice }: { invoice: any }) {
                         {formatCurrency(Number(cn.grandTotal))}
                       </td>
                       <td className="px-4 py-3 text-right">
-                        <Button variant="ghost" size="sm" asChild>
-                          <Link href={`/api/pdf/credit-notes/${cn.id}`} target="_blank">
-                            <Download className="h-4 w-4" />
-                          </Link>
+                        <Button variant="ghost" size="sm" render={<Link href={`/api/pdf/credit-notes/${cn.id}`} target="_blank" />}>
+                          <Download className="h-4 w-4" />
                         </Button>
                       </td>
                     </tr>

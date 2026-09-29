@@ -1,11 +1,12 @@
 import { prisma } from './prisma';
+import { PrismaClient, Prisma } from '@prisma/client';
 
 export class DocumentNumberService {
   /**
    * Generates the next document number atomically.
    * e.g., generateNextNumber('QT') -> 'QT-20241026-0001'
    */
-  static async generateNextNumber(prefix: string): Promise<string> {
+  static async generateNextNumber(prefix: string, tx: Prisma.TransactionClient | PrismaClient = prisma): Promise<string> {
     const now = new Date();
     // YYYYMMDD
     const year = now.getFullYear();
@@ -14,7 +15,7 @@ export class DocumentNumberService {
     const dateKey = `${year}${month}${day}`;
 
     // Upsert atomic increment
-    const sequence = await prisma.documentSequence.upsert({
+    const sequence = await tx.documentSequence.upsert({
       where: {
         prefix_dateKey: {
           prefix,

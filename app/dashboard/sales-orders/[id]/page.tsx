@@ -15,7 +15,7 @@ export default async function SalesOrderPage(props: { params: Promise<{ id: stri
 
   return (
     <div className="container mx-auto p-6 max-w-7xl">
-      <SalesOrderView initialSalesOrder={salesOrder as any} />
+      <SalesOrderView initialSalesOrder={JSON.parse(JSON.stringify(salesOrder))} />
     </div>
   );
 }

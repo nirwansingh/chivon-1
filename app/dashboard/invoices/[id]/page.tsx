@@ -5,7 +5,8 @@ import { InvoiceView } from '@/components/invoice-view';
 
 export const dynamic = 'force-dynamic';
 
-export default async function InvoicePage({ params }: { params: { id: string } }) {
+export default async function InvoicePage(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   await requirePermission('view_invoices');
   
   const invoice = await InvoiceService.getById(params.id);

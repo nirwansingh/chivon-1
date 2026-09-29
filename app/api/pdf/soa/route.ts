@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/navigation';
+import { NextResponse } from 'next/server';
 import { requirePermission } from '@/lib/auth';
 import { PdfService } from '@/lib/pdf-service';
 
@@ -19,7 +19,7 @@ export async function GET(
 
     const pdfBuffer = await PdfService.generateSOAPdf(customerId, new Date(fromDate), new Date(toDate + 'T23:59:59'));
 
-    return new NextResponse(pdfBuffer, {
+    return new NextResponse(pdfBuffer as any, {
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': `inline; filename="SOA-${customerId}.pdf"`,

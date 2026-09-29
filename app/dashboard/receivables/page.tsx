@@ -1,7 +1,7 @@
 import { requirePermission } from '@/lib/auth';
 import { SOAService } from '@/lib/soa-service';
 import { DataTable } from '@/components/data-table';
-import { formatCurrency } from '@/lib/utils';
+import { formatAED as formatCurrency } from '@/lib/money';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
@@ -90,7 +90,7 @@ export default async function ReceivablesPage() {
           <div className="text-xl font-bold">{formatCurrency(total90)}</div>
         </div>
         <div className="bg-card border border-red-200 rounded-lg p-4 shadow-sm bg-red-50/50">
-          <div className="text-sm text-red-600">> 90 Days</div>
+          <div className="text-sm text-red-600"> 90 Days</div>
           <div className="text-xl font-bold text-red-700">{formatCurrency(total120)}</div>
         </div>
         <div className="bg-card border border-green-200 rounded-lg p-4 shadow-sm bg-green-50/50">
@@ -107,7 +107,7 @@ export default async function ReceivablesPage() {
         data={agingData}
         columns={columns}
         searchPlaceholder="Search customer..."
-        pagination={{ page: 1, pageSize: 100, total: agingData.length, totalPages: 1 }}
+        pagination={{ pageIndex: 0, pageSize: 100 }}
       />
     </div>
   );

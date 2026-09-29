@@ -72,8 +72,8 @@ export function CreditNoteDialog({ invoiceId, maxAmount }: { invoiceId: string; 
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="secondary">Issue Credit Note</Button>
+      <DialogTrigger render={<Button variant="secondary" />}>
+        Issue Credit Note
       </DialogTrigger>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <form onSubmit={handleSubmit}>

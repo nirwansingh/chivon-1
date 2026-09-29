@@ -22,11 +22,11 @@ export default async function PaymentsPage({
 
   const where = query
     ? {
-        OR: [
-          { number: { contains: query, mode: 'insensitive' as const } },
-          { customer: { companyName: { contains: query, mode: 'insensitive' as const } } },
-        ],
-      }
+      OR: [
+        { number: { contains: query, mode: 'insensitive' as const } },
+        { customer: { companyName: { contains: query, mode: 'insensitive' as const } } },
+      ],
+    }
     : {};
 
   const [payments, total] = await Promise.all([
@@ -39,6 +39,11 @@ export default async function PaymentsPage({
     }),
     prisma.payment.count({ where }),
   ]);
+
+  const serializedPayments = payments.map(p => ({
+    ...p,
+    amount: Number(p.amount),
+  }));
 
   const columns = [
     {
@@ -66,14 +71,14 @@ export default async function PaymentsPage({
     {
       header: 'Amount',
       accessorKey: 'amount',
-      cell: (item: any) => <div className="font-medium text-right">{formatCurrency(Number(item.amount))}</div>,
+      cell: (item: any) => <div className="font-medium text-right">{formatCurrency(item.amount)}</div>,
     },
     {
       header: 'Status',
       accessorKey: 'status',
       cell: (item: any) => (
-        <StatusBadge 
-          status={item.isReversed ? 'CANCELLED' : item.status} 
+        <StatusBadge
+          status={item.isReversed ? 'CANCELLED' : item.status}
         />
       ),
     },
@@ -83,23 +88,20 @@ export default async function PaymentsPage({
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold tracking-tight">Payments</h1>
-        <Button asChild>
-          <Link href="/dashboard/payments/new">
-            <Plus className="mr-2 h-4 w-4" /> Record Payment
-          </Link>
+        <Button render={<Link href="/dashboard/payments/new" />}>
+          <Plus className="mr-2 h-4 w-4" /> Record Payment
         </Button>
       </div>
 
       <DataTable
-        data={payments}
+        data={serializedPayments}
         columns={columns}
         searchPlaceholder="Search payments..."
         pagination={{
-          page,
+          pageIndex: page - 1,
           pageSize,
-          total,
-          totalPages: Math.ceil(total / pageSize),
         }}
+        pageCount={Math.ceil(total / pageSize)}
       />
     </div>
   );

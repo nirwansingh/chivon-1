@@ -54,11 +54,9 @@ export function SalesOrderView({ initialSalesOrder }: { initialSalesOrder: Sales
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
-          <Button variant="outline" size="sm" asChild>
-            <a href={`/api/pdf/sales-orders/${initialSalesOrder.id}`} target="_blank" rel="noopener noreferrer">
-              <Download className="w-4 h-4 mr-2" />
-              PDF
-            </a>
+          <Button variant="outline" size="sm" render={<a href={`/api/pdf/sales-orders/${initialSalesOrder.id}`} target="_blank" rel="noopener noreferrer" />}>
+            <Download className="w-4 h-4 mr-2" />
+            PDF
           </Button>
 
           {initialSalesOrder.status === 'CONFIRMED' && (
@@ -156,18 +154,18 @@ export function SalesOrderView({ initialSalesOrder }: { initialSalesOrder: Sales
                           <div className="text-xs text-muted-foreground mt-1 whitespace-pre-line">{item.description}</div>
                         </td>
                         <td className="p-4 text-right text-muted-foreground">{item.unit}</td>
-                        <td className="p-4 text-right">{item.orderedQty.toNumber()}</td>
-                        <td className="p-4 text-right text-muted-foreground">{item.fulfilledQty?.toNumber() || 0}</td>
-                        <td className="p-4 text-right text-muted-foreground">{item.invoicedQty?.toNumber() || 0}</td>
-                        <td className="p-4 text-right font-medium">{item.remainingQty?.toNumber() || item.orderedQty.toNumber()}</td>
-                        <td className="p-4 text-right">{formatAED(item.rate.toNumber())}</td>
+                        <td className="p-4 text-right">{Number(item.orderedQty)}</td>
+                        <td className="p-4 text-right text-muted-foreground">{item.fulfilledQty ? Number(item.fulfilledQty) : 0}</td>
+                        <td className="p-4 text-right text-muted-foreground">{item.invoicedQty ? Number(item.invoicedQty) : 0}</td>
+                        <td className="p-4 text-right font-medium">{item.remainingQty ? Number(item.remainingQty) : Number(item.orderedQty)}</td>
+                        <td className="p-4 text-right">{formatAED(Number(item.rate))}</td>
                         <td className="p-4 text-right text-muted-foreground">
-                          {item.discountAmount.toNumber() > 0 ? formatAED(item.discountAmount.toNumber()) : '-'}
+                          {Number(item.discountAmount) > 0 ? formatAED(Number(item.discountAmount)) : '-'}
                         </td>
                         <td className="p-4 text-right text-muted-foreground">
-                          {item.vatAmount.toNumber() > 0 ? `${formatAED(item.vatAmount.toNumber())} (${item.vatRate}%)` : '-'}
+                          {Number(item.vatAmount) > 0 ? `${formatAED(Number(item.vatAmount))} (${item.vatRate}%)` : '-'}
                         </td>
-                        <td className="p-4 text-right font-medium">{formatAED(item.lineTotal.toNumber())}</td>
+                        <td className="p-4 text-right font-medium">{formatAED(Number(item.lineTotal))}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -210,27 +208,27 @@ export function SalesOrderView({ initialSalesOrder }: { initialSalesOrder: Sales
             <CardContent className="pt-4 space-y-4">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Subtotal</span>
-                <span>{formatAED(initialSalesOrder.subtotal.toNumber())}</span>
+                <span>{formatAED(Number(initialSalesOrder.subtotal))}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Discount</span>
-                <span className="text-red-500">-{formatAED(initialSalesOrder.discountAmount.toNumber())}</span>
+                <span className="text-red-500">-{formatAED(Number(initialSalesOrder.discountAmount))}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Taxable Amount</span>
-                <span>{formatAED(initialSalesOrder.taxableAmount.toNumber())}</span>
+                <span>{formatAED(Number(initialSalesOrder.taxableAmount))}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">VAT</span>
-                <span>{formatAED(initialSalesOrder.vatAmount.toNumber())}</span>
+                <span>{formatAED(Number(initialSalesOrder.vatAmount))}</span>
               </div>
               <div className="flex justify-between text-lg font-bold border-t pt-4">
                 <span>Total</span>
-                <span>{formatAED(initialSalesOrder.grandTotal.toNumber())}</span>
+                <span>{formatAED(Number(initialSalesOrder.grandTotal))}</span>
               </div>
               
               <div className="text-xs text-muted-foreground text-right mt-2 italic">
-                {amountInWordsAED(initialSalesOrder.grandTotal.toNumber())}
+                {amountInWordsAED(Number(initialSalesOrder.grandTotal))}
               </div>
             </CardContent>
           </Card>
@@ -242,7 +240,7 @@ export function SalesOrderView({ initialSalesOrder }: { initialSalesOrder: Sales
             <CardContent className="pt-4 space-y-3 text-sm">
               <div className="flex flex-col">
                 <span className="text-muted-foreground text-xs uppercase font-medium">Created On</span>
-                <span>{format(initialSalesOrder.createdAt, 'PPP')}</span>
+                <span>{format(new Date(initialSalesOrder.createdAt), 'PPP')}</span>
               </div>
               <div className="flex flex-col">
                 <span className="text-muted-foreground text-xs uppercase font-medium">Created By</span>

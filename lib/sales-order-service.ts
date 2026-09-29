@@ -2,12 +2,12 @@ import { prisma } from '@/lib/prisma';
 import { SalesOrderFormValues } from '@/app/dashboard/sales-orders/schema';
 import { AuditService } from '@/lib/audit';
 import { DocumentNumberService } from '@/lib/sequence';
-import { calculateLineItem, calculateDocumentTotals, LineItemInput } from '@/lib/money';
-import { SalesOrderStatus } from '@prisma/client';
+import { calculateLineItem, calculateDocumentTotals, LineItemInput, LineItemResult } from '@/lib/money';
+import { SalesOrderStatus, Prisma } from '@prisma/client';
 
 export class SalesOrderService {
   static async create(data: SalesOrderFormValues, userId: string) {
-    const rawCalcResults: any[] = [];
+    const rawCalcResults: LineItemResult[] = [];
     
     const calculatedItems = data.items.map(item => {
       const discountTypeMap: Record<string, 'PERCENTAGE' | 'FIXED_AMOUNT'> = {
@@ -102,7 +102,7 @@ export class SalesOrderService {
       throw new Error(`Cannot edit a sales order in ${existing.status} status.`);
     }
 
-    const rawCalcResults: any[] = [];
+    const rawCalcResults: LineItemResult[] = [];
     const calculatedItems = data.items.map(item => {
       const discountTypeMap: Record<string, 'PERCENTAGE' | 'FIXED_AMOUNT'> = {
         percentage: 'PERCENTAGE',
@@ -269,7 +269,12 @@ export class SalesOrderService {
     return await prisma.$transaction(async (tx) => {
       const so = await tx.salesOrder.findUnique({
         where: { id: salesOrderId },
-        include: { items: true, customer: true }
+        include: { 
+          items: {
+            include: { product: true }
+          }, 
+          customer: true 
+        }
       });
 
       if (!so) throw new Error("Sales Order not found");
@@ -289,10 +294,11 @@ export class SalesOrderService {
       }
 
       // Generate invoice number
-      const invoiceNumber = await DocumentNumberService.generateNext('INVOICE', tx);
+      const invoiceNumber = await DocumentNumberService.generateNextNumber('INVOICE', tx);
 
       // Prepare invoice items
       const newInvoiceItems = [];
+      const rawCalcResults: LineItemResult[] = [];
       for (const req of itemsToInvoice) {
         const soItem = itemsMap.get(req.salesOrderItemId)!;
         
@@ -314,6 +320,8 @@ export class SalesOrderService {
           vatRate: soItem.vatRate.toNumber(),
         });
 
+        rawCalcResults.push(calcRes);
+
         newInvoiceItems.push({
           salesOrderItemId: soItem.id,
           productId: soItem.productId,
@@ -323,11 +331,11 @@ export class SalesOrderService {
           rate: soItem.rate,
           discountType: soItem.discountType,
           discountValue: soItem.discountValue,
-          discountAmount: calcRes.discountAmount,
+          discountAmount: calcRes.discountAmount.toNumber(),
           vatRate: soItem.vatRate,
-          vatAmount: calcRes.vatAmount,
-          lineSubtotal: calcRes.subtotal,
-          lineTotal: calcRes.total,
+          vatAmount: calcRes.vatAmount.toNumber(),
+          lineSubtotal: calcRes.lineSubtotal.toNumber(),
+          lineTotal: calcRes.lineTotal.toNumber(),
         });
       }
 
@@ -342,12 +350,7 @@ export class SalesOrderService {
         });
       }
 
-      const docTotals = calculateDocumentTotals(newInvoiceItems.map(i => ({
-        subtotal: i.lineSubtotal.toNumber(),
-        discountAmount: i.discountAmount.toNumber(),
-        vatAmount: i.vatAmount.toNumber(),
-        total: i.lineTotal.toNumber()
-      })));
+      const docTotals = calculateDocumentTotals(rawCalcResults);
 
       const invoice = await tx.invoice.create({
         data: {
@@ -411,7 +414,7 @@ export class SalesOrderService {
       entityId: id,
       action: 'REOPEN',
       description: `Sales Order ${reopened.number} reopened to draft status`,
-      metadata: { previousStatus: so.status }
+      beforeData: { previousStatus: so.status }
     });
 
     return reopened;
@@ -423,7 +426,7 @@ export class SalesOrderService {
     customerId?: string;
     userId?: string;
   }) {
-    const where: any = {};
+    const where: Prisma.SalesOrderWhereInput = {};
 
     if (params.search) {
       where.OR = [
@@ -433,7 +436,7 @@ export class SalesOrderService {
     }
 
     if (params.status && params.status !== 'ALL') {
-      where.status = params.status;
+      where.status = params.status as SalesOrderStatus;
     }
 
     if (params.customerId && params.customerId !== 'ALL') {
@@ -458,7 +461,6 @@ export class SalesOrderService {
   }
 }
 
-import { Prisma } from '@prisma/client';
 export type SalesOrderWithRelations = Prisma.SalesOrderGetPayload<{
   include: {
     customer: true,

@@ -57,7 +57,7 @@ export default async function SalesOrdersPage(props: {
       />
       
       <SalesOrderClient 
-        salesOrders={salesOrders} 
+        salesOrders={JSON.parse(JSON.stringify(salesOrders)) as any} 
         canEdit={canEdit}
         users={users}
         customers={customers}

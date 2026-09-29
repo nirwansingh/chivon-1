@@ -36,6 +36,14 @@ export default async function QuotationsPage(props: {
     userId: userId || undefined 
   });
 
+  const serializedQuotations = quotations.map(q => ({
+    ...q,
+    revisions: q.revisions.map(r => ({
+      ...r,
+      grandTotal: Number(r.grandTotal)
+    }))
+  }));
+
   // Fetch users and customers for the filter dropdowns
   const users = await prisma.user.findMany({ select: { id: true, name: true }, orderBy: { name: 'asc' } });
   const customers = await prisma.customer.findMany({ select: { id: true, companyName: true }, orderBy: { companyName: 'asc' } });
@@ -58,7 +66,7 @@ export default async function QuotationsPage(props: {
       />
       
       <QuotationClient 
-        quotations={quotations} 
+        quotations={serializedQuotations as any} 
         canEdit={canEdit}
         users={users}
         customers={customers}

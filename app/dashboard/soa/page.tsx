@@ -1,7 +1,7 @@
 import { requirePermission } from '@/lib/auth';
 import { SOAService } from '@/lib/soa-service';
 import { SOAFilter } from './soa-filter';
-import { formatCurrency } from '@/lib/utils';
+import { formatAED as formatCurrency } from '@/lib/money';
 import { format } from 'date-fns';
 import { Button } from '@/components/ui/button';
 import { FileText } from 'lucide-react';
@@ -25,10 +25,8 @@ export default async function SOAPage({ searchParams }: { searchParams: { custom
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold tracking-tight">Statement of Account</h1>
         {soaReport && (
-          <Button asChild>
-            <Link href={`/api/pdf/soa?customerId=${customerId}&fromDate=${fromDate}&toDate=${toDate}`} target="_blank">
-              <FileText className="mr-2 h-4 w-4" /> Download PDF
-            </Link>
+          <Button render={<Link href={`/api/pdf/soa?customerId=${customerId}&fromDate=${fromDate}&toDate=${toDate}`} target="_blank" />}>
+            <FileText className="mr-2 h-4 w-4" /> Download PDF
           </Button>
         )}
       </div>
@@ -108,7 +106,7 @@ export default async function SOAPage({ searchParams }: { searchParams: { custom
                   <div className="font-semibold">{formatCurrency(soaReport.aging.days90)}</div>
                 </div>
                 <div>
-                  <div className="text-xs text-red-600">> 90 Days</div>
+                  <div className="text-xs text-red-600">&gt; 90 Days</div>
                   <div className="font-semibold text-red-600">{formatCurrency(soaReport.aging.days120Plus)}</div>
                 </div>
                 <div>

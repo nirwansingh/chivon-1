@@ -4,18 +4,19 @@ import { PdfService } from '@/lib/pdf-service';
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await requirePermission('view_invoices');
     
-    const buffer = await PdfService.generatePaymentReceiptPdf(params.id);
+    const { id } = await params;
+    const buffer = await PdfService.generatePaymentReceiptPdf(id);
     
-    return new NextResponse(buffer, {
+    return new NextResponse(buffer as any, {
       status: 200,
       headers: {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': `inline; filename="receipt-${params.id}.pdf"`,
+        'Content-Disposition': `inline; filename="receipt-${id}.pdf"`,
       },
     });
   } catch (error: any) {

@@ -11,14 +11,17 @@ export interface AuditLogInput {
   description?: string;
   beforeData?: unknown;
   afterData?: unknown;
+  metadata?: unknown;
   ipAddress?: string;
   userAgent?: string;
 }
 
 export class AuditService {
-  static async log(input: AuditLogInput) {
+  static async log(input: AuditLogInput, tx?: any) {
     try {
-      await prisma.auditLog.create({
+      const db = tx || prisma;
+      const finalAfterData = input.afterData || input.metadata;
+      await db.auditLog.create({
         data: {
           userId: input.userId,
           action: input.action,
@@ -27,7 +30,7 @@ export class AuditService {
           entityId: input.entityId,
           description: input.description,
           beforeData: input.beforeData ? (input.beforeData as Prisma.InputJsonValue) : undefined,
-          afterData: input.afterData ? (input.afterData as Prisma.InputJsonValue) : undefined,
+          afterData: finalAfterData ? (finalAfterData as Prisma.InputJsonValue) : undefined,
           ipAddress: input.ipAddress,
           userAgent: input.userAgent,
         }

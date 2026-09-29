@@ -6,7 +6,8 @@ import { InvoiceService } from '@/lib/invoice-service';
 
 export const dynamic = 'force-dynamic';
 
-export default async function PaymentPage({ params }: { params: { id: string } }) {
+export default async function PaymentPage(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   await requirePermission('view_invoices');
   
   const payment = await prisma.payment.findUnique({
@@ -24,7 +25,7 @@ export default async function PaymentPage({ params }: { params: { id: string } }
   // Find outstanding invoices for this customer
   const unallocatedAmount = Number(payment.amount) - payment.allocations.reduce((sum, a) => sum + (a.isReversed ? 0 : Number(a.amount)), 0);
   
-  let outstandingInvoices = [];
+  let outstandingInvoices: any[] = [];
   
   if (!payment.isReversed && unallocatedAmount > 0) {
     const customerInvoices = await prisma.invoice.findMany({

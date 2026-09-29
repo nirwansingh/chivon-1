@@ -88,7 +88,7 @@ async function main() {
     console.log('Generating dummy data...');
     // 5. Products
     const products = [];
-    for (let i = 1; i <= 15; i++) {
+    for (let i = 1; i <= 1; i++) {
       products.push(await prisma.product.create({
         data: {
           sku: `SKU-${1000 + i}`,
@@ -102,7 +102,7 @@ async function main() {
 
     // 6. Customers
     const customers = [];
-    for (let i = 1; i <= 10; i++) {
+    for (let i = 1; i <= 1; i++) {
       customers.push(await prisma.customer.create({
         data: {
           companyName: `Demo Corp ${i} LLC`,
@@ -118,7 +118,7 @@ async function main() {
 
     // 7. Opportunities
     const opportunities = [];
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 1; i++) {
       opportunities.push(await prisma.opportunity.create({
         data: {
           name: `Pipeline Upgrade Phase ${i+1}`,
@@ -132,7 +132,7 @@ async function main() {
 
     // 8. Quotes
     const quotes = [];
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 1; i++) {
       const qNum = await DocumentNumberService.generateNextNumber('QT');
       const quote = await prisma.quotation.create({
         data: {
@@ -168,7 +168,7 @@ async function main() {
 
     // 9. Sales Orders
     const salesOrders = [];
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 1; i++) {
       const soNum = await DocumentNumberService.generateNextNumber('SO');
       const so = await prisma.salesOrder.create({
         data: {
@@ -197,7 +197,7 @@ async function main() {
 
     // 10. Invoices
     const invoices = [];
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 1; i++) {
       const invNum = await DocumentNumberService.generateNextNumber('INV');
       const invoice = await prisma.invoice.create({
         data: {
@@ -224,7 +224,7 @@ async function main() {
     }
 
     // 11. Payments
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 1; i++) {
       const payNum = await DocumentNumberService.generateNextNumber('PAY');
       
       const inv = await prisma.invoice.findUnique({ where: { id: invoices[i].id } });

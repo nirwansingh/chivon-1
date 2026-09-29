@@ -2,7 +2,8 @@ import { notFound, redirect } from 'next/navigation';
 import { QuotationService } from '@/lib/quotation-service';
 import { QuotationForm } from '@/components/quotation-form';
 
-export default async function ReviseQuotationPage({ params }: { params: { id: string } }) {
+export default async function ReviseQuotationPage(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const quotation = await QuotationService.getById(params.id);
 
   if (!quotation) {

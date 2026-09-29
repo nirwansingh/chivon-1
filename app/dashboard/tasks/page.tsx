@@ -29,7 +29,7 @@ export default async function TasksPage() {
 
   const formattedTasks = tasks.map(task => {
     let visualState = 'upcoming';
-    if (task.status === 'DONE') {
+    if (task.status === 'COMPLETED') {
       visualState = 'completed';
     } else if (task.dueDate) {
       const dueDate = new Date(task.dueDate);
@@ -60,10 +60,8 @@ export default async function TasksPage() {
     <div className="space-y-6 h-[calc(100vh-100px)] flex flex-col">
       <div className="flex justify-between items-center shrink-0">
         <h1 className="text-3xl font-bold tracking-tight">Tasks & Follow-ups</h1>
-        <Button asChild>
-          <Link href="/dashboard/tasks/new">
-            <Plus className="mr-2 h-4 w-4" /> New Task
-          </Link>
+        <Button render={<Link href="/dashboard/tasks/new" />}>
+          <Plus className="mr-2 h-4 w-4" /> New Task
         </Button>
       </div>
 
