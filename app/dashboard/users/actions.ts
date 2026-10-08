@@ -9,6 +9,10 @@ export async function createUserAction(formData: FormData) {
   const password = formData.get('password') as string;
   const roleId = formData.get('roleId') as string;
 
+  if (!password || password.trim().length < 6) {
+    throw new Error('Password is required and must be at least 6 characters');
+  }
+
   await UserService.createUser({ name, email, password, roleId });
   revalidatePath('/dashboard/users');
   redirect('/dashboard/users');
@@ -35,6 +39,9 @@ export async function toggleUserStatusAction(id: string, currentStatus: string) 
 
 export async function resetPasswordAction(id: string, formData: FormData) {
   const password = formData.get('password') as string;
+  if (!password || password.trim().length < 6) {
+    throw new Error('Password is required and must be at least 6 characters');
+  }
   await UserService.resetPassword(id, password);
   revalidatePath(`/dashboard/users/${id}`);
 }

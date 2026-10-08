@@ -45,8 +45,8 @@ export default async function EditUserPage({ params }: { params: Promise<{ id: s
         await resetPasswordAction(id, formData);
       }} className="space-y-4 mb-8">
         <div>
-          <label className="block mb-1 text-sm font-medium">New Password</label>
-          <input type="password" name="password" required className="w-full border border-gray-300 rounded p-2" />
+          <label className="block mb-1 text-sm font-medium">New Password (min 6 characters)</label>
+          <input type="password" name="password" required minLength={6} placeholder="••••••••" className="w-full border border-gray-300 rounded p-2" />
         </div>
         <button type="submit" className="px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700">Reset Password</button>
       </form>

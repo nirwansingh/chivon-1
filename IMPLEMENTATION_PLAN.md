@@ -137,6 +137,16 @@ Update the Status column as phases progress. (`NOT_STARTED` / `IN_PROGRESS` / `D
 - Verified by: `npm run lint` and `npx tsc --noEmit` pass.
 - NEXT UP: Phase 9 (Sales Orders)
 
+### Session 5 — 2026-10-09
+- Completed: Authentication security hardening and cleanup:
+  1. Removed unused/dead NextAuth scaffold stub (`auth.ts` at root).
+  2. Removed hardcoded secret fallback `'dev-secret-replace-in-production'` in `lib/auth.ts`; strictly enforced `AUTH_SECRET` presence via `getAuthSecret()` and `lib/env.ts`.
+  3. Enforced password requirement in `UserService.createUser` (min 6 chars, removed default `'password'` fallback) and `UserService.resetPassword`.
+  4. Redacted `passwordHash` from `AuditService.log` payload on user creation.
+  5. Added unit test suite `tests/auth-cleanup.test.ts` (all 4 tests pass).
+- Verified by: `npx vitest run tests/auth-cleanup.test.ts` (4/4 pass), `npm run typecheck` (0 errors), `npm run lint` (0 errors).
+- Key files: `lib/auth.ts`, `lib/env.ts`, `server/services/UserService.ts`, `app/dashboard/users/actions.ts`, `app/dashboard/users/new/page.tsx`, `app/dashboard/users/[id]/page.tsx`, `tests/auth-cleanup.test.ts`.
+
 ### Session 4 — 2026-09-28
 - Completed: Part A plan updates (P3.8–P3.17 added, Phase 19 rewritten, decisions log updated, AGENTS.md and SKILL.md UI rules added). Stage 1 design refresh fully implemented and tested.
 - NEXT UP: P8.1
@@ -640,6 +650,7 @@ Ask the user only for decisions that materially change DB model, workflow, finan
 | 2026-09-28 | Design refresh committed directly to main before resuming feature phases | Single-machine workflow; both computers sync via GitHub Desktop; branching adds merge complexity for a one-developer project. Stage 1 (design only, no schema/logic changes) then Stage 2 (feature phases from P8.1). |
 | 2026-09-28 | framer-motion v13 retained; not replaced with `motion` package | Already installed and working; upgrade is a separate task and not allowed during redesign (no new dep upgrades). |
 | 2026-09-28 | Plus Jakarta Sans (headings) + Inter (body/UI) + JetBrains Mono (document numbers) via next/font | Distinctive, professionally designed fonts; free on Google Fonts; no self-hosting required; tabular numerals via font-feature-settings. |
+| 2026-10-09 | Auth security cleanup: removed fallback secrets, removed dead auth.ts, required password on user creation | Prevent hardcoded JWT fallback secret vulnerability and ensure admin-created users always have validated passwords |
 
 *(Append new rows as decisions are made.)*
 

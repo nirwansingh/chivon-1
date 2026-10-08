@@ -2,15 +2,24 @@ import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 import { prisma } from './prisma';
 
-const SECRET_KEY = new TextEncoder().encode(process.env.AUTH_SECRET || 'dev-secret-replace-in-production');
+function getAuthSecret(): Uint8Array {
+  const secret = process.env.AUTH_SECRET;
+  if (!secret || secret.trim() === '') {
+    throw new Error(
+      'AUTH_SECRET environment variable is missing. Please set AUTH_SECRET in your .env file.'
+    );
+  }
+  return new TextEncoder().encode(secret);
+}
 
 export async function createSession(userId: string) {
   const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
+  const secret = getAuthSecret();
   const token = await new SignJWT({ userId })
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
     .setExpirationTime('7d')
-    .sign(SECRET_KEY);
+    .sign(secret);
     
   (await cookies()).set('chivon_session', token, {
     httpOnly: true,
@@ -30,7 +39,8 @@ export async function getCurrentUser() {
   if (!sessionCookie) return null;
 
   try {
-    const { payload } = await jwtVerify(sessionCookie, SECRET_KEY);
+    const secret = getAuthSecret();
+    const { payload } = await jwtVerify(sessionCookie, secret);
     const userId = payload.userId as string;
 
     const user = await prisma.user.findUnique({

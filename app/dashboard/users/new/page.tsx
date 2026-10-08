@@ -18,8 +18,8 @@ export default async function NewUserPage() {
           <input type="email" name="email" required className="w-full border border-gray-300 rounded p-2" />
         </div>
         <div>
-          <label className="block mb-1 text-sm font-medium">Password</label>
-          <input type="password" name="password" required className="w-full border border-gray-300 rounded p-2" />
+          <label className="block mb-1 text-sm font-medium">Password (min 6 characters)</label>
+          <input type="password" name="password" required minLength={6} placeholder="••••••••" className="w-full border border-gray-300 rounded p-2" />
         </div>
         <div>
           <label className="block mb-1 text-sm font-medium">Role</label>

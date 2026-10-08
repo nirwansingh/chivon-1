@@ -12,16 +12,29 @@ export class UserService {
     });
   }
 
-  static async createUser(data: { name: string; email: string; password?: string; roleId: string }) {
+  static async createUser(data: { name: string; email: string; password: string; roleId: string }) {
     const actor = await requirePermission('system:manage');
     const { name, email, password, roleId } = data;
-    const pwd = password || 'password'; // default if none
-    const passwordHash = await bcrypt.hash(pwd, 10);
+
+    if (!name || name.trim() === '') {
+      throw new Error('Name is required.');
+    }
+    if (!email || !email.includes('@')) {
+      throw new Error('Valid email address is required.');
+    }
+    if (!password || password.trim().length < 6) {
+      throw new Error('Password is required and must be at least 6 characters long.');
+    }
+    if (!roleId) {
+      throw new Error('Role is required.');
+    }
+
+    const passwordHash = await bcrypt.hash(password, 10);
 
     const newUser = await prisma.user.create({
       data: {
-        name,
-        email,
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
         passwordHash,
         roleId,
         status: 'ACTIVE'
@@ -34,7 +47,13 @@ export class UserService {
       module: 'USER',
       entityType: 'User',
       entityId: newUser.id,
-      afterData: newUser
+      afterData: {
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email,
+        roleId: newUser.roleId,
+        status: newUser.status,
+      }
     });
 
     return newUser;
@@ -126,6 +145,10 @@ export class UserService {
   static async resetPassword(id: string, newPassword: string) {
     const actor = await requirePermission('system:manage');
     
+    if (!newPassword || newPassword.trim().length < 6) {
+      throw new Error('New password is required and must be at least 6 characters long.');
+    }
+
     const passwordHash = await bcrypt.hash(newPassword, 10);
 
     const updated = await prisma.user.update({
