@@ -2,6 +2,35 @@
 
 Internal CRM + Sales + Basic Finance + Documents application for Chivon Mechanical.
 
+The UI and the API run as two processes:
+
+| App | Directory | Command | URL |
+|---|---|---|---|
+| Frontend (Next.js) | `frontend/` | `npm run dev` | http://localhost:3000 |
+| Backend (Express API) | `backend/` | `npm run dev` | http://localhost:4000 |
+
+The browser talks to Next.js. Next.js calls the API with the session token. PostgreSQL is used only by the backend.
+
+Start PostgreSQL, then in two terminals:
+
+```bash
+# terminal 1 — API
+cd backend
+npm install
+npm run dev
+```
+
+```bash
+# terminal 2 — UI
+cd frontend
+npm install
+npm run dev
+```
+
+Copy `.env.example` to `.env` at the repo root. The API reads that file. Set `DATABASE_URL`, `AUTH_SECRET`, and `API_URL=http://localhost:4000`. Do not put database credentials in client code.
+
+Demo login after `npm run db:seed` (from the repo root): `super.admin@chivon.local` / `password123`. See `SETUP.md` for the other seeded users.
+
 ## Prerequisites
 - **Node.js** >= 24.21.0
 - **npm** >= 10.8.0
@@ -17,7 +46,8 @@ Internal CRM + Sales + Basic Finance + Documents application for Chivon Mechanic
 
 2. **Install dependencies:**
    ```bash
-   npm install
+   npm install --prefix frontend
+   npm install --prefix backend
    ```
 
 3. **Configure Environment Variables:**
@@ -45,9 +75,10 @@ Internal CRM + Sales + Basic Finance + Documents application for Chivon Mechanic
 
 7. **Run the Application:**
    ```bash
+   npm run dev:api
    npm run dev
    ```
-   The application will be available at `http://localhost:3000`.
+   The API listens on `http://localhost:4000`. The UI is at `http://localhost:3000`.
 
 ## Testing
 - **Unit & Integration:** `npm run test` (Vitest)

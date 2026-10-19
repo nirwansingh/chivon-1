@@ -103,8 +103,28 @@ Update the Status column as phases progress. (`NOT_STARTED` / `IN_PROGRESS` / `D
 ### Handoff Notes
 - **How to resume**: Please read the 0. RESUME PROTOCOL at the top of this file.
 - **Current NEXT UP**: Phase 21A (Real authentication)
-- **What is done**: P0 through P21 are fully implemented and verified in the codebase.
+- **What is done**: P0 through P21 are fully implemented. The Next.js UI lives in `frontend/` and the Express API lives in `backend/`. Business rules remain in the existing service classes.
 - **Known issues / Unverified**: The E2E Playwright tests and browser testing are currently blocked due to a Playwright driver 404 download issue (Azure CDN). Functional verification performed via typecheck, lint, and tests.
+
+### Session 12 — 2026-10-15
+- Removed verified leftovers: `scratch/`, root `prisma.config.ts`, `backend/prisma/schema.prisma.orig`, compiler dumps, unused default Next SVGs, and frontend copies of `prisma.ts`, `status.ts`, `permissions.ts`, and `search-service.ts` that nothing imported.
+- Kept shared UI components that the spec lists even where a page does not import them yet (`ConfirmDialog`, `DocumentActions`, `DocumentLineage`, `PdfPreview`).
+- NEXT UP: Phase 21A (Real authentication)
+
+### Session 11 — 2026-10-15
+- Moved the Next.js app into `frontend/` (`app`, `components`, `lib`, `hooks`, `server`, `public`, tests, and configs).
+- Reorganized the API into `routes`, `controllers`, `services`, `models`, `middlewares`, `validators`, `config`, `utils`, and `pdf`.
+- Root `package.json` starts either app. The shared `.env` stays at the repo root; Next and Vitest load it from there.
+- Verified: backend and frontend `tsc --noEmit` pass. Vitest 6 files / 45 tests pass. API health, login, `/api/auth/me`, and customer query return 200. Browser login as Super Admin reaches `/dashboard`. Authenticated page loads return 200 for dashboard, customers, inquiries, opportunities, quotations, sales orders, invoices, payments, products, tasks, reports, audit, users, and roles.
+- Receivables and Documents still return 500 because those server pages pass column render functions into the client `DataTable`. That boundary existed before this move.
+- NEXT UP: Phase 21A (Real authentication)
+
+### Session 10 — 2026-10-15
+- Split the app into a Next.js UI and an Express API in `backend/`.
+- UI server actions and pages call `lib/api-client.ts`. Prisma and domain services run only in the API.
+- Verified: API login, `/api/auth/me`, customer query, and authenticated page loads for dashboard, customers, inquiries, opportunities, quotations, sales orders, invoices, payments, products, tasks, reports, audit, users, and roles.
+- Receivables and Documents return 500 because those server pages pass column render functions into the client `DataTable`. That boundary existed before this split.
+- NEXT UP: Phase 21A (Real authentication)
 
 ### Session 9 — 2026-09-29
 - Completed: Fixed uncontrolled Select warnings across multiple forms (`customer-form`, `inquiry-form`, `opportunity-form`, `quotation-form`, `sales-order-form`).
