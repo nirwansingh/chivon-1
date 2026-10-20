@@ -106,6 +106,10 @@ Update the Status column as phases progress. (`NOT_STARTED` / `IN_PROGRESS` / `D
 - **What is done**: P0 through P21 are fully implemented. The Next.js UI lives in `frontend/` and the Express API lives in `backend/`. Business rules remain in the existing service classes.
 - **Known issues / Unverified**: The E2E Playwright tests and browser testing are currently blocked due to a Playwright driver 404 download issue (Azure CDN). Functional verification performed via typecheck, lint, and tests.
 
+### Session 13 — 2026-10-20
+- `next build` no longer fails because `DEV_USER_SWITCH=true` in the local `.env`. The production guard still throws when that flag is set in the process environment.
+- NEXT UP: Phase 21A (Real authentication)
+
 ### Session 12 — 2026-10-15
 - Removed verified leftovers: `scratch/`, root `prisma.config.ts`, `backend/prisma/schema.prisma.orig`, compiler dumps, unused default Next SVGs, and frontend copies of `prisma.ts`, `status.ts`, `permissions.ts`, and `search-service.ts` that nothing imported.
 - Kept shared UI components that the spec lists even where a page does not import them yet (`ConfirmDialog`, `DocumentActions`, `DocumentLineage`, `PdfPreview`).
