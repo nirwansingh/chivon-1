@@ -106,6 +106,13 @@ Update the Status column as phases progress. (`NOT_STARTED` / `IN_PROGRESS` / `D
 - **What is done**: P0 through P21 are fully implemented. The Next.js UI lives in `frontend/` and the Express API lives in `backend/`. Business rules remain in the existing service classes.
 - **Known issues / Unverified**: The E2E Playwright tests and browser testing are currently blocked due to a Playwright driver 404 download issue (Azure CDN). Functional verification performed via typecheck, lint, and tests.
 
+### Session 13 — 2026-10-20
+- Resolved dependency resolution conflict (`ERESOLVE`) in `frontend/package.json`: updated `@types/node` from `^20` to `^26` to satisfy `vitest@5.0.2`'s peer dependency requirement (`^22.0.0 || >=24.0.0`).
+- Configured fallback for `DATABASE_URL` in `backend/prisma.config.ts` so `prisma generate` postinstall succeeds cleanly without an initial `.env`.
+- Successfully installed dependencies across `frontend` and `backend`.
+- Verified: `npm run typecheck` passes with 0 errors in both frontend and backend. All unit tests pass.
+- NEXT UP: Phase 21A (Real authentication)
+
 ### Session 12 — 2026-10-15
 - Removed verified leftovers: `scratch/`, root `prisma.config.ts`, `backend/prisma/schema.prisma.orig`, compiler dumps, unused default Next SVGs, and frontend copies of `prisma.ts`, `status.ts`, `permissions.ts`, and `search-service.ts` that nothing imported.
 - Kept shared UI components that the spec lists even where a page does not import them yet (`ConfirmDialog`, `DocumentActions`, `DocumentLineage`, `PdfPreview`).
