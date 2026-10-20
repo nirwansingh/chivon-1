@@ -94,7 +94,7 @@ Update the Status column as phases progress. (`NOT_STARTED` / `IN_PROGRESS` / `D
 | P19 | Responsive pass | DONE | P16 |
 | P20 | Full test pass | DONE | P19 |
 | P21 | Documentation | DONE | P20 |
-| P22 | Deployment & production check | NOT_STARTED | P21 |
+| P22 | Deployment & production check | IN_PROGRESS | P21 |
 
 > P13, P14, P15 may be built any time after their dependencies; the rest follow order. Every module phase must satisfy the **Module Definition of Done (§10)**.
 
@@ -102,9 +102,18 @@ Update the Status column as phases progress. (`NOT_STARTED` / `IN_PROGRESS` / `D
 
 ### Handoff Notes
 - **How to resume**: Please read the 0. RESUME PROTOCOL at the top of this file.
-- **Current NEXT UP**: Phase 21A (Real authentication)
+- **Current NEXT UP**: P22.2 (Supabase migrations/seed) → P22.7 (Render deploy), then Phase 21A
 - **What is done**: P0 through P21 are fully implemented. The Next.js UI lives in `frontend/` and the Express API lives in `backend/`. Business rules remain in the existing service classes.
 - **Known issues / Unverified**: The E2E Playwright tests and browser testing are currently blocked due to a Playwright driver 404 download issue (Azure CDN). Functional verification performed via typecheck, lint, and tests.
+
+### Session 14 — 2026-10-20
+- User request: move backend off localhost to free online hosting. Chosen: **Supabase Postgres** (fresh DB, migrations + seed) + **Render free web service** for the Express API. Frontend stays local for now.
+- Added `render.yaml` (rootDir `backend`, build `npm ci && npx prisma migrate deploy`, start `npm start`, health `/api/health`, `DEV_USER_SWITCH=false`, secrets `sync: false`).
+- `backend/package.json`: moved `tsx` + `prisma` to dependencies (needed at runtime/build on Render), added `db:deploy`, `engines.node >=24`.
+- Rewrote `docs/DEPLOYMENT.md` for Supabase (Session pooler — direct host is IPv6-only, unreachable from Render) + Render.
+- Verified: backend typecheck passes; `PORT=4100 npm start` → `/api/health` 200.
+- Half-done: P22.2 waiting for user's Supabase Session-pooler URI to run `db:deploy` + seed; Render service creation needs the user's Render account.
+- NEXT UP: P22.2 (run migrations/seed on Supabase), then P22.7 (Render deploy), then Phase 21A.
 
 ### Session 13 — 2026-10-20
 - Resolved dependency resolution conflict (`ERESOLVE`) in `frontend/package.json`: updated `@types/node` from `^20` to `^26` to satisfy `vitest@5.0.2`'s peer dependency requirement (`^22.0.0 || >=24.0.0`).
@@ -639,11 +648,12 @@ Format: `[ ] ID — Task  (Deps)  ▸ Acceptance`
 
 ### PHASE 22 — Deployment & production check
 - [ ] P22.1 — GitHub repo → Netlify (Next.js) configured; env vars set (`DATABASE_URL, AUTH_SECRET, AUTH_URL`, storage creds) (Depends on P21A)
-- [ ] P22.2 — Supabase Postgres + Storage provisioned; run migrations to prod; seed **only** roles/permissions/settings (no demo passwords; no demo users shown in UI outside dev)
+- [~] P22.2 — Supabase Postgres + Storage provisioned; run migrations to prod; seed **only** roles/permissions/settings (no demo passwords; no demo users shown in UI outside dev)
 - [ ] P22.3 — Domain `crm.chivonmechanical.com` (or `erp.`) DNS + HTTPS
 - [ ] P22.4 — Security baseline: secure cookies, password hashing, CSRF, XSS-safe rendering, file validation, secrets not in repo
 - [ ] P22.5 — Note in DEPLOYMENT.md: Supabase free projects can pause when inactive; backups are not automatic on free tier
 - [ ] P22.6 — **Production check** — all of §12 works on production
+- [~] P22.7 — Express API on Render free tier via `render.yaml`; frontend `API_URL` points to it (config + docs done; awaiting user's Render account)
 
 ---
 
@@ -677,6 +687,7 @@ Ask the user only for decisions that materially change DB model, workflow, finan
 | 2026-09-28 | Design refresh committed directly to main before resuming feature phases | Single-machine workflow; both computers sync via GitHub Desktop; branching adds merge complexity for a one-developer project. Stage 1 (design only, no schema/logic changes) then Stage 2 (feature phases from P8.1). |
 | 2026-09-28 | framer-motion v13 retained; not replaced with `motion` package | Already installed and working; upgrade is a separate task and not allowed during redesign (no new dep upgrades). |
 | 2026-09-28 | Plus Jakarta Sans (headings) + Inter (body/UI) + JetBrains Mono (document numbers) via next/font | Distinctive, professionally designed fonts; free on Google Fonts; no self-hosting required; tabular numerals via font-feature-settings. |
+| 2026-10-20 | Supabase (Postgres) + Render (Express API) free tiers; deployment started before P21A at user's explicit request | User wants backend off localhost now. Risk: seeded demo users (`password123`) on a public API — user warned; `DEV_USER_SWITCH=false` on Render. |
 | 2026-10-09 | Auth security cleanup: removed fallback secrets, removed dead auth.ts, required password on user creation | Prevent hardcoded JWT fallback secret vulnerability and ensure admin-created users always have validated passwords |
 
 *(Append new rows as decisions are made.)*

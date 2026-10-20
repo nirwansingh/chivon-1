@@ -8,14 +8,20 @@
     "start": "tsx src/index.ts",
     "typecheck": "tsc --noEmit",
     "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
     "db:seed": "prisma db seed",
     "postinstall": "prisma generate"
+  },
+  "engines": {
+    "node": ">=24"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.4.0",
+    "prisma": "^6.4.0",
+    "tsx": "^4.23.15",
     "@react-pdf/renderer": "^4.9.0",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
@@ -38,8 +44,6 @@
     "@types/node": "^20",
     "@types/number-to-words": "^1.2.3",
     "@types/react": "^19",
-    "prisma": "^6.4.0",
-    "tsx": "^4.23.15",
     "typescript": "^5"
   }
 }
