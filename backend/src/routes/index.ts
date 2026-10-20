@@ -1,0 +1,34 @@
+import { Router } from 'express';
+import { authRouter } from '../controllers/auth.controller';
+import { healthRouter } from '../controllers/health.controller';
+import { customerRouter } from '../controllers/customer.controller';
+import { inquiryRouter } from '../controllers/inquiry.controller';
+import { opportunityRouter } from '../controllers/opportunity.controller';
+import { productRouter } from '../controllers/product.controller';
+import { quotationRouter } from '../controllers/quotation.controller';
+import { salesOrderRouter } from '../controllers/sales-order.controller';
+import { invoiceRouter } from '../controllers/invoice.controller';
+import { paymentRouter } from '../controllers/payment.controller';
+import { reportRouter } from '../controllers/report.controller';
+import { userRouter } from '../controllers/user.controller';
+import { taskRouter } from '../controllers/task.controller';
+import { documentRouter } from '../controllers/document.controller';
+import { pdfRouter } from '../controllers/pdf.controller';
+
+export const apiRouter = Router();
+
+apiRouter.use('/auth', authRouter);
+apiRouter.use(healthRouter);
+apiRouter.use(customerRouter);
+apiRouter.use(inquiryRouter);
+apiRouter.use(opportunityRouter);
+apiRouter.use(productRouter);
+apiRouter.use(quotationRouter);
+apiRouter.use(salesOrderRouter);
+apiRouter.use(invoiceRouter);
+apiRouter.use(paymentRouter);
+apiRouter.use(reportRouter);
+apiRouter.use(userRouter);
+apiRouter.use(taskRouter);
+apiRouter.use(documentRouter);
+apiRouter.use(pdfRouter);

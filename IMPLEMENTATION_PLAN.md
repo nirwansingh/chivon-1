@@ -103,8 +103,28 @@ Update the Status column as phases progress. (`NOT_STARTED` / `IN_PROGRESS` / `D
 ### Handoff Notes
 - **How to resume**: Please read the 0. RESUME PROTOCOL at the top of this file.
 - **Current NEXT UP**: Phase 21A (Real authentication)
-- **What is done**: P0 through P21 are fully implemented and verified in the codebase.
+- **What is done**: P0 through P21 are fully implemented. The Next.js UI lives in `frontend/` and the Express API lives in `backend/`. Business rules remain in the existing service classes.
 - **Known issues / Unverified**: The E2E Playwright tests and browser testing are currently blocked due to a Playwright driver 404 download issue (Azure CDN). Functional verification performed via typecheck, lint, and tests.
+
+### Session 12 — 2026-10-15
+- Removed verified leftovers: `scratch/`, root `prisma.config.ts`, `backend/prisma/schema.prisma.orig`, compiler dumps, unused default Next SVGs, and frontend copies of `prisma.ts`, `status.ts`, `permissions.ts`, and `search-service.ts` that nothing imported.
+- Kept shared UI components that the spec lists even where a page does not import them yet (`ConfirmDialog`, `DocumentActions`, `DocumentLineage`, `PdfPreview`).
+- NEXT UP: Phase 21A (Real authentication)
+
+### Session 11 — 2026-10-15
+- Moved the Next.js app into `frontend/` (`app`, `components`, `lib`, `hooks`, `server`, `public`, tests, and configs).
+- Reorganized the API into `routes`, `controllers`, `services`, `models`, `middlewares`, `validators`, `config`, `utils`, and `pdf`.
+- Root `package.json` starts either app. The shared `.env` stays at the repo root; Next and Vitest load it from there.
+- Verified: backend and frontend `tsc --noEmit` pass. Vitest 6 files / 45 tests pass. API health, login, `/api/auth/me`, and customer query return 200. Browser login as Super Admin reaches `/dashboard`. Authenticated page loads return 200 for dashboard, customers, inquiries, opportunities, quotations, sales orders, invoices, payments, products, tasks, reports, audit, users, and roles.
+- Receivables and Documents still return 500 because those server pages pass column render functions into the client `DataTable`. That boundary existed before this move.
+- NEXT UP: Phase 21A (Real authentication)
+
+### Session 10 — 2026-10-15
+- Split the app into a Next.js UI and an Express API in `backend/`.
+- UI server actions and pages call `lib/api-client.ts`. Prisma and domain services run only in the API.
+- Verified: API login, `/api/auth/me`, customer query, and authenticated page loads for dashboard, customers, inquiries, opportunities, quotations, sales orders, invoices, payments, products, tasks, reports, audit, users, and roles.
+- Receivables and Documents return 500 because those server pages pass column render functions into the client `DataTable`. That boundary existed before this split.
+- NEXT UP: Phase 21A (Real authentication)
 
 ### Session 9 — 2026-09-29
 - Completed: Fixed uncontrolled Select warnings across multiple forms (`customer-form`, `inquiry-form`, `opportunity-form`, `quotation-form`, `sales-order-form`).
@@ -136,6 +156,16 @@ Update the Status column as phases progress. (`NOT_STARTED` / `IN_PROGRESS` / `D
 - Completed: P8.1 to P8.12 (Entire Phase 8)
 - Verified by: `npm run lint` and `npx tsc --noEmit` pass.
 - NEXT UP: Phase 9 (Sales Orders)
+
+### Session 5 — 2026-10-09
+- Completed: Authentication security hardening and cleanup:
+  1. Removed unused/dead NextAuth scaffold stub (`auth.ts` at root).
+  2. Removed hardcoded secret fallback `'dev-secret-replace-in-production'` in `lib/auth.ts`; strictly enforced `AUTH_SECRET` presence via `getAuthSecret()` and `lib/env.ts`.
+  3. Enforced password requirement in `UserService.createUser` (min 6 chars, removed default `'password'` fallback) and `UserService.resetPassword`.
+  4. Redacted `passwordHash` from `AuditService.log` payload on user creation.
+  5. Added unit test suite `tests/auth-cleanup.test.ts` (all 4 tests pass).
+- Verified by: `npx vitest run tests/auth-cleanup.test.ts` (4/4 pass), `npm run typecheck` (0 errors), `npm run lint` (0 errors).
+- Key files: `lib/auth.ts`, `lib/env.ts`, `server/services/UserService.ts`, `app/dashboard/users/actions.ts`, `app/dashboard/users/new/page.tsx`, `app/dashboard/users/[id]/page.tsx`, `tests/auth-cleanup.test.ts`.
 
 ### Session 4 — 2026-09-28
 - Completed: Part A plan updates (P3.8–P3.17 added, Phase 19 rewritten, decisions log updated, AGENTS.md and SKILL.md UI rules added). Stage 1 design refresh fully implemented and tested.
@@ -640,6 +670,7 @@ Ask the user only for decisions that materially change DB model, workflow, finan
 | 2026-09-28 | Design refresh committed directly to main before resuming feature phases | Single-machine workflow; both computers sync via GitHub Desktop; branching adds merge complexity for a one-developer project. Stage 1 (design only, no schema/logic changes) then Stage 2 (feature phases from P8.1). |
 | 2026-09-28 | framer-motion v13 retained; not replaced with `motion` package | Already installed and working; upgrade is a separate task and not allowed during redesign (no new dep upgrades). |
 | 2026-09-28 | Plus Jakarta Sans (headings) + Inter (body/UI) + JetBrains Mono (document numbers) via next/font | Distinctive, professionally designed fonts; free on Google Fonts; no self-hosting required; tabular numerals via font-feature-settings. |
+| 2026-10-09 | Auth security cleanup: removed fallback secrets, removed dead auth.ts, required password on user creation | Prevent hardcoded JWT fallback secret vulnerability and ensure admin-created users always have validated passwords |
 
 *(Append new rows as decisions are made.)*
 
