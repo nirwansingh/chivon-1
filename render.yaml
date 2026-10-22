@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: chivon-api
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install && npx prisma generate
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: DEV_USER_SWITCH
+        value: "false"
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: AUTH_SECRET
+        sync: false
+      - key: FRONTEND_ORIGIN
+        sync: false
+  - type: web
+    name: chivon-web
+    runtime: node
+    rootDir: frontend
+    buildCommand: npm install && DATABASE_URL="${DATABASE_URL:-postgresql://127.0.0.1:5432/postgres}" npx prisma generate --schema ../backend/prisma/schema.prisma && npm run build
+    startCommand: npm start
+    envVars:
+      - key: DEV_USER_SWITCH
+        value: "false"
+      - key: NODE_ENV
+        value: production
+      - key: API_URL
+        value: https://chivon-1.onrender.com
+      - key: AUTH_SECRET
+        sync: false

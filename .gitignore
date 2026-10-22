@@ -4,6 +4,8 @@
 /backend/node_modules
 /.pnp
 .pnp.js
+/IMPLEMENTATION_PLAN.md
+IMPLEMENTATION_PLAN.md
 
 /IMPLEMENTATION_PLAN.md
 IMPLEMENTATION_PLAN.md
@@ -14,6 +16,7 @@ IMPLEMENTATION_PLAN.md
 /test-results
 /frontend/playwright-report
 /frontend/test-results
+IMPLEMENTATION_PLAN.md
 
 # next.js
 /.next/
@@ -35,6 +38,7 @@ yarn-error.log*
 # local env files
 .env*.local
 .env
+.env.supabase
 
 # vercel
 .vercel
