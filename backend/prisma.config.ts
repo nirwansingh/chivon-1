@@ -15,6 +15,6 @@ export default defineConfig({
   },
   engine: "classic",
   datasource: {
-    url: env("DATABASE_URL"),
+    url: process.env.DATABASE_URL || "postgresql://user:password@localhost:5432/chivon_dev?schema=public",
   },
 });
