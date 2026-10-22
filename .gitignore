@@ -4,6 +4,7 @@
 /backend/node_modules
 /.pnp
 .pnp.js
+/IMPLEMENTATION_PLAN.md
 
 # testing
 /coverage
@@ -33,6 +34,7 @@ yarn-error.log*
 # local env files
 .env*.local
 .env
+.env.supabase
 
 # vercel
 .vercel
