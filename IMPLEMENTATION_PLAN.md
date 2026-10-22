@@ -106,6 +106,10 @@ Update the Status column as phases progress. (`NOT_STARTED` / `IN_PROGRESS` / `D
 - **What is done**: P0 through P21 are fully implemented. The Next.js UI lives in `frontend/` and the Express API lives in `backend/`. Business rules remain in the existing service classes.
 - **Known issues / Unverified**: The E2E Playwright tests and browser testing are currently blocked due to a Playwright driver 404 download issue (Azure CDN). Functional verification performed via typecheck, lint, and tests.
 
+### Session 20 — 2026-10-23
+- Render `chivon-1-1` is connected to GitHub **main** (`05afa42` / `jjj`), not `Rahul-branch` (`0dbdccd`). The frontend typecheck fix is only on Rahul-branch, so Manual Deploy still failed with `tests/integration/flow.test.ts` pulling in `backend/`.
+- NEXT UP: Set Render branch to `Rahul-branch` (or merge the fix into main), then redeploy.
+
 ### Session 19 — 2026-10-23
 - Frontend Render typecheck failed because `tests/` import `backend/` (Prisma client and `number-to-words` not installed in that service). Excluded tests from `frontend/tsconfig.json`. Local `next build` succeeds.
 - NEXT UP: Commit + push this fix, then Manual Deploy `chivon-1-1` on Render.
