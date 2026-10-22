@@ -11,6 +11,7 @@
 /test-results
 /frontend/playwright-report
 /frontend/test-results
+IMPLEMENTATION_PLAN.md
 
 # next.js
 /.next/
