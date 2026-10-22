@@ -106,6 +106,30 @@ Update the Status column as phases progress. (`NOT_STARTED` / `IN_PROGRESS` / `D
 - **What is done**: P0 through P21 are fully implemented. The Next.js UI lives in `frontend/` and the Express API lives in `backend/`. Business rules remain in the existing service classes.
 - **Known issues / Unverified**: The E2E Playwright tests and browser testing are currently blocked due to a Playwright driver 404 download issue (Azure CDN). Functional verification performed via typecheck, lint, and tests.
 
+### Session 19 — 2026-10-23
+- Frontend Render typecheck failed because `tests/` import `backend/` (Prisma client and `number-to-words` not installed in that service). Excluded tests from `frontend/tsconfig.json`. Local `next build` succeeds.
+- NEXT UP: Commit + push this fix, then Manual Deploy `chivon-1-1` on Render.
+
+### Session 18 — 2026-10-23
+- Frontend Render service `chivon-1-1` failed with `Missing script: "buildyarn"`. Fix Build Command to `npm install && npm run build` and Start to `npm start`, Root Directory `frontend`.
+- NEXT UP: Redeploy the frontend Render service after those settings.
+
+### Session 17 — 2026-10-23
+- Render web service `chivon-1` is live at `https://chivon-1.onrender.com`. `GET /` returns Express `Cannot GET /` (no homepage). `GET /api/health` returns `{"ok":true}`.
+- NEXT UP: Deploy Next.js `frontend/` to Vercel with `API_URL=https://chivon-1.onrender.com`, then set Render `FRONTEND_ORIGIN` to the Vercel URL.
+
+### Session 16 — 2026-10-23
+- Railway new sign-ups are paused during a platform outage. Added `backend/railway.toml` and `render.yaml` so the Express API can be hosted on Railway later or Render now.
+- NEXT UP: Phase 21A (Real authentication)
+
+### Session 15 — 2026-10-23
+- Applied all three Prisma migrations to the Supabase project. Local Homebrew Postgres is unchanged.
+- NEXT UP: Phase 21A (Real authentication). Host the Express API, then deploy the Next.js UI to Vercel.
+
+### Session 14 — 2026-10-21
+- Added `.env.supabase.example` and `scripts/migrate-supabase.sh` so production Postgres can live on Supabase without changing local Homebrew Postgres.
+- NEXT UP: Phase 21A (Real authentication)
+
 ### Session 13 — 2026-10-20
 - `next build` no longer fails because `DEV_USER_SWITCH=true` in the local `.env`. The production guard still throws when that flag is set in the process environment.
 - NEXT UP: Phase 21A (Real authentication)
